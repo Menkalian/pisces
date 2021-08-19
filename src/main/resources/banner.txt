@@ -1,0 +1,9 @@
+  _____ _     _     _      ____  _____ ____
+ /    // \   / \ /\/ \  /|/  _ \/  __//  __\
+ |  __\| |   | | ||| |\ ||| | \||  \  |  \/|
+ | |   | |_/\| \_/|| | \||| |_/||  /_ |    /
+ \_/   \____/\____/\_/  \|\____/\____\\_/\_\
+
+${spring.application.name} - Version ${spring.application.version}
+using ${AnsiColor.BRIGHT_GREEN} Spring-Boot ${spring-boot.formatted-version}
+${AnsiColor.CYAN}Der Ozean eröffnet sich.${AnsiColor.DEFAULT}

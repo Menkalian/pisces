@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE features>
+<features xmlns:vela="https://schemas.menkalian.de/vela/feature" xmlns="https://schemas.menkalian.de/vela/feature">
+    <vela:set vela:name="pisces">
+        <vela:set vela:name="audio">
+            <vela:feature vela:name="Handler">
+                <vela:impl vela:name="JdaAudioHandler">
+                    <vela:dependency>pisces.discord.Handler.JdaDiscordHandler</vela:dependency>
+                </vela:impl>
+            </vela:feature>
+        </vela:set>
+        <vela:set vela:name="command">
+            <vela:feature vela:name="Handler">
+                <vela:impl vela:name="JdaMessageHandler">
+                    <vela:dependency>pisces.discord.Handler.JdaDiscordHandler</vela:dependency>
+                </vela:impl>
+            </vela:feature>
+        </vela:set>
+        <vela:set vela:name="database">
+            <vela:feature vela:name="Handler">
+                <vela:impl vela:name="HsqldbDatabaseHandler">
+                    <vela:dependency>pisces.database.DBMS.HSQLDB</vela:dependency>
+                </vela:impl>
+            </vela:feature>
+            <vela:feature vela:name="DBMS" vela:default="true">
+                <vela:impl vela:name="HSQLDB" vela:default="true"/>
+            </vela:feature>
+        </vela:set>
+        <vela:set vela:name="discord">
+            <vela:feature vela:name="Handler">
+                <vela:impl vela:name="JdaDiscordHandler" vela:default="true"/>
+            </vela:feature>
+        </vela:set>
+        <vela:set vela:name="message">
+            <vela:feature vela:name="Handler">
+                <vela:impl vela:name="JdaMessageHandler" vela:default="true">
+                    <vela:dependency>pisces.discord.Handler.JdaDiscordHandler</vela:dependency>
+                </vela:impl>
+            </vela:feature>
+        </vela:set>
+    </vela:set>
+</features>
