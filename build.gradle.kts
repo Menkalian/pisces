@@ -9,16 +9,46 @@ plugins {
     kotlin("plugin.jpa") version "1.5.21"
     java
 
+    // Gradle utilities
+    id("org.jetbrains.dokka") version "1.5.0"
+    jacoco
+    `maven-publish`
+
     // Menkalian/Utilities
-    id("de.menkalian.vela.buildconfig") version "1.0.0"
+    id("de.menkalian.vela.buildconfig") version "1.0.1"
     id("de.menkalian.vela.keygen") version "1.2.1"
     id("de.menkalian.vela.versioning") version "1.1.0"
     id("de.menkalian.vela.featuretoggle") version "1.0.0"
 }
 
-group = "de.menkalian"
+group = "de.menkalian.pisces"
 version = "5.0.0"
 
+// Compilation and generation settings
+java {
+    sourceCompatibility = JavaVersion.VERSION_11
+    targetCompatibility = JavaVersion.VERSION_11
+}
+tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
+    kotlinOptions {
+        freeCompilerArgs = listOf("-Xjsr305=strict")
+        jvmTarget = "11"
+    }
+}
+tasks.getByName("kotlinSourcesJar") {
+    dependsOn(tasks.generateBuildConfig)
+    dependsOn(tasks.generateKeyObjects)
+    dependsOn(tasks.generateFeaturetoggleCode)
+}
+
+keygen {
+    targetPackage = "de.menkalian.pisces.variables"
+}
+featuretoggle {
+    targetPackage = "de.menkalian.pisces.config"
+}
+
+// Repository settings
 repositories {
     mavenCentral()
     maven {
@@ -31,7 +61,21 @@ repositories {
         isAllowInsecureProtocol = true
     }
 }
+publishing {
+    repositories {
+        maven {
+            url = uri("http://server.menkalian.de:8081/artifactory/vela")
+            name = "artifactory-menkalian"
+            isAllowInsecureProtocol = true
+            credentials {
+                username = System.getenv("MAVEN_REPO_USER")
+                password = System.getenv("MAVEN_REPO_PASS")
+            }
+        }
+    }
+}
 
+// Dependencies
 dependencies {
     // Kotlin
     implementation(kotlin("stdlib"))
@@ -39,7 +83,7 @@ dependencies {
     implementation(kotlin("stdlib-jdk8"))
 
     // Spring
-    val springboot = {module: String -> "org.springframework.boot:spring-boot-starter-$module"}
+    val springboot = { module: String -> "org.springframework.boot:spring-boot-starter-$module" }
     implementation(springboot("web"))
     implementation(springboot("actuator"))
     implementation(springboot("data-jpa"))
@@ -57,23 +101,53 @@ dependencies {
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine")
 }
 
-java.sourceCompatibility = JavaVersion.VERSION_11
-
-keygen {
-    targetPackage = "de.menkalian.pisces.variables"
+// Test/Verification settings
+tasks.getByName<Test>("test") {
+    testLogging.showStandardStreams = true
+    useJUnitPlatform()
 }
-
-featuretoggle {
-    targetPackage = "de.menkalian.pisces.config"
-}
-
-tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
-    kotlinOptions {
-        freeCompilerArgs = listOf("-Xjsr305=strict")
-        jvmTarget = "11"
+tasks.withType<JacocoReport>().configureEach {
+    dependsOn(tasks.getByName("test"))
+    reports {
+        xml.required.set(true)
+        csv.required.set(true)
     }
 }
+tasks.getByName("check") {
+    dependsOn(tasks.withType<JacocoReport>())
+}
 
-tasks.getByName<Test>("test") {
-    useJUnitPlatform()
+// Documentation
+tasks.withType<org.jetbrains.dokka.gradle.DokkaTask>().configureEach {
+    dependsOn(tasks.generateBuildConfig)
+    dependsOn(tasks.generateKeyObjects)
+    dependsOn(tasks.generateFeaturetoggleCode)
+    dokkaSourceSets {
+        named("main") {
+            moduleName.set("Pisces (DJ Flunder) Source Dokumentation")
+            platform.set(org.jetbrains.dokka.Platform.jvm)
+            sourceLink {
+                localDirectory.set(file("src/main/kotlin"))
+                remoteUrl.set(uri("https://gitlab.com/kiliankra/pisces/-/tree/main/src/main/kotlin").toURL())
+                remoteLineSuffix.set("#L")
+            }
+        }
+    }
+}
+val dokkaHtmlJarTask = tasks.create("dokkaHtmlJar", org.gradle.jvm.tasks.Jar::class.java) {
+    archiveClassifier.set("dokka")
+    from(tasks.dokkaHtml)
+}
+
+// Deployment
+publishing {
+    publications {
+        create<MavenPublication>("basejava") {
+            artifactId = "pisces"
+            from(components["java"])
+            artifact(tasks.kotlinSourcesJar)
+            artifact(tasks.bootJar)
+            artifact(dokkaHtmlJarTask)
+        }
+    }
 }

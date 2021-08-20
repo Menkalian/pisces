@@ -1,6 +1,6 @@
 package de.menkalian.pisces.discord
 
-import de.menkalian.BuildConfig
+import de.menkalian.pisces.BuildConfig
 import de.menkalian.pisces.IHandler
 import de.menkalian.pisces.IHandlerCommonImpl
 import de.menkalian.pisces.config.IConfig
