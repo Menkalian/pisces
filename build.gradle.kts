@@ -64,7 +64,7 @@ repositories {
 publishing {
     repositories {
         maven {
-            url = uri("http://server.menkalian.de:8081/artifactory/vela")
+            url = uri("http://server.menkalian.de:8081/artifactory/pisces")
             name = "artifactory-menkalian"
             isAllowInsecureProtocol = true
             credentials {
@@ -142,7 +142,7 @@ val dokkaHtmlJarTask = tasks.create("dokkaHtmlJar", org.gradle.jvm.tasks.Jar::cl
 // Deployment
 publishing {
     publications {
-        create<MavenPublication>("basejava") {
+        create<MavenPublication>("dj-flunder") {
             artifactId = "pisces"
             from(components["java"])
             artifact(tasks.kotlinSourcesJar)
