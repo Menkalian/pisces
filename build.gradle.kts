@@ -15,13 +15,13 @@ plugins {
     `maven-publish`
 
     // Menkalian/Utilities
-    id("de.menkalian.vela.buildconfig") version "1.0.0"
+    id("de.menkalian.vela.buildconfig") version "1.0.1"
     id("de.menkalian.vela.keygen") version "1.2.1"
     id("de.menkalian.vela.versioning") version "1.1.0"
     id("de.menkalian.vela.featuretoggle") version "1.0.0"
 }
 
-group = "de.menkalian"
+group = "de.menkalian.pisces"
 version = "5.0.0"
 
 // Compilation and generation settings
@@ -36,6 +36,7 @@ tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
     }
 }
 tasks.getByName("kotlinSourcesJar") {
+    dependsOn(tasks.generateBuildConfig)
     dependsOn(tasks.generateKeyObjects)
     dependsOn(tasks.generateFeaturetoggleCode)
 }
@@ -118,6 +119,7 @@ tasks.getByName("check") {
 
 // Documentation
 tasks.withType<org.jetbrains.dokka.gradle.DokkaTask>().configureEach {
+    dependsOn(tasks.generateBuildConfig)
     dependsOn(tasks.generateKeyObjects)
     dependsOn(tasks.generateFeaturetoggleCode)
     dokkaSourceSets {
