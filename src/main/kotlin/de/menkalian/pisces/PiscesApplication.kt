@@ -1,6 +1,6 @@
 package de.menkalian.pisces
 
-import org.slf4j.LoggerFactory
+import de.menkalian.pisces.util.logger
 import org.springframework.boot.CommandLineRunner
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication
@@ -18,13 +18,9 @@ fun main(args: Array<String>) {
 
 /**
  * Startklasse der `SpringBoot`-Applikation.
- *
- * @property log Logger der Klasse
  */
 @SpringBootApplication
 class PiscesApplication {
-    val log = LoggerFactory.getLogger(this::class.java)!!
-
     /**
      * Automatische Initialisierung aller Komponenten.
      *
@@ -34,8 +30,8 @@ class PiscesApplication {
      */
     @Bean
     fun initialize(handlers: List<IHandler>): CommandLineRunner = CommandLineRunner {
-        log.info("Initializing components...")
-        log.debug("Found ${handlers.size} components.")
+        logger().info("Initializing components...")
+        logger().debug("Found ${handlers.size} components.")
         handlers.forEach(IHandler::initialize)
     }
 
@@ -51,19 +47,19 @@ class PiscesApplication {
     fun runCli(handlers: List<IHandler>): CommandLineRunner = CommandLineRunner {
         val scanner = Scanner(System.`in`)
 
-        log.debug("Reading manual CLI-input.")
+        logger().debug("Reading manual CLI-input.")
         while (scanner.hasNextLine()) {
             val input = scanner.nextLine()
-            log.trace("Read manual input line.")
+            logger().trace("Read manual input line.")
 
             when (input.trim()) {
                 "q", "quit" -> {
-                    log.info("Deinitializing components...")
+                    logger().info("Deinitializing components...")
                     handlers.forEach(IHandler::deinitialize)
-                    log.info("Components were deinitialized. Shutting down.")
+                    logger().info("Components were deinitialized. Shutting down.")
                     exitProcess(0)
                 }
-                else        -> log.warn("Unknown CLI-input \"$input\".")
+                else        -> logger().warn("Unknown CLI-input \"$input\".")
             }
         }
     }

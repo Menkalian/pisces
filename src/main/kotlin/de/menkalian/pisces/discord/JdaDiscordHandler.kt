@@ -19,12 +19,13 @@ import java.util.concurrent.Executors
 @Conditional(OnConfigValueCondition::class)
 @RequiresKey(["pisces.discord.Handler.JdaDiscordHandler"])
 class JdaDiscordHandler(
-    @Value("\${pisces.bot.token}")
-    val token: String,
+    @Value("\${pisces.bot.token}") val token: String,
     val config: IConfig,
     val listeners: List<EventListener>
 ) : IDiscordHandler, CommonHandlerImpl() {
+
     private lateinit var innerJda: JDA
+
     override val jda: JDA
         get() = innerJda
 
@@ -44,9 +45,9 @@ class JdaDiscordHandler(
     }
 
     override fun deinitialize() {
+        startDeinitialization()
         innerJda.shutdown()
         // Waiting for the shutdown to finish
         Thread.sleep(300)
-        innerInitialized.set(false)
     }
 }

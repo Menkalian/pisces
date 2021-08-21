@@ -8,20 +8,28 @@ import java.util.concurrent.atomic.AtomicBoolean
  * Diese Klasse **muss nicht** von jeder [IHandler]-Implementierung verwendet werden, aber in vielen Fällen kann so Code eingespart werden.
  */
 abstract class CommonHandlerImpl : IHandler {
-
     /**
      * Thread-sichere und veränderbare Repräsentation des Initialisierungsstatus.
      */
-    val innerInitialized: AtomicBoolean = AtomicBoolean(false)
-    override val initialized: Boolean
-        get() = innerInitialized.get()
+    private val innerInitialized: AtomicBoolean = AtomicBoolean(false)
+
+    /**
+     * Mutex zur Absicherung der (De-)Initialisierung der Komponente
+     */
+    private val initializationMutex = Any()
+
+    final override val initialized: Boolean
+        get() = synchronized(initializationMutex) {
+            innerInitialized.get()
+        }
 
     /**
      * Set der registrierten [IHandler.IInitializationHandler]. Eine doppelte Registrierung hat keinen Effekt durch die Nutzung eines [Set]s.
      */
     val initializationHandlers: MutableSet<IHandler.IInitializationHandler> = mutableSetOf()
+
     override fun addInitializationHandler(handler: IHandler.IInitializationHandler) {
-        synchronized(initializationHandlers) {
+        synchronized(initializationMutex) {
             if (initialized)
                 handler.onInitialized(this)
             else
@@ -38,7 +46,8 @@ abstract class CommonHandlerImpl : IHandler {
      * Sollte am Ende von [IHandler.initialize] aufgerufen werden.
      */
     fun finishInitialization() {
-        synchronized(initializationHandlers) {
+        synchronized(initializationMutex) {
+            logger().info("Component \"${this::class.qualifiedName}\" fully initialized.")
             innerInitialized.set(true)
             initializationHandlers
                 .forEach { it.onInitialized(this) }
@@ -47,10 +56,11 @@ abstract class CommonHandlerImpl : IHandler {
 
     /**
      * Führt allgemeine Aufgaben zum Abschließen der Deinitialisierung durch und ruft die registrierten [IHandler.IInitializationHandler] auf.
-     * Sollte am Ende von [IHandler.deinitialize] aufgerufen werden.
+     * Sollte am Anfang von [IHandler.deinitialize] aufgerufen werden.
      */
-    fun finishDeinitialization() {
-        synchronized(initializationHandlers) {
+    fun startDeinitialization() {
+        synchronized(initializationMutex) {
+            logger().info("Start deinitialization of component \"${this::class.qualifiedName}\".")
             innerInitialized.set(false)
             initializationHandlers
                 .forEach { it.onDeinitialized(this) }
