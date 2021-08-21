@@ -11,5 +11,6 @@ interface IHandler {
 
     fun interface IInitializationHandler {
         fun onInitialized(handler: IHandler)
+        fun onDeinitialized(handler: IHandler) {}
     }
 }

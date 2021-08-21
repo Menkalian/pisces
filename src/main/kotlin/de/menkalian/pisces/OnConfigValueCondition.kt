@@ -1,11 +1,10 @@
-package de.menkalian.pisces.util
+package de.menkalian.pisces
 
 import de.menkalian.pisces.config.ConfigProvider
 import org.slf4j.LoggerFactory
 import org.springframework.context.annotation.Condition
 import org.springframework.context.annotation.ConditionContext
 import org.springframework.core.type.AnnotatedTypeMetadata
-import java.lang.annotation.Inherited
 
 class OnConfigValueCondition : Condition {
     val log = LoggerFactory.getLogger(this::class.java)!!
@@ -28,7 +27,3 @@ class OnConfigValueCondition : Condition {
         return false
     }
 }
-
-@Repeatable
-@Inherited
-annotation class RequiresKey(val value: Array<String>)
