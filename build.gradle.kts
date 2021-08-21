@@ -17,7 +17,7 @@ plugins {
     // Menkalian/Utilities
     id("de.menkalian.vela.buildconfig") version "1.0.1"
     id("de.menkalian.vela.keygen") version "1.2.1"
-    id("de.menkalian.vela.featuretoggle") version "1.0.0"
+    id("de.menkalian.vela.featuretoggle") version "1.0.1"
 }
 
 group = "de.menkalian.pisces"
