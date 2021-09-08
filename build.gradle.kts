@@ -1,3 +1,5 @@
+@file:Suppress("GradlePackageUpdate")
+
 plugins {
     // Spring
     id("org.springframework.boot") version "2.5.3"
