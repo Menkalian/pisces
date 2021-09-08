@@ -1,4 +1,4 @@
-package de.menkalian.pisces.audio
+package de.menkalian.pisces.audio.data
 
 /**
  * Aktueller Status des Tracks.

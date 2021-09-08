@@ -1,4 +1,4 @@
-package de.menkalian.pisces.audio
+package de.menkalian.pisces.audio.data
 
 import com.sedmelluq.discord.lavaplayer.source.AudioSourceManager
 import com.sedmelluq.discord.lavaplayer.source.bandcamp.BandcampAudioSourceManager
@@ -10,16 +10,16 @@ import com.sedmelluq.discord.lavaplayer.source.soundcloud.SoundCloudAudioSourceM
 import com.sedmelluq.discord.lavaplayer.source.twitch.TwitchStreamAudioSourceManager
 import com.sedmelluq.discord.lavaplayer.source.vimeo.VimeoAudioSourceManager
 import com.sedmelluq.discord.lavaplayer.source.youtube.YoutubeAudioSourceManager
-import de.menkalian.pisces.audio.AudioSourceType.BANDCAMP
-import de.menkalian.pisces.audio.AudioSourceType.GETYARN
-import de.menkalian.pisces.audio.AudioSourceType.HTTP
-import de.menkalian.pisces.audio.AudioSourceType.LOCAL
-import de.menkalian.pisces.audio.AudioSourceType.NICO
-import de.menkalian.pisces.audio.AudioSourceType.SOUNDCLOUD
-import de.menkalian.pisces.audio.AudioSourceType.TWITCH
-import de.menkalian.pisces.audio.AudioSourceType.UNKNOWN
-import de.menkalian.pisces.audio.AudioSourceType.VIMEO
-import de.menkalian.pisces.audio.AudioSourceType.YOUTUBE
+import de.menkalian.pisces.audio.data.AudioSourceType.BANDCAMP
+import de.menkalian.pisces.audio.data.AudioSourceType.GETYARN
+import de.menkalian.pisces.audio.data.AudioSourceType.HTTP
+import de.menkalian.pisces.audio.data.AudioSourceType.LOCAL
+import de.menkalian.pisces.audio.data.AudioSourceType.NICO
+import de.menkalian.pisces.audio.data.AudioSourceType.SOUNDCLOUD
+import de.menkalian.pisces.audio.data.AudioSourceType.TWITCH
+import de.menkalian.pisces.audio.data.AudioSourceType.UNKNOWN
+import de.menkalian.pisces.audio.data.AudioSourceType.VIMEO
+import de.menkalian.pisces.audio.data.AudioSourceType.YOUTUBE
 
 /**
  * Repräsentiert die Quelle des Tracks.
