@@ -1,5 +1,6 @@
 package de.menkalian.pisces.audio
 
+import de.menkalian.pisces.audio.data.TrackInfo
 import de.menkalian.pisces.util.QueueResult
 
 /**
@@ -43,14 +44,14 @@ interface IGuildAudioController {
      * Dabei wird die folgende Reihenfolge verwendet:
      *  1. Ist der Text eine URL, die auf eine abspielbare Audiodatei verweist -> Gebe diese Audiodatei wieder
      *  2. Suche auf Youtube nach dem gegebenen Text. Falls diese Suche ein Ergebnis hat -> Gebe das erste Ergebnis dieser Suche wieder.
-     *  3. Das Ergebnis [EPlayTrackResult.NOT_FOUND] wird zurückgegeben und die aktuelle Wiedergabe oder Queue wird **nicht verändert**
+     *  3. Das Ergebnis [EPlayTrackResult.NOT_FOUND][de.menkalian.pisces.audio.data.EPlayTrackResult.NOT_FOUND] wird zurückgegeben und die aktuelle Wiedergabe oder Queue wird **nicht verändert**
      *
      *  @param searchterm  Text, der zur Lokalisierung des Audiotracks verwendet wird
      *  @param playInstant Flag, ob die aktuelle Queue ignoriert werden soll (d.h. der gefundene Track wird sofort abgespielt, die aktuelle Wiedergabe wird **abgebrochen**)
      *  @param interruptCurrent Falls dieser Wert `true` ist, wird die Wiedergabe des aktuellen Tracks unterbrochen und stattdessen der angegebene Track gespielt.
      *  @param playFullPlaylist Falls der gefundene Track (bzw. die angegebene URL) teil einer Playlist ist, wird diese Playlist vollständig zur Queue hinzugefügt.
      *
-     *  @return Das passende Enum-Literal von [EPlayTrackResult] und eine Liste mit allen Tracks, die zur aktuellen Queue hinzugefügt wurden.
+     *  @return Das passende Enum-Literal von [EPlayTrackResult][de.menkalian.pisces.audio.data.EPlayTrackResult] und eine Liste mit allen Tracks, die zur aktuellen Queue hinzugefügt wurden.
      */
     fun playTrack(
         searchterm: String,
@@ -67,7 +68,7 @@ interface IGuildAudioController {
      *  @param enableSearch Aktiviert die Youtube-Suche.
      *  @param results      Anzahl der Such-Ergebnisse, die zurückgegeben werden sollen (nur relevant, falls die Suche aktiviert ist)
      *
-     *  @return Das passende Enum-Literal von [EPlayTrackResult] und eine Liste mit allen Tracks, die gefunden wurden.
+     *  @return Das passende Enum-Literal von [EPlayTrackResult][de.menkalian.pisces.audio.data.EPlayTrackResult] und eine Liste mit allen Tracks, die gefunden wurden.
      */
     fun getSearchResult(
         searchterm: String,
