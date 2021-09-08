@@ -2,9 +2,14 @@
 <features xmlns:vela="https://schemas.menkalian.de/vela/feature" xmlns="https://schemas.menkalian.de/vela/feature">
     <set vela:name="pisces">
         <set vela:name="audio">
+            <set vela:name="filter" />
+            <feature vela:default="true" vela:name="ExtendedAudioSendHandler">
+                <impl vela:default="true" vela:name="UnfilteredLavaplayerAudioSendHandler" />
+            </feature>
             <feature vela:default="true" vela:name="Handler">
                 <impl vela:name="JdaAudioHandler">
                     <dependency>pisces.discord.Handler.JdaDiscordHandler</dependency>
+                    <dependency>pisces.audio.ExtendedAudioSendHandler</dependency>
                 </impl>
             </feature>
         </set>
