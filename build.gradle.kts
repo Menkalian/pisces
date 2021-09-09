@@ -1,3 +1,5 @@
+@file:Suppress("GradlePackageUpdate")
+
 plugins {
     // Spring
     id("org.springframework.boot") version "2.5.3"
@@ -17,8 +19,7 @@ plugins {
     // Menkalian/Utilities
     id("de.menkalian.vela.buildconfig") version "1.0.1"
     id("de.menkalian.vela.keygen") version "1.2.1"
-    id("de.menkalian.vela.versioning") version "1.1.0"
-    id("de.menkalian.vela.featuretoggle") version "1.0.0"
+    id("de.menkalian.vela.featuretoggle") version "1.0.1"
 }
 
 group = "de.menkalian.pisces"
@@ -31,7 +32,7 @@ java {
 }
 tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
     kotlinOptions {
-        freeCompilerArgs = listOf("-Xjsr305=strict")
+        freeCompilerArgs = listOf("-Xjsr305=strict", "-Xopt-in=kotlin.RequiresOptIn")
         jvmTarget = "11"
     }
 }
@@ -124,6 +125,7 @@ tasks.withType<org.jetbrains.dokka.gradle.DokkaTask>().configureEach {
     dependsOn(tasks.generateFeaturetoggleCode)
     dokkaSourceSets {
         named("main") {
+            includes.from(file("src/main/resources/modules.dokka.md"))
             moduleName.set("Pisces (DJ Flunder) Source Dokumentation")
             platform.set(org.jetbrains.dokka.Platform.jvm)
             sourceLink {

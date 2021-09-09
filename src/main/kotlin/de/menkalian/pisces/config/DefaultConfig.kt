@@ -2,6 +2,9 @@ package de.menkalian.pisces.config
 
 import kotlin.reflect.full.memberProperties
 
+/**
+ * Standardimplementierung der [IConfig]-Schnittstelle.
+ */
 class DefaultConfig : IConfig {
     override val featureConfig: FeatureConfig = DefaultFeatureConfig()
 

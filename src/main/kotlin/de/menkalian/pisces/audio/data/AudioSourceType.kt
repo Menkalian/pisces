@@ -1,8 +1,7 @@
-package de.menkalian.pisces.audio
+package de.menkalian.pisces.audio.data
 
 import com.sedmelluq.discord.lavaplayer.source.AudioSourceManager
 import com.sedmelluq.discord.lavaplayer.source.bandcamp.BandcampAudioSourceManager
-import com.sedmelluq.discord.lavaplayer.source.beam.BeamAudioSourceManager
 import com.sedmelluq.discord.lavaplayer.source.getyarn.GetyarnAudioSourceManager
 import com.sedmelluq.discord.lavaplayer.source.http.HttpAudioSourceManager
 import com.sedmelluq.discord.lavaplayer.source.local.LocalAudioSourceManager
@@ -11,37 +10,34 @@ import com.sedmelluq.discord.lavaplayer.source.soundcloud.SoundCloudAudioSourceM
 import com.sedmelluq.discord.lavaplayer.source.twitch.TwitchStreamAudioSourceManager
 import com.sedmelluq.discord.lavaplayer.source.vimeo.VimeoAudioSourceManager
 import com.sedmelluq.discord.lavaplayer.source.youtube.YoutubeAudioSourceManager
-import com.sedmelluq.discord.lavaplayer.track.AudioTrack
+import de.menkalian.pisces.audio.data.AudioSourceType.BANDCAMP
+import de.menkalian.pisces.audio.data.AudioSourceType.GETYARN
+import de.menkalian.pisces.audio.data.AudioSourceType.HTTP
+import de.menkalian.pisces.audio.data.AudioSourceType.LOCAL
+import de.menkalian.pisces.audio.data.AudioSourceType.NICO
+import de.menkalian.pisces.audio.data.AudioSourceType.SOUNDCLOUD
+import de.menkalian.pisces.audio.data.AudioSourceType.TWITCH
+import de.menkalian.pisces.audio.data.AudioSourceType.UNKNOWN
+import de.menkalian.pisces.audio.data.AudioSourceType.VIMEO
+import de.menkalian.pisces.audio.data.AudioSourceType.YOUTUBE
 
-data class TrackInfo(
-    val title: String,
-    val author: String,
-
-    val state: AudioTrackState,
-    val position: Long,
-    val length: Long,
-    val isStream: Boolean,
-
-    val sourcetype: AudioSourceType,
-    val sourceIdentifier: String,
-    val sourceUri: String
-) {
-    constructor(track: AudioTrack) : this(
-        track.info.title,
-        track.info.author,
-        AudioTrackState.valueOf(track.state.name),
-        track.position,
-        track.duration,
-        track.info.isStream,
-        AudioSourceType.fromLavaplayerSourceManager(track.sourceManager),
-        track.info.identifier,
-        track.info.uri
-    )
-}
-
+/**
+ * Repräsentiert die Quelle des Tracks.
+ * Zur Bestimmung dieses Typs wird die Klasse des verwendeten [AudioSourceManager] genutzt.
+ *
+ * @property BANDCAMP   Audiotrack von `bandcamp.com`
+ * @property GETYARN    Audiotrack von `getyarn.io`
+ * @property HTTP       Audiotrack der direkt unter einer `http(s)`-URL abgelegt ist.
+ * @property LOCAL      Audiotrack der aus einer lokalen Datei gelesen wird.
+ * @property NICO       Audiotrack von `nicovideo.jp`
+ * @property SOUNDCLOUD Audiotrack von `soundcloud.com`
+ * @property TWITCH     Audiotrack von `twitch.tv`
+ * @property VIMEO      Audiotrack von `vimeo.com`
+ * @property YOUTUBE    Audiotrack von `youtube.com`
+ * @property UNKNOWN    Unbekannte Quelle. Falls dieser Wert verwendet wird, hat Lavaplayer vermutlich eine neue Audioquelle hinzugefügt.
+ */
 enum class AudioSourceType {
     BANDCAMP,
-    BEAM,
     GETYARN,
     HTTP,
     LOCAL,
@@ -55,7 +51,6 @@ enum class AudioSourceType {
     companion object {
         fun fromLavaplayerSourceManager(manager: AudioSourceManager) = when (manager) {
             is BandcampAudioSourceManager     -> BANDCAMP
-            is BeamAudioSourceManager         -> BEAM
             is GetyarnAudioSourceManager      -> GETYARN
             is HttpAudioSourceManager         -> HTTP
             is LocalAudioSourceManager        -> LOCAL
@@ -68,8 +63,3 @@ enum class AudioSourceType {
         }
     }
 }
-
-enum class AudioTrackState {
-    INACTIVE, LOADING, PLAYING, SEEKING, STOPPING, FINISHED
-}
-
