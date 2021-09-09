@@ -46,3 +46,14 @@ publish:
     paths:
       - ./build/libs/*.jar
     expire_in: 1 month
+
+pages:
+  stage: deploy
+  only:
+    - main
+  script:
+    - ./gradlew dokkaHtml
+    - cp build/dokka/html public
+  artifacts:
+    paths:
+      - public
