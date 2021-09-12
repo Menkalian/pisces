@@ -20,6 +20,10 @@ Kapselung der Datenbankzugriffe. Das [IHandler][de.menkalian.pisces.IHandler]-In
 
 * HSQLDB über `spring-data-jpa`
 
+# Package de.menkalian.pisces.database.jpa
+
+JPA-Objekte und Repository-Interfaces. Die Repository-Interfaces werden von Spring automatisch implementiert und als Bean zur Verfügung gestellt.
+
 # Package de.menkalian.pisces.discord
 
 Kapselt die Anmeldung und grundsätzlichen Zugriff auf die Discord-API. Das [IHandler][de.menkalian.pisces.IHandler]-Interface der Komponente ist [IDiscordHandler][de.menkalian.pisces.discord.IDiscordHandler]. Da nicht die vollständige Discord-API neu abgebildet wird, ist die Hauptaufgabe dieser Schnittstelle die aktuelle Instanz des API-Handlers (aktuell `JDA`) bereitzustellen.
