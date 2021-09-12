@@ -1,0 +1,13 @@
+Flunder
+  Kommando
+    Sent
+      Channel
+        Id
+        Name
+      User
+        Id
+        Name
+  Guild
+    Channel
+      Default
+        Id
