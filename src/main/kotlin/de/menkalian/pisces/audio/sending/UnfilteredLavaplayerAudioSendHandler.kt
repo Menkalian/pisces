@@ -6,17 +6,33 @@ import de.menkalian.pisces.audio.sending.filter.IAudioInputFilter
 import de.menkalian.pisces.util.ExperimentalPisces
 import java.nio.ByteBuffer
 
-class UnfilteredLavaplayerAudioSendHandler(val player: AudioPlayer) : IExtendedAudioSendHandler {
+/**
+ * Implementierung der [IExtendedAudioSendHandler]-Schnittstelle.
+ * Dieser SendHandler erhält die Audiodaten von Lavaplayer und leitet diese ohne weitere Verarbeitung an Discord/JDA weiter.
+ * Die [IAudioInputFilter] werden in dieser Klasse **nicht** verwendet.
+ */
+internal class UnfilteredLavaplayerAudioSendHandler(val player: AudioPlayer) : IExtendedAudioSendHandler {
 
     /**
-     *
+     * Definition zur Erfüllung der Schnittstelle.
+     * [@Unused]
      */
     @OptIn(ExperimentalPisces::class)
     override val filter: MutableList<IAudioInputFilter> = mutableListOf()
 
+    /**
+     * Mutex zur Absicherung des Multithread-Zugriffs.
+     */
     private val frameProvisionMutex = Any()
+
+    /**
+     * Caching eines [AudioFrame]s (da für diese einfache Verarbeitung nicht mehrere [AudioFrame]s gespeichert werden müssen)
+     */
     private var lastFrame: AudioFrame? = null
 
+    /**
+     * Prüft, ob ein [AudioFrame] zum Senden zur Verfügung steht.
+     */
     override fun canProvide(): Boolean {
         synchronized(frameProvisionMutex) {
             readFrame()
@@ -24,6 +40,9 @@ class UnfilteredLavaplayerAudioSendHandler(val player: AudioPlayer) : IExtendedA
         }
     }
 
+    /**
+     * Stellt das nächste [AudioFrame] an Discord bereit.
+     */
     override fun provide20MsAudio(): ByteBuffer? {
         val data: ByteBuffer
         synchronized(frameProvisionMutex) {
@@ -38,12 +57,18 @@ class UnfilteredLavaplayerAudioSendHandler(val player: AudioPlayer) : IExtendedA
         return data
     }
 
+    /**
+     * Liest das nächste [AudioFrame] von [player] aus und speichert es im Cache.
+     */
     private fun readFrame() {
         if (lastFrame == null) {
             lastFrame = player.provide()
         }
     }
 
+    /**
+     * Löscht das gespeicherte [AudioFrame].
+     */
     private fun clearFrame() {
         lastFrame = null
     }
