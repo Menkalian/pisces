@@ -1,6 +1,6 @@
-package de.menkalian.pisces.message
+package de.menkalian.pisces.message.spec
 
-internal data class FieldSpec(
+data class FieldSpec(
     val title: String = "",
     val text: String = "",
     val inline: Boolean,
