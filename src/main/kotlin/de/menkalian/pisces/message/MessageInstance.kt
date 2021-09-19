@@ -5,6 +5,7 @@ import de.menkalian.pisces.message.spec.FieldSpec
 import de.menkalian.pisces.message.spec.MessageSpec
 import de.menkalian.pisces.util.Emoji
 import de.menkalian.pisces.util.TimeoutTimer
+import de.menkalian.pisces.util.logger
 import net.dv8tion.jda.api.EmbedBuilder
 import net.dv8tion.jda.api.Permission
 import net.dv8tion.jda.api.entities.GuildChannel
@@ -13,6 +14,36 @@ import net.dv8tion.jda.api.entities.MessageEmbed
 import net.dv8tion.jda.api.entities.TextChannel
 import java.time.temporal.TemporalAccessor
 
+/**
+ * Repräsentation einer Nachrichteninstanz, die bearbeitet werden kann.
+ * Falls nach einer festgelegten Zeitspanne (30 min) keine Interaktion mit der Nachricht stattgefunden hat, wird die Instanz ungültig und verworfen.
+ * Falls keine Interaktion mit der Nachricht nötig ist, sollte direkt nach der Erstellung (bzw. nachdem keine Interaktion mehr erforderlich ist) die Funktion [stopInvalidationTimer] aufgerufen werden.
+ *
+ * @property discordHandler Akutelle Instanz der [IDiscordHandler]-Schnittstelle
+ * @property messageHandler Akutelle Instanz der [IMessageHandler]-Schnittstelle
+ * @property guildId Discord-ID des Servers, in dem die Nachricht geschickt werden soll.
+ *                   Falls dieser Wert `null` ist, wird die Nachricht in einem Privatchat geschickt.
+ * @property channelId Discord-ID des Kanals, in dem die Nachricht geschickt werden soll.
+ *                     Falls [guildId] `null` ist, wird dieser Wert als UserId interpretiert.
+ *
+ * @property messageEditMutex Mutex zum Absichern der Nachrichtenbearbeitung
+ * @property pagesMutex Mutex zum Absichern von Änderungen an [pages]
+ *
+ * @property initialized Flag, ob die Initialisierung bereits abgeschlossen ist (und die Nachricht initial gesendet worden ist).
+ *
+ * @property jdaMessageInstance JDA-Instanz der gesendeten Nachricht
+ * @property inactivityTimer Timer zur Invalidierung der Nachricht nach Ablauf der festgelegten Zeitspanne.
+ *
+ * @property pages Interne Aufteilung der Nachricht in Seiten, um die Limits von Discord korrekt zu behandeln.
+ * @property currentPage Index der aktuell angezeigten Seite.
+ *
+ * @property currentPageIncrementAction [IMessageInstance.IReactionAction], die ausgelöst wird, wenn der Nutzer die nächste Seite der Nachricht sehen möchte.
+ * @property currentPageDecrementAction [IMessageInstance.IReactionAction], die ausgelöst wird, wenn der Nutzer die vorige Seite der Nachricht sehen möchte.
+ *
+ * @property reactionAddedActions Aktionen, die beim Hinzufügen einer bestimmten Reaktion ausgelöst werden
+ * @property reactionRemovedActions Aktionen, die beim Entfernen einer bestimmten Reaktion ausgelöst werden
+ * @property messageReactionListener [IMessageHandler.IReactionListener]-Instanz, um [reactionAddedActions] und [reactionRemovedActions] auszulösen.
+ */
 class MessageInstance(
     private val discordHandler: IDiscordHandler,
     private val messageHandler: IMessageHandler,
@@ -40,15 +71,19 @@ class MessageInstance(
     private val pages = mutableListOf<MessagePage>()
     private var currentPage = 0
 
-    private val currentPageIncrementAction = { _: Long, _: IMessageInstance ->
-        currentPage++
-        clearUserReactions(Emoji.ARROW_UP)
-        updateRenderedMessage()
+    private val currentPageIncrementAction = { uid: Long, _: IMessageInstance ->
+        if (uid != discordHandler.jda.selfUser.idLong) {
+            currentPage++
+            clearUserReactions(Emoji.ARROW_UP)
+            updateRenderedMessage()
+        }
     }
-    private val currentPageDecrementAction = { _: Long, _: IMessageInstance ->
-        currentPage--
-        clearUserReactions(Emoji.ARROW_DOWN)
-        updateRenderedMessage()
+    private val currentPageDecrementAction = { uid: Long, _: IMessageInstance ->
+        if (uid != discordHandler.jda.selfUser.idLong) {
+            currentPage--
+            clearUserReactions(Emoji.ARROW_DOWN)
+            updateRenderedMessage()
+        }
     }
 
     private val reactionAddedActions: MutableMap<String, MutableList<IMessageInstance.IReactionAction>> = mutableMapOf()
@@ -76,17 +111,19 @@ class MessageInstance(
                 .getGuildById(guildId)
                 ?.getGuildChannelById(channelId)
             if (targetChannel?.isEligibleChannel() == true && targetChannel is TextChannel) {
+                logger().info("Sending message to $targetChannel")
                 jdaMessageInstance = targetChannel
                     .sendMessageEmbeds(renderMessage())
                     .complete()!!
             } else {
-                throw IllegalArgumentException()
+                throw IllegalArgumentException("Provided IDs (guild=$guildId, channel=$channelId) are not a valid target.")
             }
         } else {
             val targetChannel = discordHandler.jda
                 .getUserById(channelId)
                 ?.openPrivateChannel()
                 ?.complete()
+            logger().info("Sending message to $targetChannel")
             jdaMessageInstance = targetChannel
                 ?.sendMessageEmbeds(renderMessage())
                 ?.complete()!!
@@ -142,16 +179,18 @@ class MessageInstance(
     override fun setFooter(text: String?, url: String?): IMessageInstance {
         return withFooter(text, url)
     }
-
     //endregion
 
     override fun stopInvalidationTimer() {
+        logger().debug("Stopped invalidation-timer for $jdaMessageInstance")
         inactivityTimer.stop()
     }
 
     override fun addReaction(reaction: String) {
-        if (hasReactionRights(false))
+        if (hasReactionRights(false)) {
+            logger().debug("Adding reaction $reaction to $jdaMessageInstance")
             jdaMessageInstance.addReaction(reaction).complete()
+        }
     }
 
     override fun clearUserReactions(reaction: String) {
@@ -163,13 +202,16 @@ class MessageInstance(
 
     override fun removeReaction(reaction: String) {
         if (hasReactionRights(true)) {
+            logger().debug("Removing all reactions $reaction from $jdaMessageInstance")
             jdaMessageInstance.clearReactions(reaction).complete()
         }
     }
 
     override fun removeAllReactions() {
-        if (hasReactionRights(true))
+        if (hasReactionRights(true)) {
+            logger().debug("Removing all reactions from $jdaMessageInstance")
             jdaMessageInstance.clearReactions()
+        }
     }
 
     override fun addReactionHandler(handler: IMessageHandler.IReactionListener) {
@@ -180,21 +222,21 @@ class MessageInstance(
         messageHandler.removeReactionListener(this, handler)
     }
 
-    override fun onReactionAdded(reaction: String, action: IMessageInstance.IReactionAction) {
+    override fun addOnReactionAddedAction(reaction: String, action: IMessageInstance.IReactionAction) {
         if (reactionAddedActions.containsKey(reaction).not()) {
             reactionAddedActions[reaction] = mutableListOf()
         }
         reactionAddedActions[reaction]?.add(action)
     }
 
-    override fun onReactionRemoved(reaction: String, action: IMessageInstance.IReactionAction) {
+    override fun addOnReactionRemovedAction(reaction: String, action: IMessageInstance.IReactionAction) {
         if (reactionRemovedActions.containsKey(reaction).not()) {
             reactionRemovedActions[reaction] = mutableListOf()
         }
         reactionRemovedActions[reaction]?.add(action)
     }
 
-    override fun clearReactionAction(reaction: String) {
+    override fun clearReactionActions(reaction: String) {
         reactionAddedActions[reaction]?.clear()
         reactionRemovedActions[reaction]?.clear()
     }
@@ -208,6 +250,10 @@ class MessageInstance(
         }
     }
 
+    /**
+     * Bearbeitet die gesendete Nachricht, so dass diese zu den aktuellen Werten passt.
+     * Dies kann beispielsweise aufgerufen werden nachdem sich [currentPage] geändert hat.
+     */
     private fun updateRenderedMessage() {
         synchronized(messageEditMutex) {
             jdaMessageInstance
@@ -217,6 +263,10 @@ class MessageInstance(
         }
     }
 
+    /**
+     * Berechnet die Seiten, abhängig von den aktuellen Einstellungen der Nachricht und speichert diese in [pages].
+     * Diese Methode läuft synchronisiert durch [pagesMutex]
+     */
     private fun buildPages() {
         synchronized(pagesMutex) {
             pages.clear()
@@ -250,6 +300,10 @@ class MessageInstance(
         }
     }
 
+    /**
+     * Überträgt die aktuellen Werte auf ein [MessageEmbed], das dann an Discord geschickt werden kann.
+     * Diese Methode läuft teilweise synchronisiert durch [pagesMutex]
+     */
     private fun renderMessage(): MessageEmbed {
         val builder = EmbedBuilder()
 
@@ -280,25 +334,35 @@ class MessageInstance(
         return builder.build()
     }
 
+    /**
+     * Aktualisiert die Reaktionen zum Seitenwechsel.
+     * Zudem wird durch diese Methode sichergestellt, dass der aktuelle Wert von [currentPage] gültig ist.
+     */
     private fun updateScrollReactions() {
         val pageRange = 0 until pages.size
         currentPage = currentPage.coerceIn(pageRange)
 
         if (currentPage != pageRange.first) {
             addReaction(Emoji.ARROW_DOWN)
-            onReactionAdded(Emoji.ARROW_DOWN, currentPageDecrementAction)
+            addOnReactionAddedAction(Emoji.ARROW_DOWN, currentPageDecrementAction)
         } else {
-            clearReactionAction(Emoji.ARROW_DOWN)
+            removeReaction(Emoji.ARROW_DOWN)
+            clearReactionActions(Emoji.ARROW_DOWN)
         }
 
         if (currentPage != pageRange.last) {
             addReaction(Emoji.ARROW_UP)
-            onReactionAdded(Emoji.ARROW_UP, currentPageIncrementAction)
+            addOnReactionAddedAction(Emoji.ARROW_UP, currentPageIncrementAction)
         } else {
-            clearReactionAction(Emoji.ARROW_UP)
+            removeReaction(Emoji.ARROW_UP)
+            clearReactionActions(Emoji.ARROW_UP)
         }
     }
 
+    /**
+     * Prüft ob der aktuelle Nutzeraccount Reaktionen zu dieser Nachricht hinzufügen kann.
+     * @param checkRemove Ob zusätzlich geprüft werden soll, dass Reaktionen gelöscht werden können.
+     */
     private fun hasReactionRights(checkRemove: Boolean): Boolean {
         if (jdaMessageInstance.channelType.isGuild) {
             val guildMember = jdaMessageInstance.guild.getMember(discordHandler.jda.selfUser)
@@ -310,6 +374,9 @@ class MessageInstance(
             return !checkRemove
     }
 
+    /**
+     * Prüft, ob der Channel ein gültiges Ziel für das Senden von Nachrichten ist.
+     */
     private fun GuildChannel.isEligibleChannel(): Boolean {
         return this.type.isMessage
                 && guild.getMember(jda.selfUser)?.hasPermission(this, Permission.MESSAGE_WRITE) ?: false
