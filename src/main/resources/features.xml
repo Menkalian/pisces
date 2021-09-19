@@ -46,8 +46,10 @@
             <feature vela:default="true" vela:name="Handler">
                 <impl vela:default="true" vela:name="JdaMessageHandler">
                     <dependency>pisces.discord.Handler.JdaDiscordHandler</dependency>
+                    <dependency>pisces.message.ReactionListener</dependency>
                 </impl>
             </feature>
+            <feature vela:default="true" vela:name="ReactionListener" />
         </set>
     </set>
 </features>
