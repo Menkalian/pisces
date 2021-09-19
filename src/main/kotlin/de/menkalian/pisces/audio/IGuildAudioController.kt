@@ -11,6 +11,13 @@ import de.menkalian.pisces.util.QueueResult
 interface IGuildAudioController {
 
     /**
+     * Gibt die Discord ID des Channels an, mit dem der [IGuildAudioController] momentan verbunden ist.
+     *
+     * @return Discord ID des Channels
+     */
+    fun getConnectedChannel() : Long?
+
+    /**
      * Verbindet sich zu dem Voicechannel mit der angegebenen ID.
      *
      * @param channelId Discord ID des Channels
@@ -49,6 +56,7 @@ interface IGuildAudioController {
      *  @param searchterm  Text, der zur Lokalisierung des Audiotracks verwendet wird
      *  @param playInstant Flag, ob die aktuelle Queue ignoriert werden soll (d.h. der gefundene Track wird sofort abgespielt, die aktuelle Wiedergabe wird **abgebrochen**)
      *  @param interruptCurrent Falls dieser Wert `true` ist, wird die Wiedergabe des aktuellen Tracks unterbrochen und stattdessen der angegebene Track gespielt.
+     *                          **NACHDEM** der Track fertig gespielt hat wird die aktuelle Wiedergabe **fortgesetzt**.
      *  @param playFullPlaylist Falls der gefundene Track (bzw. die angegebene URL) teil einer Playlist ist, wird diese Playlist vollständig zur Queue hinzugefügt.
      *
      *  @return Das passende Enum-Literal von [EPlayTrackResult][de.menkalian.pisces.audio.data.EPlayTrackResult] und eine Liste mit allen Tracks, die zur aktuellen Queue hinzugefügt wurden.
@@ -70,7 +78,7 @@ interface IGuildAudioController {
      *
      *  @return Das passende Enum-Literal von [EPlayTrackResult][de.menkalian.pisces.audio.data.EPlayTrackResult] und eine Liste mit allen Tracks, die gefunden wurden.
      */
-    fun getSearchResult(
+    fun lookupTracks(
         searchterm: String,
         enableSearch: Boolean = true,
         results: Int = 1
@@ -94,9 +102,9 @@ interface IGuildAudioController {
      * @param deltaMs Um wie viel die aktuelle Position des Tracks verändert werden soll.
      *                Ein positiver Wert bewirkt das Vorspulen des Tracks; ein negativer Wert spult zurück.
      *
-     * @return Die Informationen des aktuellen Tracks **nachdem** die Methode ausgeführt wurde.
+     * @return Die Informationen des aktuellen Tracks **nachdem** die Methode ausgeführt wurde oder `null` falls aktuell kein Track spielt
      */
-    fun windCurrentTrack(deltaMs: Long): TrackInfo
+    fun windCurrentTrack(deltaMs: Long): TrackInfo?
 
     /**
      * Löscht den Track am angegebenen Index aus der Queue.
@@ -104,9 +112,9 @@ interface IGuildAudioController {
      * @param index Index des Tracks, der entfernt werden soll.
      *              Ein Index `0` bedeutet, dass der Track entfernt wird, der als nächstes abgespielt worden wäre.
      *
-     * @return Die Informationen des entfernten Tracks
+     * @return Die Informationen des entfernten Tracks oder `null`, falls kein Track mit diesem Index existiert
      */
-    fun deleteFromQueue(index: Int): TrackInfo
+    fun deleteFromQueue(index: Int): TrackInfo?
 
     /**
      * Löscht die aktuelle Queue.
@@ -138,11 +146,11 @@ interface IGuildAudioController {
      *   * `true`: pausiert
      *   * `false`: nicht pausiert
      *
-     * @param readOnly Falls dieser Parameter `true` ist, wird lediglich der Status der Pausenfunktion ausgelesen und zurückgegeben.
+     * @param changeValue Falls dieser Parameter `true` ist, wird die Pausierung des Players geändert.
      *
      * @return Der Status **nach** der Ausführung der Methode.
      */
-    fun togglePause(readOnly: Boolean = false): Boolean
+    fun togglePause(changeValue: Boolean = true): Boolean
 
     /**
      * Ändert den Wiederholungsstatus.
@@ -150,11 +158,11 @@ interface IGuildAudioController {
      *   * `true`: beendete Tracks werden wieder neu zur Queue hinzugefügt
      *   * `false`: beendete Tracks werden verworfen
      *
-     * @param readOnly Falls dieser Parameter `true` ist, wird lediglich der Status der Wiederholungsfunktion ausgelesen und zurückgegeben.
+     * @param changeValue Falls dieser Parameter `true` ist, wird der Status der Wiederholung geändert.
      *
      * @return Der Status **nach** der Ausführung der Methode.
      */
-    fun toggleRepeat(readOnly: Boolean = false): Boolean
+    fun toggleRepeat(changeValue: Boolean = true): Boolean
 
     /**
      * Ändert den Zufallsmodus des Audioplayers.
@@ -162,9 +170,9 @@ interface IGuildAudioController {
      *   * `true`: der nächste Track wird zufällig aus der Queue ausgewählt
      *   * `false`: der nächste Track wird von der ersten Position der Liste genommen.
      *
-     * @param readOnly Falls dieser Parameter `true` ist, wird lediglich der Status des Zufallsmodus ausgelesen und zurückgegeben.
+     * @param changeValue Falls dieser Parameter `true` ist, wird der Status des Zufallsmodus geändert.
      *
      * @return Der Status **nach** der Ausführung der Methode.
      */
-    fun togglePermanentShuffle(readOnly: Boolean = false): Boolean
+    fun togglePermanentShuffle(changeValue: Boolean = true): Boolean
 }

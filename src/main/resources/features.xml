@@ -7,8 +7,15 @@
                 <impl vela:default="true" vela:name="UnfilteredLavaplayerAudioSendHandler" />
             </feature>
             <feature vela:default="true" vela:name="Handler">
+                <dependency>pisces.audio.Controller</dependency>
                 <impl vela:name="JdaAudioHandler">
                     <dependency>pisces.discord.Handler.JdaDiscordHandler</dependency>
+                    <dependency>pisces.audio.ExtendedAudioSendHandler</dependency>
+                    <dependency>pisces.audio.Controller</dependency>
+                </impl>
+            </feature>
+            <feature vela:default="true" vela:name="Controller">
+                <impl vela:default="true" vela:name="JdaGuildAudioController">
                     <dependency>pisces.audio.ExtendedAudioSendHandler</dependency>
                 </impl>
             </feature>
