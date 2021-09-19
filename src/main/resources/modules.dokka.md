@@ -46,6 +46,10 @@ Kapselt die Anmeldung und grundsätzlichen Zugriff auf die Discord-API. Das [IHa
 
 Kapselt das Senden und die Manipulation von Nachrichten und Reaktionen. Das [IHandler][de.menkalian.pisces.IHandler]-Interface der Komponente ist [IDiscordHandler][de.menkalian.pisces.message.IMessageHandler].
 
+# Package de.menkalian.pisces.message.spec
+
+Datenklassen zur Beschreibung von Nachrichten. Das Ziel ist, dass die Commands nur den *Inhalt* der Nachrichten definieren, während sich die [Instanz der Nachricht][de.menkalian.pisces.message.IMessageInstance] um die *Darstellung* kümmert.
+
 # Package de.menkalian.pisces.util
 
 Hilfscode, der für mehrere Teile der Applikation relevant ist. Hierzu gehören Typaliase, Teilimplementierungen von Schnittstellen, die Definition von Erweiterungsmethoden, sowie klassische Hilfsmethoden.
