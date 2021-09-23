@@ -8,20 +8,20 @@ import javax.persistence.Id
 import javax.persistence.Table
 import javax.persistence.UniqueConstraint
 
-@Table(name = "settings_dto", uniqueConstraints = [
-    UniqueConstraint(name = "uc_aliasdto_guildid_alias", columnNames = ["guildId", "alias"])
+@Table(name = "settings", uniqueConstraints = [
+    UniqueConstraint(name = "uc_settingsdto_guildid_key", columnNames = ["guildId", "key"])
 ])
 @Entity
-data class AliasDto(
-    @Id @GeneratedValue(strategy = GenerationType.AUTO) var id: Long = -1,
+data class SettingsDto(
+    @Id @GeneratedValue(strategy = GenerationType.AUTO) val id: Long = -1,
     val guildId: Long,
-    val alias: String,
-    val original: String
+    val key: String,
+    val value: String
 ) {
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
         if (other == null || Hibernate.getClass(this) != Hibernate.getClass(other)) return false
-        other as AliasDto
+        other as SettingsDto
 
         return id == other.id
     }
@@ -30,6 +30,7 @@ data class AliasDto(
 
     @Override
     override fun toString(): String {
-        return this::class.simpleName + "(id = $id , guildId = $guildId , alias = $alias , original = $original )"
+        return this::class.simpleName + "(id = $id , guildId = $guildId , key = $key , value = $value )"
     }
+
 }

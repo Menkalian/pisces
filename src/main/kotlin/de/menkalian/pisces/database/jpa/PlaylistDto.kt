@@ -5,23 +5,24 @@ import javax.persistence.Entity
 import javax.persistence.GeneratedValue
 import javax.persistence.GenerationType
 import javax.persistence.Id
+import javax.persistence.ManyToMany
 import javax.persistence.Table
 import javax.persistence.UniqueConstraint
 
-@Table(name = "settings_dto", uniqueConstraints = [
-    UniqueConstraint(name = "uc_aliasdto_guildid_alias", columnNames = ["guildId", "alias"])
+@Table(name = "playlist", uniqueConstraints = [
+    UniqueConstraint(name = "uc_playlistdto_guildid_name", columnNames = ["guildId", "name"])
 ])
 @Entity
-data class AliasDto(
+data class PlaylistDto(
     @Id @GeneratedValue(strategy = GenerationType.AUTO) var id: Long = -1,
     val guildId: Long,
-    val alias: String,
-    val original: String
+    val name: String,
+    @ManyToMany val songs: MutableList<SongEntryDto> = mutableListOf()
 ) {
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
         if (other == null || Hibernate.getClass(this) != Hibernate.getClass(other)) return false
-        other as AliasDto
+        other as PlaylistDto
 
         return id == other.id
     }
@@ -30,6 +31,6 @@ data class AliasDto(
 
     @Override
     override fun toString(): String {
-        return this::class.simpleName + "(id = $id , guildId = $guildId , alias = $alias , original = $original )"
+        return this::class.simpleName + "(id = $id , guildId = $guildId , name = $name )"
     }
 }
