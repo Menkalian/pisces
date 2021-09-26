@@ -8,9 +8,20 @@ import javax.persistence.Id
 import javax.persistence.Table
 import javax.persistence.UniqueConstraint
 
-@Table(name = "settings", uniqueConstraints = [
-    UniqueConstraint(name = "uc_settingsdto_guildid_key", columnNames = ["guildId", "key"])
-])
+/**
+ * Stellt einen Datensatz zur Speicherung einer Einstellung dar.
+ * Diese Einstellung kann spezifisch für einen Server sein, aber auch allgemein.
+ *
+ * @property id Automatisch generierte ID des Datensatzes
+ * @property guildId Discord-ID des Servers (`0`, falls die Einstellung allgemein gültig ist)
+ * @property key Schlüssel des Einstellungsparameters
+ * @property value Wert des Einstellungsparameters
+ */
+@Table(
+    name = "SETTINGS", uniqueConstraints = [
+        UniqueConstraint(name = "UNIQUE_TBL_SETTINGS_COL_GUILDID_KEY", columnNames = ["GUILD_ID", "KEY"])
+    ]
+)
 @Entity
 data class SettingsDto(
     @Id @GeneratedValue(strategy = GenerationType.AUTO) val id: Long = -1,

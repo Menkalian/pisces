@@ -8,9 +8,20 @@ import javax.persistence.Id
 import javax.persistence.Table
 import javax.persistence.UniqueConstraint
 
-@Table(name = "settings_dto", uniqueConstraints = [
-    UniqueConstraint(name = "uc_aliasdto_guildid_alias", columnNames = ["guildId", "alias"])
-])
+/**
+ * Stellt einen Datensatz zur Speicherung eines alternativen Namens für ein Command dar.
+ * Diese Abkürzung kann spezifisch für einen Server sein, aber auch allgemein.
+ *
+ * @property id Automatisch generierte ID des Datensatzes
+ * @property guildId Discord-ID des Servers (`0`, falls die Namensvariante allgemein gültig ist)
+ * @property alias Alias/Abkürzender Name des Commands
+ * @property original Originaler/Vollständiger Name des Commands
+ */
+@Table(
+    name = "ALIAS", uniqueConstraints = [
+        UniqueConstraint(name = "UNIQUE_TBL_ALIAS_COL_GUILDID_ALIAS", columnNames = ["GUILD_ID", "ALIAS"])
+    ]
+)
 @Entity
 data class AliasDto(
     @Id @GeneratedValue(strategy = GenerationType.AUTO) var id: Long = -1,

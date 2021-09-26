@@ -9,9 +9,20 @@ import javax.persistence.ManyToMany
 import javax.persistence.Table
 import javax.persistence.UniqueConstraint
 
-@Table(name = "playlist", uniqueConstraints = [
-    UniqueConstraint(name = "uc_playlistdto_guildid_name", columnNames = ["guildId", "name"])
-])
+/**
+ * Stellt einen Datensatz zur Speicherung einer Playlist dar.
+ * Diese Playlist, sowie der zugehörige Name, ist immer spezifisch für einen Discord-Server.
+ *
+ * @property id Automatisch generierte ID des Datensatzes
+ * @property guildId Discord-ID des Servers
+ * @property name Name der Playlist (eindeutig pro Server)
+ * @property songs Liste der enthaltenen Songs/Lieder
+ */
+@Table(
+    name = "PLAYLIST", uniqueConstraints = [
+        UniqueConstraint(name = "UNIQUE_TBL_PLAYLIST_COL_GUILDID_NAME", columnNames = ["GUILD_ID", "NAME"])
+    ]
+)
 @Entity
 data class PlaylistDto(
     @Id @GeneratedValue(strategy = GenerationType.AUTO) var id: Long = -1,
