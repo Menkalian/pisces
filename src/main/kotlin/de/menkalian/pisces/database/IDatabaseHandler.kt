@@ -18,8 +18,8 @@ interface IDatabaseHandler : IHandler {
     fun setSettingsValue(guildId: Long, variable: String, value: String)
 
     // Song (Information) Caching
-    fun createSavedSongEntryIfNotExists(audioTrackInfo: TrackInfo) : Long
-    fun getSavedSongEntryInformation(id: Long) : DatabaseSongEntry?
+    fun createSavedSongEntryIfNotExists(audioTrackInfo: TrackInfo): Long
+    fun getSavedSongEntryInformation(id: Long): DatabaseSongEntry?
     fun clearAllUnreferencedSongEntries()
 
     // Playlists
@@ -27,5 +27,4 @@ interface IDatabaseHandler : IHandler {
     fun addToPlaylist(handle: PlaylistHandle, audioTrackInfo: TrackInfo): Boolean
     fun removeFromPlaylist(handle: PlaylistHandle, audioTrackInfo: TrackInfo)
     fun deletePlaylist(handle: PlaylistHandle)
-
 }

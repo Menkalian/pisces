@@ -20,7 +20,12 @@ import org.springframework.stereotype.Component
 @Component
 @Conditional(OnConfigValueCondition::class)
 @RequiresKey(["pisces.audio.Handler.JdaAudioHandler"])
-class DefaultAudioHandler(val discordHandler: IDiscordHandler, val databaseHandler: IDatabaseHandler, val config: IConfig, val audioSendHandlerFactory: AudioSendHandlerFactory) : IAudioHandler,
+class DefaultAudioHandler(
+    val discordHandler: IDiscordHandler,
+    val databaseHandler: IDatabaseHandler,
+    val config: IConfig,
+    val audioSendHandlerFactory: AudioSendHandlerFactory
+) : IAudioHandler,
     CommonHandlerImpl() {
     val controllerLock = Any()
 

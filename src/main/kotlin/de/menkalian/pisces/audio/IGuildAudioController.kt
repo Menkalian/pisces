@@ -15,7 +15,7 @@ interface IGuildAudioController {
      *
      * @return Discord ID des Channels
      */
-    fun getConnectedChannel() : Long?
+    fun getConnectedChannel(): Long?
 
     /**
      * Verbindet sich zu dem Voicechannel mit der angegebenen ID.

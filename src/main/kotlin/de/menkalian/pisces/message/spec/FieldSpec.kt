@@ -14,4 +14,6 @@ data class FieldSpec(
     val text: String = "",
     val inline: Boolean,
     val blank: Boolean = false
-) { val length = title.length + text.length }
+) {
+    val length = title.length + text.length
+}
