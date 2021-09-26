@@ -12,5 +12,6 @@ Flunder
       Default
         Id
     Settings
-      Shuffle
+      Prefix
       Repeat
+      Shuffle

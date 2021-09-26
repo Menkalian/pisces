@@ -29,12 +29,7 @@
         </set>
         <set vela:name="database">
             <feature vela:default="true" vela:name="Handler">
-                <impl vela:name="HsqldbDatabaseHandler">
-                    <dependency>pisces.database.DBMS.HSQLDB</dependency>
-                </impl>
-            </feature>
-            <feature vela:default="true" vela:name="DBMS">
-                <impl vela:default="true" vela:name="HSQLDB" />
+                <impl vela:default="true" vela:name="JpaDatabaseHandler" />
             </feature>
         </set>
         <set vela:name="discord">

@@ -1,10 +1,14 @@
 package de.menkalian.pisces.database
 
+import de.menkalian.pisces.OnConfigValueCondition
+import de.menkalian.pisces.RequiresKey
 import de.menkalian.pisces.audio.data.TrackInfo
 import de.menkalian.pisces.database.data.DatabaseSongEntry
 import de.menkalian.pisces.database.data.PlaylistHandle
 import de.menkalian.pisces.database.jpa.AliasDto
 import de.menkalian.pisces.database.jpa.AliasRepository
+import de.menkalian.pisces.database.jpa.JoinSoundDto
+import de.menkalian.pisces.database.jpa.JoinSoundRepository
 import de.menkalian.pisces.database.jpa.PlaylistDto
 import de.menkalian.pisces.database.jpa.PlaylistRepository
 import de.menkalian.pisces.database.jpa.SettingsDto
@@ -14,6 +18,7 @@ import de.menkalian.pisces.database.jpa.SongEntryRepository
 import de.menkalian.pisces.util.CommonHandlerImpl
 import de.menkalian.pisces.util.logger
 import de.menkalian.pisces.variables.FlunderKey.Flunder
+import org.springframework.context.annotation.Conditional
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
 
@@ -23,10 +28,13 @@ import org.springframework.stereotype.Service
  * Die Klassen für den Access sind im Package [de.menkalian.pisces.database.jpa].
  */
 @Service
+@Conditional(OnConfigValueCondition::class)
+@RequiresKey(["pisces.database.Handler.JpaDatabaseHandler"])
 class JpaDatabaseHandler(
     val aliasRepo: AliasRepository,
     val settingsRepo: SettingsRepository,
     val playlistRepo: PlaylistRepository,
+    val joinSoundRepository: JoinSoundRepository,
     val songEntryRepository: SongEntryRepository
 ) : IDatabaseHandler, CommonHandlerImpl() {
 
@@ -100,6 +108,13 @@ class JpaDatabaseHandler(
         return PlaylistHandle(this, playlist.name, playlist.guildId)
     }
 
+    override fun getPlaylistSongs(handle: PlaylistHandle): List<DatabaseSongEntry> {
+        return findPlaylistByHandle(handle)
+            ?.songs
+            ?.map { DatabaseSongEntry(it) }
+            ?: listOf()
+    }
+
     override fun addToPlaylist(handle: PlaylistHandle, audioTrackInfo: TrackInfo): Boolean {
         logger().info("Adding $audioTrackInfo to $handle")
         val songId = createSavedSongEntryIfNotExists(audioTrackInfo)
@@ -131,8 +146,19 @@ class JpaDatabaseHandler(
         }
     }
 
-    private fun findPlaylistByHandle(handle: PlaylistHandle): PlaylistDto? =
-        playlistRepo.findByGuildIdAndName(handle.guildId, handle.name)
+    override fun setUserJoinsound(userId: Long, audioTrackInfo: TrackInfo) {
+        val songEntry = songEntryRepository.findByIdOrNull(createSavedSongEntryIfNotExists(audioTrackInfo)) ?: return
+        val dto = joinSoundRepository.findByIdOrNull(userId) ?: JoinSoundDto(userId, songEntry)
+        dto.song = songEntry
+        joinSoundRepository.save(dto)
+    }
+
+    override fun getUserJoinsound(userId: Long): DatabaseSongEntry? {
+        return joinSoundRepository
+            .findByIdOrNull(userId)
+            ?.song
+            ?.let { DatabaseSongEntry(it) }
+    }
 
     override fun initialize() {
         // Clear generated
@@ -146,6 +172,7 @@ class JpaDatabaseHandler(
         logger().debug("Writing default settings to database")
         setSettingsValue(0L, Flunder.Guild.Settings.Repeat.toString(), "false")
         setSettingsValue(0L, Flunder.Guild.Settings.Shuffle.toString(), "false")
+        setSettingsValue(0L, Flunder.Guild.Settings.Prefix.toString(), "_")
 
         finishInitialization()
     }
@@ -156,4 +183,10 @@ class JpaDatabaseHandler(
         // cleanup song entries
         clearAllUnreferencedSongEntries()
     }
+
+    /**
+     * Sucht das [PlaylistDto]-Objekt anhand des [PlaylistHandle] aus der Datenbank.
+     */
+    private fun findPlaylistByHandle(handle: PlaylistHandle): PlaylistDto? =
+        playlistRepo.findByGuildIdAndName(handle.guildId, handle.name)
 }
