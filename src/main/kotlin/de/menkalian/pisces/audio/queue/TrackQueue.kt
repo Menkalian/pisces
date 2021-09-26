@@ -14,7 +14,7 @@ internal class TrackQueue : MutableList<AudioTrack> by mutableListOf() {
      * @param isShuffle Ob der nächste Track zufällig gewählt werden soll oder
      */
     fun nextTrack(isShuffle: Boolean): AudioTrack? {
-        if(isEmpty()) {
+        if (isEmpty()) {
             logger().info("Reached end of queue $this")
             return null
         }

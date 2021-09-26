@@ -11,3 +11,7 @@ Flunder
     Channel
       Default
         Id
+    Settings
+      Prefix
+      Repeat
+      Shuffle

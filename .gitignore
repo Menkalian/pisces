@@ -1,8 +1,12 @@
 # IDE
+!.idea/icon.svg
 .idea
 *.iml
+.jpb
 
 # build
 .gradle
 build
 
+# database
+.database

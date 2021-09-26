@@ -7,6 +7,7 @@ import de.menkalian.pisces.OnConfigValueCondition
 import de.menkalian.pisces.RequiresKey
 import de.menkalian.pisces.audio.sending.AudioSendHandlerFactory
 import de.menkalian.pisces.config.IConfig
+import de.menkalian.pisces.database.IDatabaseHandler
 import de.menkalian.pisces.discord.IDiscordHandler
 import de.menkalian.pisces.util.CommonHandlerImpl
 import de.menkalian.pisces.util.logger
@@ -19,7 +20,12 @@ import org.springframework.stereotype.Component
 @Component
 @Conditional(OnConfigValueCondition::class)
 @RequiresKey(["pisces.audio.Handler.JdaAudioHandler"])
-class DefaultAudioHandler(val discordHandler: IDiscordHandler, val config: IConfig, val audioSendHandlerFactory: AudioSendHandlerFactory) : IAudioHandler,
+class DefaultAudioHandler(
+    val discordHandler: IDiscordHandler,
+    val databaseHandler: IDatabaseHandler,
+    val config: IConfig,
+    val audioSendHandlerFactory: AudioSendHandlerFactory
+) : IAudioHandler,
     CommonHandlerImpl() {
     val controllerLock = Any()
 
@@ -52,7 +58,7 @@ class DefaultAudioHandler(val discordHandler: IDiscordHandler, val config: IConf
                 throw IllegalStateException("AudioController may not be inactive in Config, if AudioHandler is active")
 
             return when (it.activeImplementation) {
-                it.JdaGuildAudioController -> JdaGuildAudioController(id, audioSendHandlerFactory, playerManager, discordHandler)
+                it.JdaGuildAudioController -> JdaGuildAudioController(id, audioSendHandlerFactory, playerManager, discordHandler, databaseHandler)
                 else                       -> throw IllegalStateException("Unknown pisces.audio.Controller implementation ative")
             }
         }

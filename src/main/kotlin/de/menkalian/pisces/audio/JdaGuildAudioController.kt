@@ -17,9 +17,11 @@ import de.menkalian.pisces.audio.data.EPlayTrackResult
 import de.menkalian.pisces.audio.data.TrackInfo
 import de.menkalian.pisces.audio.queue.TrackQueue
 import de.menkalian.pisces.audio.sending.AudioSendHandlerFactory
+import de.menkalian.pisces.database.IDatabaseHandler
 import de.menkalian.pisces.discord.IDiscordHandler
 import de.menkalian.pisces.util.QueueResult
 import de.menkalian.pisces.util.logger
+import de.menkalian.pisces.variables.FlunderKey.Flunder
 import net.dv8tion.jda.api.audio.AudioSendHandler
 import net.dv8tion.jda.api.entities.VoiceChannel
 import net.dv8tion.jda.api.managers.AudioManager
@@ -44,7 +46,8 @@ import java.util.concurrent.atomic.AtomicBoolean
  */
 class JdaGuildAudioController(
     val guildId: Long, private val sendHandlerFactory: AudioSendHandlerFactory,
-    private val playerManager: AudioPlayerManager, discordHandler: IDiscordHandler
+    private val playerManager: AudioPlayerManager, discordHandler: IDiscordHandler,
+    databaseHandler: IDatabaseHandler
 ) : IGuildAudioController, AudioEventListener, AudioEventAdapter() {
 
     // Synchronisation Locks
@@ -76,6 +79,10 @@ class JdaGuildAudioController(
             .getGuildById(guildId)
             ?.audioManager ?: throw IllegalArgumentException("Invalid GuildId")
         jdaGuildAudioManager.sendingHandler = createSendingHandler(player)
+
+        this.logger().debug("Loading default settings for $guildId.")
+        isShuffle.set(databaseHandler.getSettingsValue(guildId, Flunder.Guild.Settings.Shuffle.toString()).toBooleanStrictOrNull() ?: false)
+        isRepeat.set(databaseHandler.getSettingsValue(guildId, Flunder.Guild.Settings.Repeat.toString()).toBooleanStrictOrNull() ?: false)
 
         this.logger().info("Initialization of $this complete.")
     }
