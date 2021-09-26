@@ -12,10 +12,16 @@ import de.menkalian.pisces.database.jpa.SettingsRepository
 import de.menkalian.pisces.database.jpa.SongEntryDto
 import de.menkalian.pisces.database.jpa.SongEntryRepository
 import de.menkalian.pisces.util.CommonHandlerImpl
+import de.menkalian.pisces.util.logger
 import de.menkalian.pisces.variables.FlunderKey.Flunder
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
 
+/**
+ * Standardimplementierung von [IDatabaseHandler].
+ * Implementiert die Datenbankanbindung durch Nutzung der Java Persistence API (JPA).
+ * Die Klassen für den Access sind im Package [de.menkalian.pisces.database.jpa].
+ */
 @Service
 class JpaDatabaseHandler(
     val aliasRepo: AliasRepository,
@@ -26,6 +32,7 @@ class JpaDatabaseHandler(
 
     override fun addCommandShortcut(guildId: Long, alias: String, original: String) {
         val origResolved = getFormalCommandName(guildId, original)
+        logger().info("Creating command alias for guild $guildId: \"$alias\"=\"$origResolved\"")
         aliasRepo.save(AliasDto(guildId = guildId, alias = alias, original = origResolved))
     }
 
@@ -40,11 +47,19 @@ class JpaDatabaseHandler(
     }
 
     override fun setSettingsValue(guildId: Long, variable: String, value: String) {
+        logger().info("Saving setting for guild $guildId: \"$variable\"=\"$value\"")
         settingsRepo.save(SettingsDto(guildId = guildId, key = variable, value = value))
     }
 
     override fun createSavedSongEntryIfNotExists(audioTrackInfo: TrackInfo): Long {
         val existingEntry = songEntryRepository.findByUrl(audioTrackInfo.sourceUri)
+
+        if (existingEntry == null) {
+            logger().info("Creating new song-entry for $audioTrackInfo")
+        } else {
+            logger().debug("Found existing song-entry for $audioTrackInfo")
+        }
+
         return existingEntry?.id ?: songEntryRepository.save(
             SongEntryDto(
                 url = audioTrackInfo.sourceUri,
@@ -59,14 +74,23 @@ class JpaDatabaseHandler(
     }
 
     override fun clearAllUnreferencedSongEntries() {
+        logger().info("Clearing up unreferenced song-entries")
         songEntryRepository.deleteAll(
             songEntryRepository.findAll()
-                .filter { it.playlists.isEmpty() }
+                .filter { it.playlists.isEmpty() && it.joinSounds.isEmpty() }
         )
     }
 
     override fun getOrCreatePlaylist(guildId: Long, name: String): PlaylistHandle {
-        val playlist = playlistRepo.findByGuildIdAndName(guildId, name) ?: playlistRepo
+        val existingPlaylist = playlistRepo.findByGuildIdAndName(guildId, name)
+
+        if (existingPlaylist == null) {
+            logger().info("Creating new playlist \"$name\" for guild $guildId")
+        } else {
+            logger().debug("Found existing playlist \"$name\" for guild $guildId")
+        }
+
+        val playlist = existingPlaylist ?: playlistRepo
             .save(
                 PlaylistDto(
                     guildId = guildId,
@@ -77,10 +101,23 @@ class JpaDatabaseHandler(
     }
 
     override fun addToPlaylist(handle: PlaylistHandle, audioTrackInfo: TrackInfo): Boolean {
-        TODO("Not yet implemented")
+        logger().info("Adding $audioTrackInfo to $handle")
+        val songId = createSavedSongEntryIfNotExists(audioTrackInfo)
+        val songEntry = songEntryRepository.findById(songId)
+        val playlist = findPlaylistByHandle(handle)
+
+        songEntry.ifPresent {
+            if (playlist != null) {
+                playlist.songs.add(it)
+                playlistRepo.save(playlist)
+            }
+        }
+
+        return songEntry.isPresent && playlist != null
     }
 
     override fun removeFromPlaylist(handle: PlaylistHandle, audioTrackInfo: TrackInfo) {
+        logger().info("Trying to remove $audioTrackInfo from $handle")
         val playlist = findPlaylistByHandle(handle)
         playlist?.songs
             ?.removeIf { it.url == audioTrackInfo.sourceUri }
@@ -88,6 +125,7 @@ class JpaDatabaseHandler(
     }
 
     override fun deletePlaylist(handle: PlaylistHandle) {
+        logger().info("Deleting playlist $handle")
         findPlaylistByHandle(handle)?.let {
             playlistRepo.delete(it)
         }
@@ -98,12 +136,14 @@ class JpaDatabaseHandler(
 
     override fun initialize() {
         // Clear generated
+        logger().info("Clearing automatic generated entries from database.")
         aliasRepo.deleteAllByGuildId(0L)
         settingsRepo.deleteAllByGuildId(0L)
 
         // Default aliases are set externally
 
         // Default settings are set here
+        logger().debug("Writing default settings to database")
         setSettingsValue(0L, Flunder.Guild.Settings.Repeat.toString(), "false")
         setSettingsValue(0L, Flunder.Guild.Settings.Shuffle.toString(), "false")
 
