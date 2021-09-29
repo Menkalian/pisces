@@ -21,6 +21,7 @@ import de.menkalian.pisces.variables.FlunderKey.Flunder
 import org.springframework.context.annotation.Conditional
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
+import org.springframework.transaction.annotation.Transactional
 
 /**
  * Standardimplementierung von [IDatabaseHandler].
@@ -40,8 +41,16 @@ class JpaDatabaseHandler(
 
     override fun addCommandShortcut(guildId: Long, alias: String, original: String) {
         val origResolved = getFormalCommandName(guildId, original)
-        logger().info("Creating command alias for guild $guildId: \"$alias\"=\"$origResolved\"")
-        aliasRepo.save(AliasDto(guildId = guildId, alias = alias, original = origResolved))
+        val existingEntry = aliasRepo.findByGuildIdAndAlias(guildId, alias)
+
+        if (existingEntry != null) {
+            logger().info("Updating existing alias for guild $guildId: \"$alias\"=\"$origResolved\"")
+            existingEntry.original = origResolved
+            aliasRepo.save(existingEntry)
+        } else {
+            logger().info("Creating command alias for guild $guildId: \"$alias\"=\"$origResolved\"")
+            aliasRepo.save(AliasDto(guildId = guildId, alias = alias, original = origResolved))
+        }
     }
 
     override fun getFormalCommandName(guildId: Long, alias: String): String {
@@ -50,13 +59,21 @@ class JpaDatabaseHandler(
 
     override fun getSettingsValue(guildId: Long, variable: String, default: String): String {
         return settingsRepo
-            .getFirstByGuildIdInAndKeyIsOrderByGuildIdDesc(listOf(guildId, 0L), variable)
+            .getFirstByGuildIdInAndVariableNameIsOrderByGuildIdDesc(listOf(guildId, 0L), variable)
             ?.value ?: default
     }
 
     override fun setSettingsValue(guildId: Long, variable: String, value: String) {
-        logger().info("Saving setting for guild $guildId: \"$variable\"=\"$value\"")
-        settingsRepo.save(SettingsDto(guildId = guildId, key = variable, value = value))
+        val existingSetting = settingsRepo.findByGuildIdAndVariableName(guildId, variable)
+
+        if (existingSetting != null) {
+            logger().info("Updating setting for guild $guildId: \"$variable\"=\"${existingSetting.value}\" -> \"$value\"")
+            existingSetting.value = value
+            settingsRepo.save(existingSetting)
+        } else {
+            logger().info("Saving setting for guild $guildId: \"$variable\"=\"$value\"")
+            settingsRepo.save(SettingsDto(guildId = guildId, variableName = variable, value = value))
+        }
     }
 
     override fun createSavedSongEntryIfNotExists(audioTrackInfo: TrackInfo): Long {
@@ -115,6 +132,7 @@ class JpaDatabaseHandler(
             ?: listOf()
     }
 
+    @Transactional
     override fun addToPlaylist(handle: PlaylistHandle, audioTrackInfo: TrackInfo): Boolean {
         logger().info("Adding $audioTrackInfo to $handle")
         val songId = createSavedSongEntryIfNotExists(audioTrackInfo)
@@ -146,6 +164,7 @@ class JpaDatabaseHandler(
         }
     }
 
+    @Transactional
     override fun setUserJoinsound(userId: Long, audioTrackInfo: TrackInfo) {
         val songEntry = songEntryRepository.findByIdOrNull(createSavedSongEntryIfNotExists(audioTrackInfo)) ?: return
         val dto = joinSoundRepository.findByIdOrNull(userId) ?: JoinSoundDto(userId, songEntry)
@@ -161,18 +180,12 @@ class JpaDatabaseHandler(
     }
 
     override fun initialize() {
-        // Clear generated
-        logger().info("Clearing automatic generated entries from database.")
-        aliasRepo.deleteAllByGuildId(0L)
-        settingsRepo.deleteAllByGuildId(0L)
-
         // Default aliases are set externally
-
         // Default settings are set here
         logger().debug("Writing default settings to database")
-        setSettingsValue(0L, Flunder.Guild.Settings.Repeat.toString(), "false")
-        setSettingsValue(0L, Flunder.Guild.Settings.Shuffle.toString(), "false")
-        setSettingsValue(0L, Flunder.Guild.Settings.Prefix.toString(), "_")
+        setSettingsValue(0L, Flunder.Guild.Settings.Repeat, "false")
+        setSettingsValue(0L, Flunder.Guild.Settings.Shuffle, "false")
+        setSettingsValue(0L, Flunder.Guild.Settings.Prefix, "_")
 
         finishInitialization()
     }

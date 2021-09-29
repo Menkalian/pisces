@@ -45,7 +45,7 @@ class MessageBuilder(
         messageSpec.withTimestamp(timestamp)
         messageSpec.withImage(imageUrl)
         messageSpec.withThumbnail(imageUrl)
-        messageSpec.withFooter(footerText, footerUrl)
+        messageSpec.withFooter(footerText, footerIconUrl)
     }
 
     /**
@@ -60,7 +60,7 @@ class MessageBuilder(
      * Setzt die Informationen dieses Builders wieder auf die Standardwerte zurück.
      */
     fun clear(): MessageBuilder {
-        withAuthor(discordHandler.jda.selfUser.name, "https://pisces.menkalian.de", discordHandler.jda.selfUser.effectiveAvatarUrl)
+        withAuthor(discordHandler.jda.selfUser.name, "https://pisces.menkalian.de", discordHandler.jda.selfUser.avatarUrl)
         withTitle("Message")
         withText("")
         clearFields()
@@ -68,7 +68,7 @@ class MessageBuilder(
         withTimestamp(OffsetDateTime.now())
         withImage("")
         withThumbnail("")
-        withFooter("Visit Pisces on Gitlab", "https://gitlab.com/kiliankra/pisces")
+        withFooter("Visit Pisces on Gitlab", discordHandler.jda.selfUser.avatarUrl)
 
         return this
     }
