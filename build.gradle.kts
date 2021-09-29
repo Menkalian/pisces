@@ -41,6 +41,9 @@ tasks.getByName("kotlinSourcesJar") {
     dependsOn(tasks.generateKeyObjects)
     dependsOn(tasks.generateFeaturetoggleCode)
 }
+tasks.bootJar.configure {
+    archiveAppendix.set("boot")
+}
 
 keygen {
     targetPackage = "de.menkalian.pisces.variables"
