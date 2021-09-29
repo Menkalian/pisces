@@ -20,7 +20,7 @@ import java.time.temporal.TemporalAccessor
  * @property fields Zusätzliche Textfelder dieser Nachricht. Es wird empfohlen verschiedene Abschnitte der Nachricht in eigene Felder zu packen, damit das Rendern mehrerer Seiten der Nachricht einfacher ist.
  * @property timestamp Zeitpunkt, der unter der Nachricht angezeigt werden soll (Dies ist **nicht** das gleiche wie der Sendezeitpunkt der Nachricht laut Discord)
  * @property footerText Zusatztext, der unter der Nachricht angezeigt wird
- * @property footerUrl URL, die erreicht werden kann, wenn man den Footer der Nachricht anklickt.
+ * @property footerIconUrl URL, die erreicht werden kann, wenn man den Footer der Nachricht anklickt.
  */
 @Suppress("UNCHECKED_CAST") // T has to be the Subclass, so
 abstract class MessageSpec<T> {
@@ -39,7 +39,7 @@ abstract class MessageSpec<T> {
     protected val fields: MutableList<FieldSpec> = mutableListOf()
     protected var timestamp: TemporalAccessor = OffsetDateTime.now()
     protected var footerText: String = ""
-    protected var footerUrl: String = ""
+    protected var footerIconUrl: String = ""
 
     /**
      * Setzt neue Autorendaten.
@@ -203,11 +203,11 @@ abstract class MessageSpec<T> {
      * Ein Parameterwert `null` bewirkt, dass der bisherige Wert erhalten bleibt.
      *
      * @param text neuer Text des Footers
-     * @param url neues Verlinkungsziel des Footers
+     * @param imageUrl neues Verlinkungsziel des Footers
      */
-    fun withFooter(text: String? = null, url: String? = null): T {
+    fun withFooter(text: String? = null, imageUrl: String? = null): T {
         this.footerText = text ?: this.footerText
-        this.footerUrl = url ?: this.footerUrl
+        this.footerIconUrl = imageUrl ?: this.footerIconUrl
 
         onUpdated()
         return this as T

@@ -5,6 +5,7 @@ import de.menkalian.pisces.RequiresKey
 import de.menkalian.pisces.discord.IDiscordHandler
 import de.menkalian.pisces.util.CommonHandlerImpl
 import de.menkalian.pisces.util.asBold
+import org.springframework.beans.factory.BeanFactory
 import org.springframework.context.annotation.Conditional
 import org.springframework.stereotype.Component
 
@@ -14,8 +15,10 @@ import org.springframework.stereotype.Component
 @Component
 @Conditional(OnConfigValueCondition::class)
 @RequiresKey(["pisces.message.Handler.JdaMessageHandler"])
-class JdaMessageHandler(val discordHandler: IDiscordHandler, val reactionListener: MessageReactionListener) : IMessageHandler, CommonHandlerImpl() {
+class JdaMessageHandler(val beanFactory: BeanFactory, val reactionListener: MessageReactionListener) : IMessageHandler, CommonHandlerImpl() {
+    private lateinit var discordHandler: IDiscordHandler
     override fun initialize() {
+        discordHandler = beanFactory.getBean(IDiscordHandler::class.java)
         finishInitialization()
     }
 

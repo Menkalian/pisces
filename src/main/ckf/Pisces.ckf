@@ -1,12 +1,11 @@
 Flunder
-  Kommando
-    Sent
-      Channel
-        Id
-        Name
-      User
-        Id
-        Name
+  Command
+    Guild
+      Name
+    Channel
+      Name
+    User
+      Name
   Guild
     Channel
       Default

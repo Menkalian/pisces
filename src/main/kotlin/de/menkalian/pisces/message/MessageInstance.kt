@@ -105,7 +105,7 @@ class MessageInstance(
         builder.applyTo(this)
         buildPages()
 
-        if (guildId != null) {
+        if (guildId != null && guildId != 0L) {
             // Send as guildMessage
             val targetChannel = discordHandler.jda
                 .getGuildById(guildId)
@@ -120,7 +120,8 @@ class MessageInstance(
             }
         } else {
             val targetChannel = discordHandler.jda
-                .getUserById(channelId)
+                .retrieveUserById(channelId)
+                .complete()
                 ?.openPrivateChannel()
                 ?.complete()
             logger().info("Sending message to $targetChannel")
@@ -279,11 +280,12 @@ class MessageInstance(
 
             // Split the text
             val chunkedText = text.chunked(lengthPerPage)
-            chunkedText.take(chunkedText.size - 1).forEach {
+            chunkedText.take((chunkedText.size - 1).coerceAtLeast(0)).forEach {
                 pages.add(MessagePage(it))
             }
-            remainingLength = lengthPerPage - chunkedText.last().length
-            currentPage.text = chunkedText.last()
+
+            remainingLength = lengthPerPage - (chunkedText.lastOrNull()?.length ?: 0)
+            currentPage.text = chunkedText.lastOrNull() ?: ""
 
             fields.forEach {
                 if (it.length > remainingLength) {
@@ -315,8 +317,8 @@ class MessageInstance(
             builder.setImage(imageUrl)
         if (thumbnailUrl.isNotBlank())
             builder.setThumbnail(thumbnailUrl)
-        if (footerUrl.isNotBlank())
-            builder.setFooter(footerText, footerUrl)
+        if (footerIconUrl.isNotBlank())
+            builder.setFooter(footerText, footerIconUrl)
         else
             builder.setFooter(footerText)
 

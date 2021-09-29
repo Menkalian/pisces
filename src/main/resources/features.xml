@@ -21,10 +21,19 @@
             </feature>
         </set>
         <set vela:name="command">
+            <set vela:name="impl">
+                <set vela:name="base">
+                    <vela:feature vela:name="Greet" />
+                    <vela:feature vela:default="true" vela:name="Help" />
+                    <vela:feature vela:default="true" vela:name="Ping" />
+                    <vela:feature vela:default="true" vela:name="Usage" />
+                </set>
+            </set>
             <feature vela:default="true" vela:name="Handler">
-                <impl vela:name="JdaMessageHandler">
-                    <dependency>pisces.discord.Handler.JdaDiscordHandler</dependency>
-                </impl>
+                <impl vela:name="DefaultCommandHandler" />
+            </feature>
+            <feature vela:default="true" vela:name="CommandMessageListener">
+                <dependency>pisces.discord.Handler.JdaDiscordHandler</dependency>
             </feature>
         </set>
         <set vela:name="database">
