@@ -42,7 +42,7 @@ tasks.getByName("kotlinSourcesJar") {
     dependsOn(tasks.generateFeaturetoggleCode)
 }
 tasks.bootJar.configure {
-    archiveAppendix.set("boot")
+    archiveClassifier.set("boot")
 }
 
 keygen {
