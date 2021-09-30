@@ -24,6 +24,7 @@
             <set vela:name="impl">
                 <set vela:name="audio">
                     <vela:feature vela:name="Join" />
+                    <vela:feature vela:name="Queue" />
                     <vela:feature vela:name="Skip" />
                     <vela:feature vela:name="Play">
                         <dependency>pisces.command.impl.audio.Join</dependency>

@@ -2,23 +2,29 @@ package de.menkalian.pisces.util
 
 import de.menkalian.pisces.audio.data.AudioSourceType
 import de.menkalian.pisces.audio.data.EPlayTrackResult
+import de.menkalian.pisces.audio.data.TrackInfo
 import de.menkalian.pisces.message.spec.MessageSpec
 
-fun <T> MessageSpec<T>.applyQueueResult(queueResult: QueueResult): T {
-    queueResult.second.forEach {
-        addField(
-            it.title,
-            """
+fun <T> MessageSpec<T>.addTrackInfoField(trackInfo: TrackInfo): T {
+    return addField(
+        trackInfo.title,
+        """
                 Urheber: %s
                 Länge:   %s
                 URI:     %s
             """.trimIndent()
-                .format(
-                    it.author,
-                    it.length.toDurationString(),
-                    it.sourceUri
-                )
-        )
+            .format(
+                trackInfo.author,
+                trackInfo.length.toDurationString(),
+                trackInfo.sourceUri
+            )
+    )
+}
+
+
+fun <T> MessageSpec<T>.applyQueueResult(queueResult: QueueResult): T {
+    queueResult.second.forEach {
+        addTrackInfoField(it)
     }
 
     if (queueResult.second.size == 1) {

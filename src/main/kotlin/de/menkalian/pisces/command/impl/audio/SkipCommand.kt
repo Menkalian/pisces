@@ -10,6 +10,7 @@ import de.menkalian.pisces.command.data.ECommandSource
 import de.menkalian.pisces.database.IDatabaseHandler
 import de.menkalian.pisces.message.IMessageHandler
 import de.menkalian.pisces.util.FixedVariables
+import de.menkalian.pisces.util.addTrackInfoField
 import org.springframework.context.annotation.Conditional
 import org.springframework.stereotype.Component
 
@@ -75,13 +76,7 @@ class SkipCommand(
                 msg
                     .withTitle("Ein Track wurde erfolgreich übersprungen")
                     .withThumbnail("https://img.youtube.com/vi/${track.sourceIdentifier}/default.jpg")
-                    .addField(
-                        track.title,
-                        """
-                            Urheber: ${track.author}
-                            URI:     ${track.sourceUri}
-                        """.trimIndent()
-                    )
+                    .addTrackInfoField(track)
             }
             else             -> {
                 msg.withTitle("Mehrere Tracks wurden erfolgreich übersprungen.")
