@@ -43,6 +43,22 @@ abstract class CommonCommandBase : ICommand {
     override infix fun supports(source: ECommandSource) =
         supportedSources.contains(source)
 
+    protected fun addBooleanParameter(
+        name: String = "",
+        short: Char = ' ',
+        description: String = "..."
+    ) {
+        parameters.add(
+            CommandParameter(
+                name,
+                short,
+                description,
+                EParameterType.BOOLEAN,
+                false
+            )
+        )
+    }
+
     protected fun addIntParameter(
         name: String = "",
         short: Char = ' ',
@@ -87,7 +103,7 @@ abstract class CommonCommandBase : ICommand {
                 name,
                 short,
                 description,
-                EParameterType.STRING,
+                EParameterType.USER,
                 -1L
             )
         )
@@ -144,4 +160,5 @@ abstract class CommonCommandBase : ICommand {
         )
     }
 
+    protected fun List<CommandParameter>.getDefaultArg() = firstOrNull { it.name.isBlank() }
 }

@@ -11,6 +11,7 @@ import de.menkalian.pisces.database.IDatabaseHandler
 import de.menkalian.pisces.discord.IDiscordHandler
 import de.menkalian.pisces.util.CommonHandlerImpl
 import de.menkalian.pisces.util.logger
+import org.springframework.beans.factory.BeanFactory
 import org.springframework.context.annotation.Conditional
 import org.springframework.stereotype.Component
 
@@ -21,15 +22,16 @@ import org.springframework.stereotype.Component
 @Conditional(OnConfigValueCondition::class)
 @RequiresKey(["pisces.audio.Handler.JdaAudioHandler"])
 class DefaultAudioHandler(
-    val discordHandler: IDiscordHandler,
     val databaseHandler: IDatabaseHandler,
     val config: IConfig,
-    val audioSendHandlerFactory: AudioSendHandlerFactory
+    val audioSendHandlerFactory: AudioSendHandlerFactory,
+    val beanFactory: BeanFactory
 ) : IAudioHandler,
     CommonHandlerImpl() {
     val controllerLock = Any()
 
     val controllers: HashMap<Long, IGuildAudioController> = hashMapOf()
+    lateinit var discordHandler: IDiscordHandler
     lateinit var playerManager: AudioPlayerManager
 
     override fun getGuildAudioController(guildId: Long): IGuildAudioController {
@@ -65,6 +67,8 @@ class DefaultAudioHandler(
     }
 
     override fun initialize() {
+        discordHandler = beanFactory.getBean(IDiscordHandler::class.java)
+
         // Initialize the AudioPlayerManager
         playerManager = DefaultAudioPlayerManager()
         AudioSourceManagers.registerLocalSource(playerManager)

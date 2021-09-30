@@ -92,6 +92,14 @@ class JdaGuildAudioController(
             jdaGuildAudioManager.guild.audioManager.connectedChannel?.idLong
         }
 
+    override fun getUserVoiceChannelId(userId: Long): Long? {
+        return jdaGuildAudioManager.guild
+            .getMemberById(userId)
+            ?.voiceState
+            ?.channel
+            ?.idLong
+    }
+
     override fun connect(channelId: Long): Boolean {
         synchronized(connectionLock) {
             val channel = jdaGuildAudioManager.guild.getGuildChannelById(channelId)
@@ -284,16 +292,16 @@ class JdaGuildAudioController(
 
                 val queueRemove = trackQueue.take(amountFromQueue)
                 tracksToRemove.addAll(queueRemove)
-                trackQueue.removeAll(tracksToRemove)
+                trackQueue.removeAll(queueRemove)
 
                 toReturn.addAll(tracksToRemove)
             }
 
-            startNextTrack()
-
             if (requeue) {
                 trackQueue.addAll(toReturn.map { it.makeClone() })
             }
+
+            startNextTrack()
 
             // Return the skipped Tracks as List of TrackInfo
             toReturn.map { it.makeInfo() }

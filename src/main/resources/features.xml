@@ -22,6 +22,14 @@
         </set>
         <set vela:name="command">
             <set vela:name="impl">
+                <set vela:name="audio">
+                    <vela:feature vela:name="Join" />
+                    <vela:feature vela:name="Queue" />
+                    <vela:feature vela:name="Skip" />
+                    <vela:feature vela:name="Play">
+                        <dependency>pisces.command.impl.audio.Join</dependency>
+                    </vela:feature>
+                </set>
                 <set vela:name="base">
                     <vela:feature vela:name="Greet" />
                     <vela:feature vela:default="true" vela:name="Help" />

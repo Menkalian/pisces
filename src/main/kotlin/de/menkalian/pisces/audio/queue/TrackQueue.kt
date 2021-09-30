@@ -21,6 +21,7 @@ internal class TrackQueue : MutableList<AudioTrack> by mutableListOf() {
 
         val nextTrack = if (isShuffle) random() else first()
         logger().debug("Providing next track: $nextTrack.ma.")
+        remove(nextTrack)
         return nextTrack
     }
 }

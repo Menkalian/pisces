@@ -65,6 +65,7 @@ class MessageInstance(
         get() = jdaMessageInstance.idLong
 
     private val inactivityTimer = TimeoutTimer(30 * 60 * 1000L) { // Message invalid after 30 minutes without interaction
+        currentPage = 0
         messageHandler.invalidateMessage(this)
     }
 
@@ -74,6 +75,7 @@ class MessageInstance(
     private val currentPageIncrementAction = { uid: Long, _: IMessageInstance ->
         if (uid != discordHandler.jda.selfUser.idLong) {
             currentPage++
+            clearUserReactions(Emoji.ARROW_DOWN)
             clearUserReactions(Emoji.ARROW_UP)
             updateRenderedMessage()
         }
@@ -82,6 +84,7 @@ class MessageInstance(
         if (uid != discordHandler.jda.selfUser.idLong) {
             currentPage--
             clearUserReactions(Emoji.ARROW_DOWN)
+            clearUserReactions(Emoji.ARROW_UP)
             updateRenderedMessage()
         }
     }
@@ -203,7 +206,7 @@ class MessageInstance(
 
     override fun removeReaction(reaction: String) {
         if (hasReactionRights(true)) {
-            logger().debug("Removing all reactions $reaction from $jdaMessageInstance")
+            logger().debug("Removing all reactions \"$reaction\" from $jdaMessageInstance")
             jdaMessageInstance.clearReactions(reaction).complete()
         }
     }
@@ -211,7 +214,7 @@ class MessageInstance(
     override fun removeAllReactions() {
         if (hasReactionRights(true)) {
             logger().debug("Removing all reactions from $jdaMessageInstance")
-            jdaMessageInstance.clearReactions()
+            jdaMessageInstance.clearReactions().complete()
         }
     }
 
@@ -224,17 +227,25 @@ class MessageInstance(
     }
 
     override fun addOnReactionAddedAction(reaction: String, action: IMessageInstance.IReactionAction) {
-        if (reactionAddedActions.containsKey(reaction).not()) {
-            reactionAddedActions[reaction] = mutableListOf()
+        synchronized(reactionAddedActions) {
+            if (reactionAddedActions.containsKey(reaction).not()) {
+                reactionAddedActions[reaction] = mutableListOf()
+            }
+            if (reactionAddedActions[reaction]?.contains(action)?.not() != false) {
+                reactionAddedActions[reaction]?.add(action)
+            }
         }
-        reactionAddedActions[reaction]?.add(action)
     }
 
     override fun addOnReactionRemovedAction(reaction: String, action: IMessageInstance.IReactionAction) {
-        if (reactionRemovedActions.containsKey(reaction).not()) {
-            reactionRemovedActions[reaction] = mutableListOf()
+        synchronized(reactionRemovedActions) {
+            if (reactionRemovedActions.containsKey(reaction).not()) {
+                reactionRemovedActions[reaction] = mutableListOf()
+            }
+            if (reactionRemovedActions[reaction]?.contains(action)?.not() != false) {
+                reactionRemovedActions[reaction]?.add(action)
+            }
         }
-        reactionRemovedActions[reaction]?.add(action)
     }
 
     override fun clearReactionActions(reaction: String) {
@@ -345,19 +356,17 @@ class MessageInstance(
         currentPage = currentPage.coerceIn(pageRange)
 
         if (currentPage != pageRange.first) {
-            addReaction(Emoji.ARROW_DOWN)
-            addOnReactionAddedAction(Emoji.ARROW_DOWN, currentPageDecrementAction)
+            addReaction(Emoji.ARROW_UP)
+            addOnReactionAddedAction(Emoji.ARROW_UP, currentPageDecrementAction)
         } else {
-            removeReaction(Emoji.ARROW_DOWN)
-            clearReactionActions(Emoji.ARROW_DOWN)
+            removeReaction(Emoji.ARROW_UP)
         }
 
         if (currentPage != pageRange.last) {
-            addReaction(Emoji.ARROW_UP)
-            addOnReactionAddedAction(Emoji.ARROW_UP, currentPageIncrementAction)
+            addReaction(Emoji.ARROW_DOWN)
+            addOnReactionAddedAction(Emoji.ARROW_DOWN, currentPageIncrementAction)
         } else {
-            removeReaction(Emoji.ARROW_UP)
-            clearReactionActions(Emoji.ARROW_UP)
+            removeReaction(Emoji.ARROW_DOWN)
         }
     }
 

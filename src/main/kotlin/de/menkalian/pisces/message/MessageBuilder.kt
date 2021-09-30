@@ -44,7 +44,7 @@ class MessageBuilder(
         messageSpec.withColor(color)
         messageSpec.withTimestamp(timestamp)
         messageSpec.withImage(imageUrl)
-        messageSpec.withThumbnail(imageUrl)
+        messageSpec.withThumbnail(thumbnailUrl)
         messageSpec.withFooter(footerText, footerIconUrl)
     }
 

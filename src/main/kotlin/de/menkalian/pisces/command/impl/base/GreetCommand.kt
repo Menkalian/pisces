@@ -43,8 +43,7 @@ class GreetCommand(
         authorId: Long,
         sourceInformation: FixedVariables
     ) {
-        val targetUserId = parameters
-            .first()
+        val targetUserId = parameters.getDefaultArg()!!
         if (targetUserId.asUserId() != -1L) {
             messageHandler
                 .createPrivateMessage(targetUserId.asUserId())
