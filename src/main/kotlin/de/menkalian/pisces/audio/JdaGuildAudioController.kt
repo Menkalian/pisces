@@ -92,6 +92,14 @@ class JdaGuildAudioController(
             jdaGuildAudioManager.guild.audioManager.connectedChannel?.idLong
         }
 
+    override fun getUserVoiceChannelId(userId: Long): Long? {
+        return jdaGuildAudioManager.guild
+            .getMemberById(userId)
+            ?.voiceState
+            ?.channel
+            ?.idLong
+    }
+
     override fun connect(channelId: Long): Boolean {
         synchronized(connectionLock) {
             val channel = jdaGuildAudioManager.guild.getGuildChannelById(channelId)

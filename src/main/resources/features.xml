@@ -22,6 +22,9 @@
         </set>
         <set vela:name="command">
             <set vela:name="impl">
+                <set vela:name="audio">
+                    <vela:feature vela:name="Join" />
+                </set>
                 <set vela:name="base">
                     <vela:feature vela:name="Greet" />
                     <vela:feature vela:default="true" vela:name="Help" />
