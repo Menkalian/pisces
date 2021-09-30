@@ -78,8 +78,7 @@ class PlayCommand(
     }
 
     private fun List<CommandParameter>.getTextArg(): String {
-        return this
-            .firstOrNull { it.name.isBlank() }
+        return getDefaultArg()
             ?.asString() ?: ""
     }
 

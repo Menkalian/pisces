@@ -42,7 +42,7 @@ class UsageCommand(override val databaseHandler: IDatabaseHandler, val messageHa
         authorId: Long,
         sourceInformation: FixedVariables
     ) {
-        val commandName = databaseHandler.getFormalCommandName(guildId, parameters.first().asString())
+        val commandName = databaseHandler.getFormalCommandName(guildId, parameters.getDefaultArg()?.asString() ?: "")
 
         val helpMessage = messageHandler
             .createMessage(guildId, channelId)

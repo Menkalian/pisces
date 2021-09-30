@@ -50,7 +50,7 @@ fun <T> MessageSpec<T>.applyQueueResult(queueResult: QueueResult): T {
             withTitle("Es konnte kein Song gefunden werden")
         }
         EPlayTrackResult.ERROR               -> {
-            withColor(red = 255.toByte(), green = 40.toByte())
+            withColor(red = 255.toByte())
             withText("Beim Suchen/Abspielen des Songs ist ein Fehler aufgetreten")
         }
     }

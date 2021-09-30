@@ -160,4 +160,5 @@ abstract class CommonCommandBase : ICommand {
         )
     }
 
+    protected fun List<CommandParameter>.getDefaultArg() = firstOrNull { it.name.isBlank() }
 }
