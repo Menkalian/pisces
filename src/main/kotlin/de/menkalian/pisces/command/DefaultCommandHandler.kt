@@ -129,13 +129,18 @@ class DefaultCommandHandler(
                     paramIndex = sectioned.indexOf("-" + param.short)
                 }
 
-                if (paramIndex != -1) {
-                    try {
-                        highestIndex = maxOf(highestIndex, paramIndex + 1)
-                        param.currentValue = parseParameter(sectioned.getOrNull(paramIndex + 1), param.type)
-                    } catch (ex: Exception) {
-                        logger().error("Error when parsing parameter", ex)
-                        param.currentValue = param.defaultValue
+                if (param.type == EParameterType.BOOLEAN) {
+                    highestIndex = maxOf(highestIndex, paramIndex)
+                    param.currentValue = true
+                } else {
+                    if (paramIndex != -1) {
+                        try {
+                            highestIndex = maxOf(highestIndex, paramIndex + 1)
+                            param.currentValue = parseParameter(sectioned.getOrNull(paramIndex + 1), param.type)
+                        } catch (ex: Exception) {
+                            logger().error("Error when parsing parameter", ex)
+                            param.currentValue = param.defaultValue
+                        }
                     }
                 }
             }
@@ -184,6 +189,7 @@ class DefaultCommandHandler(
             EParameterType.TIMESTAMP -> LocalDateTime.parse(value, DateTimeFormatter.ofPattern("$datePattern-$timePattern"))
             EParameterType.DATE      -> LocalDate.parse(value, DateTimeFormatter.ofPattern(datePattern))
             EParameterType.TIME      -> LocalTime.parse(value, DateTimeFormatter.ofPattern(timePattern))
+            EParameterType.BOOLEAN   -> true
         }
     }
 

@@ -10,6 +10,7 @@ data class CommandParameter(
     val type: EParameterType,
     val defaultValue: Any, var currentValue: Any = defaultValue
 ) {
+    fun asBoolean() = currentValue.toString().toBooleanStrictOrNull() ?: defaultValue.toString().toBoolean()
     fun asInt() = currentValue.toString().toIntOrNull() ?: defaultValue.toString().toInt()
     fun asString() = currentValue.toString()
     fun asUserId() = currentValue.toString().toLongOrNull() ?: -1L
