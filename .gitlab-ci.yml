@@ -57,3 +57,22 @@ pages:
   artifacts:
     paths:
       - public
+
+dockerize-latest:
+  stage: deploy
+  image: docker:20
+  only:
+    - main
+  script:
+    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD registry.gitlab.com
+    - docker build -t registry.gitlab.com/kiliankra/pisces/flunder:latest .
+    - docker push registry.gitlab.com/kiliankra/pisces/flunder:latest
+
+dockerize-commit:
+  stage: deploy
+  image: docker:20
+  script:
+    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD registry.gitlab.com
+    - docker build -t registry.gitlab.com/kiliankra/pisces/flunder:${CI_COMMIT_SHORT_SHA} .
+    - docker push registry.gitlab.com/kiliankra/pisces/flunder:${CI_COMMIT_SHORT_SHA}
+

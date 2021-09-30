@@ -1,0 +1,22 @@
+version: '3.8'
+services:
+  pisces-flunder:
+    image: registry.gitlab.com/kiliankra/pisces/flunder:latest
+    container_name: pisces-flunder
+    networks:
+      - pisces-net
+  #
+  pisces-flunderdb:
+    image: mariadb:latest
+    container_name: flunderdb
+    volumes:
+      - /etc/pisces/volumes/db:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: "definitivKeinTestPW"
+      MYSQL_PASSWORD: "changeit"
+    networks:
+      - pisces-net
+
+networks:
+  flunder-net:
+    name: pisces-net
