@@ -155,7 +155,8 @@ class DefaultCommandHandler(
                         .joinToString(" ")
 
                     try {
-                        param.currentValue = parseParameter(parameterValue, param.type)
+                        if (parameterValue.isNotBlank())
+                            param.currentValue = parseParameter(parameterValue, param.type)
                     } catch (ex: Exception) {
                         logger().error("Error when parsing parameter", ex)
                         param.currentValue = param.defaultValue
