@@ -3,6 +3,7 @@ package de.menkalian.pisces.command.impl.audio
 import de.menkalian.pisces.OnConfigValueCondition
 import de.menkalian.pisces.RequiresKey
 import de.menkalian.pisces.audio.IAudioHandler
+import de.menkalian.pisces.audio.data.AudioSourceType
 import de.menkalian.pisces.command.CommonCommandBase
 import de.menkalian.pisces.command.ICommandHandler
 import de.menkalian.pisces.command.data.CommandParameter
@@ -75,8 +76,10 @@ class SkipCommand(
                 val track = result.first()
                 msg
                     .withTitle("Ein Track wurde erfolgreich übersprungen")
-                    .withThumbnail("https://img.youtube.com/vi/${track.sourceIdentifier}/default.jpg")
                     .addTrackInfoField(track)
+                if (track.sourcetype == AudioSourceType.YOUTUBE)
+                    msg.withThumbnail("https://img.youtube.com/vi/${track.sourceIdentifier}/default.jpg")
+
             }
             else             -> {
                 msg.withTitle("Mehrere Tracks wurden erfolgreich übersprungen.")
