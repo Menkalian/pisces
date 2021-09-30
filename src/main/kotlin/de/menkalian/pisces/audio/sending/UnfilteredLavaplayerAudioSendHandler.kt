@@ -57,6 +57,8 @@ internal class UnfilteredLavaplayerAudioSendHandler(val player: AudioPlayer) : I
         return data
     }
 
+    override fun isOpus(): Boolean = true
+
     /**
      * Liest das nächste [AudioFrame] von [player] aus und speichert es im Cache.
      */

@@ -129,11 +129,11 @@ class DefaultCommandHandler(
                     paramIndex = sectioned.indexOf("-" + param.short)
                 }
 
-                if (param.type == EParameterType.BOOLEAN) {
-                    highestIndex = maxOf(highestIndex, paramIndex)
-                    param.currentValue = true
-                } else {
-                    if (paramIndex != -1) {
+                if (paramIndex != -1) {
+                    if (param.type == EParameterType.BOOLEAN) {
+                        highestIndex = maxOf(highestIndex, paramIndex)
+                        param.currentValue = true
+                    } else {
                         try {
                             highestIndex = maxOf(highestIndex, paramIndex + 1)
                             param.currentValue = parseParameter(sectioned.getOrNull(paramIndex + 1), param.type)
