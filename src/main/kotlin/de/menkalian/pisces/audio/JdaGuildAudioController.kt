@@ -292,16 +292,16 @@ class JdaGuildAudioController(
 
                 val queueRemove = trackQueue.take(amountFromQueue)
                 tracksToRemove.addAll(queueRemove)
-                trackQueue.removeAll(tracksToRemove)
+                trackQueue.removeAll(queueRemove)
 
                 toReturn.addAll(tracksToRemove)
             }
 
-            startNextTrack()
-
             if (requeue) {
                 trackQueue.addAll(toReturn.map { it.makeClone() })
             }
+
+            startNextTrack()
 
             // Return the skipped Tracks as List of TrackInfo
             toReturn.map { it.makeInfo() }
