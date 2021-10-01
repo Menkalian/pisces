@@ -16,22 +16,22 @@ import org.springframework.stereotype.Component
 
 @Component
 @Conditional(OnConfigValueCondition::class)
-@RequiresKey(["pisces.command.impl.audio.playlist.AddToPlaylist"])
-class AddToPlaylistCommand(
+@RequiresKey(["pisces.command.impl.audio.playlist.RemoveFromPlaylist"])
+class RemoveFromPlaylistCommand(
     override val databaseHandler: IDatabaseHandler,
     val messageHandler: IMessageHandler,
     val audioHandler: IAudioHandler
 ) : CommonCommandBase() {
     override fun initialize() {
-        aliases.add("atp")
-        aliases.add("addtopl")
-        aliases.add("addpl")
+        aliases.add("rfp")
+        aliases.add("rmfrompl")
+        aliases.add("rmpl")
 
         supportedContexts.addAll(ALL_GUILD_CONTEXTS)
         supportedSources.addAll(ALL_SOURCES)
 
         addStringParameter("name", 'n', "Name der Playlist, die verändert werden soll.")
-        addStringParameter(description = "Suchbegriff/URL, der/die zu der Playlist hinzugefügt werden soll.")
+        addStringParameter(description = "Suchbegriff/URL, der/die aus der Playlist entfernt werden soll.")
 
         super.initialize()
     }
@@ -39,7 +39,7 @@ class AddToPlaylistCommand(
     override val name: String
         get() = "addToPlaylist"
     override val description: String
-        get() = "Fügt einen Song/Suchbegriff zu einer Playlist hinzu."
+        get() = "Entfernt einen Song/Suchbegriff aus einer Playlist."
 
     override fun execute(
         commandHandler: ICommandHandler,
@@ -54,12 +54,12 @@ class AddToPlaylistCommand(
         val playlistName = parameters.getName()
         val searchResult = controller.lookupTracks(parameters.getTextArg())
         val playlist = databaseHandler.getOrCreatePlaylist(guildId, playlistName)
-        databaseHandler.addToPlaylist(playlist, searchResult.second.first())
+        databaseHandler.removeFromPlaylist(playlist, searchResult.second.first())
 
         messageHandler
             .createMessage(guildId, channelId)
             .applyQueueResult(searchResult.copy(second = searchResult.second.subList(0, 1)))
-            .withTitle("Ein Track wurde zur Playlist \"$playlistName\" hinzugefügt.")
+            .withTitle("Ein Track wurde aus der Playlist \"$playlistName\" entfernt.")
             .build()
     }
 
@@ -69,8 +69,7 @@ class AddToPlaylistCommand(
     }
 
     private fun List<CommandParameter>.getName(): String {
-        return filter { it.name == "name" }
-            .firstOrNull()
+        return firstOrNull { it.name == "name" }
             ?.asString() ?: ""
     }
 }
