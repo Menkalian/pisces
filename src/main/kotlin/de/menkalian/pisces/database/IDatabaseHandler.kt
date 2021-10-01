@@ -88,6 +88,15 @@ interface IDatabaseHandler : IHandler {
     fun getOrCreatePlaylist(guildId: Long, name: String): PlaylistHandle
 
     /**
+     * Gibt die Playlist mit dem Namen zurück falls diese existiert.
+     *
+     * @param guildId Server-ID des Servers für den die Playlist angelegt werden soll.
+     * @param name Name der Playlist, einmalig pro Server.
+     * @return Handle für die Playlist
+     */
+    fun getPlaylistIfExists(guildId: Long, name: String): PlaylistHandle?
+
+    /**
      * Gibt eine Liste der SongEntries zurück, die für die Playlist hinterlegt sind.
      *
      * @param handle Handle für die Playlist

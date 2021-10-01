@@ -125,6 +125,9 @@ class JpaDatabaseHandler(
         return PlaylistHandle(this, playlist.name, playlist.guildId)
     }
 
+    override fun getPlaylistIfExists(guildId: Long, name: String): PlaylistHandle? =
+        playlistRepo.findByGuildIdAndName(guildId, name)?.let { PlaylistHandle(this, it.name, it.guildId) }
+
     override fun getPlaylistSongs(handle: PlaylistHandle): List<DatabaseSongEntry> {
         return findPlaylistByHandle(handle)
             ?.songs
