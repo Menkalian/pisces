@@ -15,4 +15,12 @@ interface PlaylistRepository : CrudRepository<PlaylistDto, Long> {
      * @return Das gefundene Objekt, falls dieses existiert. Sonst `null`
      */
     fun findByGuildIdAndName(guildId: Long, name: String): PlaylistDto?
+
+    /**
+     * Ermittelt alle existierenden Playlists für die angegebene Server-ID
+     *
+     * @param guildId Server-ID nach der gefiltert werden soll.
+     * @return Eine Liste der gefundenen Playlists
+     */
+    fun findAllByGuildId(guildId: Long): List<PlaylistDto>
 }

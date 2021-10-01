@@ -79,6 +79,14 @@ interface IDatabaseHandler : IHandler {
 
     // Playlists
     /**
+     * Ermittelt eine Liste der existierenden Playlists für einen Server.
+     *
+     * @param guildId Server-ID des Servers für den die Playlists ermittelt werden sollen.
+     * @return Liste der existierenden Namen
+     */
+    fun getPlaylists(guildId: Long): List<String>
+
+    /**
      * Legt eine neue Playlist an, oder gibt ein Handle zurück, das die existierende Playlist referenziert.
      *
      * @param guildId Server-ID des Servers für den die Playlist angelegt werden soll.

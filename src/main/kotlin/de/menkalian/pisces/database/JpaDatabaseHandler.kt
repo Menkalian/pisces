@@ -106,6 +106,12 @@ class JpaDatabaseHandler(
         )
     }
 
+    override fun getPlaylists(guildId: Long): List<String> {
+        return playlistRepo
+            .findAllByGuildId(guildId)
+            .map { it.name }
+    }
+
     override fun getOrCreatePlaylist(guildId: Long, name: String): PlaylistHandle {
         val existingPlaylist = playlistRepo.findByGuildIdAndName(guildId, name)
 
