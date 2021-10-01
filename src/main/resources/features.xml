@@ -16,6 +16,7 @@
             </feature>
             <feature vela:default="true" vela:name="Controller">
                 <impl vela:default="true" vela:name="JdaGuildAudioController">
+                    <dependency>pisces.discord.Handler.JdaDiscordHandler</dependency>
                     <dependency>pisces.audio.ExtendedAudioSendHandler</dependency>
                 </impl>
             </feature>
@@ -23,15 +24,63 @@
         <set vela:name="command">
             <set vela:name="impl">
                 <set vela:name="audio">
-                    <vela:feature vela:name="Join" />
-                    <vela:feature vela:name="Queue" />
-                    <vela:feature vela:name="Skip" />
-                    <vela:feature vela:name="Play">
+                    <dependency>pisces.audio.Handler</dependency>
+                    <dependency>pisces.audio.Controller</dependency>
+
+                    <vela:set vela:name="playing">
                         <dependency>pisces.command.impl.audio.Join</dependency>
-                    </vela:feature>
+
+                        <vela:feature vela:name="Play" />
+                        <vela:feature vela:name="Playnow" />
+                    </vela:set>
+
+                    <vela:set vela:name="playlist">
+                        <dependency>pisces.command.impl.audio.Join</dependency>
+
+                        <vela:feature vela:name="PlayList" />
+                        <vela:feature vela:name="PlayListShuffled" />
+
+                        <vela:feature vela:name="QueueToPlaylist" />
+                        <vela:feature vela:name="CreatePlaylist" />
+                        <vela:feature vela:name="RenamePlaylist" />
+                        <vela:feature vela:name="AddToPlaylist" />
+                        <vela:feature vela:name="RemoveFromPlaylist" />
+
+                        <vela:feature vela:name="Show" />
+                    </vela:set>
+
+                    <vela:set vela:name="joinsound">
+                        <vela:feature vela:name="Get" />
+                        <vela:feature vela:name="Set" />
+                    </vela:set>
+
+                    <vela:feature vela:name="Join" />
+                    <vela:feature vela:name="Leave" />
+
+                    <vela:feature vela:name="Pause" />
+                    <vela:feature vela:name="Repeat" />
+                    <vela:feature vela:name="PermanentShuffle" />
+
+                    <vela:feature vela:name="Now" />
+                    <vela:feature vela:name="Search" />
+                    <vela:feature vela:name="Queue" />
+
+                    <vela:feature vela:name="Skip" />
+                    <vela:feature vela:name="Reskip" />
+                    <vela:feature vela:name="Stop" />
+                    <vela:feature vela:name="Wind" />
+
+                    <vela:feature vela:name="Reset" />
+                    <vela:feature vela:name="Shuffle" />
+                    <vela:feature vela:name="ClearQueue" />
+                    <vela:feature vela:name="Unqueue" />
+                    <vela:feature vela:name="Unqueuelast" />
                 </set>
                 <set vela:name="base">
-                    <vela:feature vela:name="Greet" />
+                    <vela:feature vela:default="true" vela:name="Credits" />
+                    <vela:feature vela:default="false" vela:name="Greet" />
+                    <vela:feature vela:default="true" vela:name="Info" />
+                    <vela:feature vela:default="true" vela:name="InstallAux" />
                     <vela:feature vela:default="true" vela:name="Help" />
                     <vela:feature vela:default="true" vela:name="Ping" />
                     <vela:feature vela:default="true" vela:name="Usage" />
@@ -41,6 +90,17 @@
                 <impl vela:name="DefaultCommandHandler" />
             </feature>
             <feature vela:default="true" vela:name="CommandMessageListener">
+                <dependency>pisces.command.Handler</dependency>
+                <dependency>pisces.discord.Handler.JdaDiscordHandler</dependency>
+            </feature>
+            <feature vela:default="true" vela:name="SlashCommandListener">
+                <dependency>pisces.command.Handler</dependency>
+                <dependency>pisces.discord.Handler.JdaDiscordHandler</dependency>
+            </feature>
+            <feature vela:default="true" vela:name="JoinListener">
+                <dependency>pisces.audio.Controller</dependency>
+                <dependency>pisces.audio.Handler</dependency>
+                <dependency>pisces.command.Handler</dependency>
                 <dependency>pisces.discord.Handler.JdaDiscordHandler</dependency>
             </feature>
         </set>

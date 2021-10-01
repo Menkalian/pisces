@@ -16,7 +16,7 @@ import org.springframework.stereotype.Component
 
 @Component
 @Conditional(OnConfigValueCondition::class)
-@RequiresKey(["pisces.command.impl.audio.Play"])
+@RequiresKey(["pisces.command.impl.audio.playing.Play"])
 class PlayCommand(
     override val databaseHandler: IDatabaseHandler,
     val messageHandler: IMessageHandler,
