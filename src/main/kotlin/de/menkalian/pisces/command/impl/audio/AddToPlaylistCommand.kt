@@ -10,21 +10,22 @@ import de.menkalian.pisces.command.data.ECommandSource
 import de.menkalian.pisces.database.IDatabaseHandler
 import de.menkalian.pisces.message.IMessageHandler
 import de.menkalian.pisces.util.FixedVariables
+import de.menkalian.pisces.util.applyQueueResult
 import org.springframework.context.annotation.Conditional
 import org.springframework.stereotype.Component
 
 @Component
 @Conditional(OnConfigValueCondition::class)
-@RequiresKey(["pisces.command.impl.audio.playlist.RenamePlaylist"])
-class RenamePlaylistCommand(
+@RequiresKey(["pisces.command.impl.audio.playlist.AddToPlaylist"])
+class AddToPlaylistCommand(
     override val databaseHandler: IDatabaseHandler,
     val messageHandler: IMessageHandler,
     val audioHandler: IAudioHandler
 ) : CommonCommandBase() {
     override fun initialize() {
-        aliases.add("mvpl")
-        aliases.add("rnpl")
-        aliases.add("renamepl")
+        aliases.add("atp")
+        aliases.add("addtopl")
+        aliases.add("addpl")
 
         supportedContexts.addAll(ALL_GUILD_CONTEXTS)
         supportedSources.addAll(ALL_SOURCES)
@@ -36,9 +37,9 @@ class RenamePlaylistCommand(
     }
 
     override val name: String
-        get() = "renamePlaylist"
+        get() = "addToPlaylist"
     override val description: String
-        get() = "Benennt eine existierende Playlist um."
+        get() = "Fügt einen Song/Suchbegriff zu einer Playlist hinzu."
 
     override fun execute(
         commandHandler: ICommandHandler,
@@ -49,24 +50,16 @@ class RenamePlaylistCommand(
         authorId: Long,
         sourceInformation: FixedVariables
     ) {
-        val oldName = parameters.getName()
-        val newName = parameters.getTextArg()
-        val plExists = databaseHandler.getPlaylistIfExists(guildId, newName) == null
-        if (!plExists) {
-            databaseHandler.renamePlaylist(
-                databaseHandler.getOrCreatePlaylist(guildId, oldName),
-                newName
-            )
-        }
+        val controller = audioHandler.getGuildAudioController(guildId)
+        val playlistName = parameters.getName()
+        val searchResult = controller.lookupTracks(parameters.getTextArg())
+        val playlist = databaseHandler.getOrCreatePlaylist(guildId, playlistName)
+        databaseHandler.addToPlaylist(playlist, searchResult.second.first())
 
         messageHandler
             .createMessage(guildId, channelId)
-            .withTitle(
-                if (plExists)
-                    "Die Playlist \"$newName\" existiert bereits. Ein Umbenennen ist nicht möglich."
-                else
-                    "Die Playlist \"$oldName\" wurde zu \"$newName\" umbenannt."
-            )
+            .applyQueueResult(searchResult.copy(second = searchResult.second.subList(0, 1)))
+            .withTitle("Ein Track wurde zur Playlist \"$playlistName\" hinzugefügt.")
             .build()
     }
 
