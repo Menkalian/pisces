@@ -29,7 +29,7 @@ class DefaultCommandHandler(
     val messageHandler: IMessageHandler
 ) : ICommandHandler,
     CommonHandlerImpl() {
-    private val commandMap: Map<String, CommonCommandBase> = commands.associateBy { it.name }
+    private val commandMap: Map<String, CommonCommandBase> = commands.associateBy { it.name.lowercase() }
 
     override fun initialize() {
         commands.forEach { it.initialize() }
@@ -100,7 +100,7 @@ class DefaultCommandHandler(
 
     private fun getCommandName(commandString: String, guildId: Long = 0L): String {
         val writtenName = commandString.split(" ", limit = 2)[0]
-        return databaseHandler.getFormalCommandName(guildId, writtenName)
+        return databaseHandler.getFormalCommandName(guildId, writtenName).lowercase()
     }
 
     private fun getParameterString(commandString: String): String {
