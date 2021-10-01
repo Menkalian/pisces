@@ -30,7 +30,7 @@ class CreatePlaylistCommand(
         supportedContexts.addAll(ALL_GUILD_CONTEXTS)
         supportedSources.addAll(ALL_SOURCES)
 
-        addStringParameter(description = "Name der Playlist, zu der die aktuelle Wiedergabeliste hinzugefügt werden soll.")
+        addStringParameter(description = "Name der Playlist, die erstellt werden soll.")
 
         super.initialize()
     }
