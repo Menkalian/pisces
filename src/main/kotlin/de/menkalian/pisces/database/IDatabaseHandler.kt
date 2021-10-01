@@ -128,6 +128,15 @@ interface IDatabaseHandler : IHandler {
      */
     fun deletePlaylist(handle: PlaylistHandle)
 
+    /**
+     * Benennt die angegebene Playlist um.
+     *
+     * @param handle Handle für die Playlist
+     * @param name Neuer Name der Playlist
+     * @return Aktualisiertes PlaylistHandle
+     */
+    fun renamePlaylist(handle: PlaylistHandle, name: String): PlaylistHandle
+
     // Joinsound
     /**
      * Setzt den JoinSound für den angegebenen Nutzer.

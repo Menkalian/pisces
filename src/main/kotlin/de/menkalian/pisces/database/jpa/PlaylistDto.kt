@@ -28,7 +28,7 @@ import javax.persistence.UniqueConstraint
 data class PlaylistDto(
     @Id @GeneratedValue(strategy = GenerationType.AUTO) var id: Long = -1,
     @Column(name = "GUILD_ID") val guildId: Long,
-    val name: String,
+    var name: String,
     @ManyToMany val songs: MutableList<SongEntryDto> = mutableListOf()
 ) {
     override fun equals(other: Any?): Boolean {

@@ -167,6 +167,15 @@ class JpaDatabaseHandler(
         }
     }
 
+    override fun renamePlaylist(handle: PlaylistHandle, name: String): PlaylistHandle {
+        logger().info("Renaming playlist $handle to $name")
+        findPlaylistByHandle(handle)?.let {
+            it.name = name
+            playlistRepo.save(it)
+        }
+        return PlaylistHandle(this, name, handle.guildId)
+    }
+
     @Transactional
     override fun setUserJoinsound(userId: Long, audioTrackInfo: TrackInfo) {
         val songEntry = songEntryRepository.findByIdOrNull(createSavedSongEntryIfNotExists(audioTrackInfo)) ?: return
