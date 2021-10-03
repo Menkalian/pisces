@@ -268,7 +268,7 @@ class JdaGuildAudioController(
     }
 
     override fun skipTracks(requeue: Boolean, skipAmount: Int): List<TrackInfo> {
-        if (skipAmount < 1)
+        if (skipAmount < 1 || player.playingTrack == null)
             return listOf()
 
         return synchronized(playerAndQueueLock) {
