@@ -20,7 +20,7 @@ interface IGuildAudioController {
     /**
      * Gibt die ChannelId des Channels zurück, mit der der User mit der angegebenen ID verbunden ist.
      *
-     * @param userId ID ges angefragten Nutzers
+     * @param userId ID des angefragten Nutzers
      * @return Discord-ID des VoiceChannels oder `null`, falls kein Channel ermittelt werden konnte.
      */
     fun getUserVoiceChannelId(userId: Long): Long?
