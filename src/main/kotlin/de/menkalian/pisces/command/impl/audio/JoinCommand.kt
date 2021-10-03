@@ -10,6 +10,7 @@ import de.menkalian.pisces.command.data.ECommandSource
 import de.menkalian.pisces.database.IDatabaseHandler
 import de.menkalian.pisces.message.IMessageHandler
 import de.menkalian.pisces.util.FixedVariables
+import de.menkalian.pisces.util.withWarningColor
 import org.springframework.context.annotation.Conditional
 import org.springframework.stereotype.Component
 
@@ -52,7 +53,7 @@ class JoinCommand(override val databaseHandler: IDatabaseHandler, val messageHan
         } else {
             messageHandler
                 .createMessage(guildId, channelId)
-                .withColor(red = 255.toByte(), green = 136.toByte()) // Orange
+                .withWarningColor()
                 .withTitle(
                     if (targetId != null) {
                         "Du bist in keinem Voice-Channel. Der Bot kann dir also nicht beitreten."

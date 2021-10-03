@@ -12,6 +12,7 @@ import de.menkalian.pisces.database.IDatabaseHandler
 import de.menkalian.pisces.message.IMessageHandler
 import de.menkalian.pisces.util.FixedVariables
 import de.menkalian.pisces.util.applyQueueResult
+import de.menkalian.pisces.util.withSuccessColor
 import org.springframework.context.annotation.Conditional
 import org.springframework.stereotype.Component
 
@@ -83,7 +84,7 @@ class PlayListCommand(
 
             msg
                 .withThumbnail("")
-                .withColor(red = 104.toByte(), green = 232.toByte(), blue = 39.toByte())
+                .withSuccessColor()
                 .withTitle("Die Playlist $name wurde geladen.")
                 .build()
         } else {

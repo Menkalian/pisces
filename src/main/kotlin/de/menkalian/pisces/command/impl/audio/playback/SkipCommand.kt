@@ -12,6 +12,7 @@ import de.menkalian.pisces.database.IDatabaseHandler
 import de.menkalian.pisces.message.IMessageHandler
 import de.menkalian.pisces.util.FixedVariables
 import de.menkalian.pisces.util.addTrackInfoField
+import de.menkalian.pisces.util.withWarningColor
 import org.springframework.context.annotation.Conditional
 import org.springframework.stereotype.Component
 
@@ -69,7 +70,7 @@ class SkipCommand(
             result.isEmpty() -> {
                 msg
                     .withTitle("Es wurden keine Tracks übersprungen")
-                    .withColor(red = 255.toByte(), green = 136.toByte())
+                    .withWarningColor()
                     .withText("Möglicherweise ist die Queue aktuell leer oder der Aufruf des Befehls war fehlerhaft.")
             }
             result.size == 1 -> {

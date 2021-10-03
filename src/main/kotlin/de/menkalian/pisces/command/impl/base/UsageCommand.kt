@@ -9,6 +9,7 @@ import de.menkalian.pisces.command.data.ECommandSource
 import de.menkalian.pisces.database.IDatabaseHandler
 import de.menkalian.pisces.message.IMessageHandler
 import de.menkalian.pisces.util.FixedVariables
+import de.menkalian.pisces.util.withErrorColor
 import org.springframework.context.annotation.Conditional
 import org.springframework.stereotype.Component
 
@@ -67,7 +68,7 @@ class UsageCommand(override val databaseHandler: IDatabaseHandler, val messageHa
         } else {
             helpMessage
                 .withText("Der angefragte Befehl existiert nicht (oder ist im aktuellen Build deaktiviert).")
-                .withColor(red = 255.toByte())
+                .withErrorColor()
         }
 
         helpMessage.build()

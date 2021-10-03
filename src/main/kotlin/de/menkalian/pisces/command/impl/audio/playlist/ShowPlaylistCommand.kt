@@ -10,6 +10,7 @@ import de.menkalian.pisces.database.IDatabaseHandler
 import de.menkalian.pisces.message.IMessageHandler
 import de.menkalian.pisces.util.FixedVariables
 import de.menkalian.pisces.util.toDurationString
+import de.menkalian.pisces.util.withErrorColor
 import de.menkalian.pisces.variables.FlunderKey.Flunder
 import org.springframework.context.annotation.Conditional
 import org.springframework.stereotype.Component
@@ -76,7 +77,7 @@ class ShowPlaylistCommand(
                 }
             } else {
                 msg
-                    .withColor(red = 255.toByte())
+                    .withErrorColor()
                     .withTitle("Die angegebene Playlist \"$name\" existiert nicht.")
             }
         }

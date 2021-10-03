@@ -12,6 +12,8 @@ import de.menkalian.pisces.database.IDatabaseHandler
 import de.menkalian.pisces.message.IMessageHandler
 import de.menkalian.pisces.util.FixedVariables
 import de.menkalian.pisces.util.applyQueueResult
+import de.menkalian.pisces.util.withErrorColor
+import de.menkalian.pisces.util.withSuccessColor
 import org.springframework.context.annotation.Conditional
 import org.springframework.stereotype.Component
 
@@ -78,13 +80,13 @@ class PlayListShuffledCommand(
 
             msg
                 .withThumbnail("")
-                .withColor(red = 104.toByte(), green = 232.toByte(), blue = 39.toByte())
+                .withSuccessColor()
                 .withTitle("Die Playlist $playlistName wurde geladen und in zufälliger Reihenfolge zur Queue hinzugefügt.")
                 .build()
         } else {
             messageHandler
                 .createMessage(guildId, channelId)
-                .withColor(red = 255.toByte())
+                .withErrorColor()
                 .withTitle("Eine Playlist namens \"$playlistName\" existiert nicht auf dem Server")
                 .build()
         }

@@ -1,6 +1,7 @@
 package de.menkalian.pisces.command.impl.audio.playlist
 
 import de.menkalian.pisces.message.IMessageHandler
+import de.menkalian.pisces.util.withErrorColor
 
 object PlaylistHelper {
     fun ensurePlaylistValid(
@@ -12,7 +13,7 @@ object PlaylistHelper {
             messageHandler
                 .createMessage(guildId, channelId)
                 .withTitle("Name \"$name\" ist ungültig für eine Playlist.")
-                .withColor(red = 255.toByte())
+                .withErrorColor()
                 .build()
             return false
         } else {
