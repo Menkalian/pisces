@@ -85,6 +85,20 @@
                     <vela:feature vela:default="true" vela:name="Ping" />
                     <vela:feature vela:default="true" vela:name="Usage" />
                 </set>
+                <set vela:name="settings">
+                    <vela:set vela:name="repeat">
+                        <vela:feature vela:name="Get" />
+                        <vela:feature vela:name="Set" />
+                    </vela:set>
+                    <vela:set vela:name="shuffle">
+                        <vela:feature vela:name="Get" />
+                        <vela:feature vela:name="Set" />
+                    </vela:set>
+                    <vela:set vela:name="prefix">
+                        <vela:feature vela:name="Get" />
+                        <vela:feature vela:name="Set" />
+                    </vela:set>
+                </set>
             </set>
             <feature vela:default="true" vela:name="Handler">
                 <impl vela:name="DefaultCommandHandler" />
