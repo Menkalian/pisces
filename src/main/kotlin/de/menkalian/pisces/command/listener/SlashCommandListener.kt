@@ -83,7 +83,10 @@ class SlashCommandListener(
     }
 
     override fun onSlashCommand(event: SlashCommandEvent) {
+        val guildId = if (event.isFromGuild) event.guild?.idLong ?: 0L else 0L
+        val channelId = if (event.isFromGuild) event.channel.idLong else event.user.idLong
         val command = commandMap[event.commandIdLong]
+
         if (command != null) {
             val parameters = command.parameters.map { it.copy() }
             parameters.forEach {
@@ -123,32 +126,21 @@ class SlashCommandListener(
             val additionalVars: Variables = hashMapOf()
             additionalVars[FlunderKey.Flunder.Command.User.Name] = event.user.name
 
+            if (event.isFromGuild) {
+                additionalVars[FlunderKey.Flunder.Command.Guild.Name] = event.guild?.name ?: ""
+                additionalVars[FlunderKey.Flunder.Command.Channel.Name] = event.channel.name
+            }
+
             try {
-                if (event.isFromGuild) {
-                    additionalVars[FlunderKey.Flunder.Command.Guild.Name] = event.guild?.name ?: ""
-                    additionalVars[FlunderKey.Flunder.Command.Channel.Name] = event.channel.name
-
-                    command.execute(
-                        commandHandler,
-                        source = ECommandSource.COMMAND,
-                        parameters = parameters,
-                        event.guild?.idLong ?: 0,
-                        event.channel.idLong,
-                        event.user.idLong,
-                        additionalVars
-                    )
-                } else {
-                    command.execute(
-                        commandHandler,
-                        source = ECommandSource.COMMAND,
-                        parameters = parameters,
-                        0L,
-                        event.user.idLong,
-                        event.user.idLong,
-                        additionalVars
-                    )
-                }
-
+                command.execute(
+                    commandHandler,
+                    source = ECommandSource.COMMAND,
+                    parameters = parameters,
+                    guildId,
+                    channelId,
+                    event.user.idLong,
+                    additionalVars
+                )
                 event.reply("Befehl erfolgreich").setEphemeral(true).queue()
             } catch (ex: Exception) {
                 logger().error("Error when executing slash-command", ex)
