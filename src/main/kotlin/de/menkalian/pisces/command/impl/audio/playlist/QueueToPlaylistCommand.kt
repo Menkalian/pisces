@@ -1,4 +1,4 @@
-package de.menkalian.pisces.command.impl.audio
+package de.menkalian.pisces.command.impl.audio.playlist
 
 import de.menkalian.pisces.OnConfigValueCondition
 import de.menkalian.pisces.RequiresKey
@@ -10,36 +10,32 @@ import de.menkalian.pisces.command.data.ECommandSource
 import de.menkalian.pisces.database.IDatabaseHandler
 import de.menkalian.pisces.message.IMessageHandler
 import de.menkalian.pisces.util.FixedVariables
-import de.menkalian.pisces.util.applyQueueResult
 import org.springframework.context.annotation.Conditional
 import org.springframework.stereotype.Component
 
 @Component
 @Conditional(OnConfigValueCondition::class)
-@RequiresKey(["pisces.command.impl.audio.playlist.RemoveFromPlaylist"])
-class RemoveFromPlaylistCommand(
+@RequiresKey(["pisces.command.impl.audio.playlist.QueueToPlaylist"])
+class QueueToPlaylistCommand(
     override val databaseHandler: IDatabaseHandler,
     val messageHandler: IMessageHandler,
     val audioHandler: IAudioHandler
 ) : CommonCommandBase() {
     override fun initialize() {
-        aliases.add("rfp")
-        aliases.add("rmfrompl")
-        aliases.add("rmpl")
+        aliases.add("qtpl")
 
         supportedContexts.addAll(ALL_GUILD_CONTEXTS)
         supportedSources.addAll(ALL_SOURCES)
 
-        addStringParameter("name", 'n', "Name der Playlist, die verändert werden soll.")
-        addStringParameter(description = "Suchbegriff/URL, der/die aus der Playlist entfernt werden soll.")
+        addStringParameter(description = "Name der Playlist, zu der die aktuelle Wiedergabeliste hinzugefügt werden soll.")
 
         super.initialize()
     }
 
     override val name: String
-        get() = "addToPlaylist"
+        get() = "queueToPlaylist"
     override val description: String
-        get() = "Entfernt einen Song/Suchbegriff aus einer Playlist."
+        get() = "Erstellt eine neue Playlist aus der aktuellen Queue."
 
     override fun execute(
         commandHandler: ICommandHandler,
@@ -51,25 +47,27 @@ class RemoveFromPlaylistCommand(
         sourceInformation: FixedVariables
     ) {
         val controller = audioHandler.getGuildAudioController(guildId)
-        val playlistName = parameters.getName()
-        val searchResult = controller.lookupTracks(parameters.getTextArg())
-        val playlist = databaseHandler.getOrCreatePlaylist(guildId, playlistName)
-        databaseHandler.removeFromPlaylist(playlist, searchResult.second.first())
+        val playlistName: String = parameters.getTextArg()
+        if (!PlaylistHelper.ensurePlaylistValid(playlistName, guildId, channelId, messageHandler)) {
+            return
+        }
+
+        val playlistHandle = databaseHandler.getOrCreatePlaylist(guildId, playlistName)
+
+        controller
+            .getQueueInfo()
+            .forEach {
+                databaseHandler.addToPlaylist(playlistHandle, it)
+            }
 
         messageHandler
             .createMessage(guildId, channelId)
-            .applyQueueResult(searchResult.copy(second = searchResult.second.subList(0, 1)))
-            .withTitle("Ein Track wurde aus der Playlist \"$playlistName\" entfernt.")
+            .withTitle("Die aktuelle Queue wurde zur Playlist \"$playlistName\" hinzugefügt")
             .build()
     }
 
     private fun List<CommandParameter>.getTextArg(): String {
         return getDefaultArg()
-            ?.asString() ?: ""
-    }
-
-    private fun List<CommandParameter>.getName(): String {
-        return firstOrNull { it.name == "name" }
             ?.asString() ?: ""
     }
 }

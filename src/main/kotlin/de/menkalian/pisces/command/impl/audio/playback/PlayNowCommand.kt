@@ -1,4 +1,4 @@
-package de.menkalian.pisces.command.impl.audio
+package de.menkalian.pisces.command.impl.audio.playback
 
 import de.menkalian.pisces.OnConfigValueCondition
 import de.menkalian.pisces.RequiresKey
@@ -7,6 +7,7 @@ import de.menkalian.pisces.command.CommonCommandBase
 import de.menkalian.pisces.command.ICommandHandler
 import de.menkalian.pisces.command.data.CommandParameter
 import de.menkalian.pisces.command.data.ECommandSource
+import de.menkalian.pisces.command.impl.audio.JoinCommand
 import de.menkalian.pisces.database.IDatabaseHandler
 import de.menkalian.pisces.message.IMessageHandler
 import de.menkalian.pisces.util.FixedVariables
@@ -16,29 +17,20 @@ import org.springframework.stereotype.Component
 
 @Component
 @Conditional(OnConfigValueCondition::class)
-@RequiresKey(["pisces.command.impl.audio.playing.Play"])
-class PlayCommand(
+@RequiresKey(["pisces.command.impl.audio.playing.Playnow"])
+class PlayNowCommand(
     override val databaseHandler: IDatabaseHandler,
     val messageHandler: IMessageHandler,
     val audioHandler: IAudioHandler,
     val joinCommand: JoinCommand
 ) : CommonCommandBase() {
     override fun initialize() {
-        aliases.add("p")
+        aliases.add("nowplay")
+        aliases.add("np")
+        aliases.add("pn")
 
         supportedContexts.addAll(ALL_GUILD_CONTEXTS)
         supportedSources.addAll(ALL_SOURCES)
-
-        addBooleanParameter(
-            "instant",
-            'i',
-            "Falls diese Option übergeben wurde, wird die aktuelle Queue übersprungen, die aktuelle Wiedergabe abgebrochen und der Song wird sofort abgespielt."
-        )
-        addBooleanParameter(
-            "now",
-            'n',
-            "Falls diese Option übergeben wurde, wird die aktuelle Queue übersprungen, die aktuelle Wiedergabe abgebrochen und der Song wird sofort abgespielt."
-        )
 
         addBooleanParameter("list", 'l', "Falls diese Option angegeben ist, wird die vollständige Playlist abgespielt, falls eine Playlist gefunden wird.")
         addStringParameter(description = "Suchbegriff oder URL zum abspielen.")
@@ -47,7 +39,7 @@ class PlayCommand(
     }
 
     override val name: String
-        get() = "play"
+        get() = "playnow"
     override val description: String
         get() = "Fügt den angegebenen Song zur Queue hinzu. Falls der Bot in keinem Voice-Channel ist, tritt dieser automatisch deinem aktuellen Voice-Channel bei."
 
@@ -67,7 +59,7 @@ class PlayCommand(
 
         val result = controller.playTrack(
             parameters.getTextArg(),
-            parameters.isSkipQueue(),
+            true,
             false,
             parameters.isPlayList()
         )
@@ -80,12 +72,6 @@ class PlayCommand(
     private fun List<CommandParameter>.getTextArg(): String {
         return getDefaultArg()
             ?.asString() ?: ""
-    }
-
-    private fun List<CommandParameter>.isSkipQueue(): Boolean {
-        return this
-            .filter { listOf("instant", "now").contains(it.name) }
-            .any { it.asBoolean() }
     }
 
     private fun List<CommandParameter>.isPlayList(): Boolean {

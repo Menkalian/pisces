@@ -3,6 +3,7 @@ package de.menkalian.pisces.database.jpa
 import org.hibernate.Hibernate
 import javax.persistence.Column
 import javax.persistence.Entity
+import javax.persistence.FetchType
 import javax.persistence.GeneratedValue
 import javax.persistence.GenerationType
 import javax.persistence.Id
@@ -29,7 +30,7 @@ data class PlaylistDto(
     @Id @GeneratedValue(strategy = GenerationType.AUTO) var id: Long = -1,
     @Column(name = "GUILD_ID") val guildId: Long,
     var name: String,
-    @ManyToMany val songs: MutableList<SongEntryDto> = mutableListOf()
+    @ManyToMany(fetch = FetchType.EAGER) val songs: MutableList<SongEntryDto> = mutableListOf()
 ) {
     override fun equals(other: Any?): Boolean {
         if (this === other) return true

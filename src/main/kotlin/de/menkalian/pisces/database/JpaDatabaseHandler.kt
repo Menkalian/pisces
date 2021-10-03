@@ -210,9 +210,6 @@ class JpaDatabaseHandler(
 
     override fun deinitialize() {
         startDeinitialization()
-
-        // cleanup song entries
-        clearAllUnreferencedSongEntries()
     }
 
     /**

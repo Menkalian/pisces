@@ -63,6 +63,8 @@ class CommandMessageListener(final val commandHandler: ICommandHandler, final va
     private fun executeCommand(command: String, event: GuildMessageReceivedEvent) {
         val additionalVars: Variables = hashMapOf()
         additionalVars[Flunder.Command.User.Name] = event.author.name
+        additionalVars[Flunder.Command.Guild.Name] = event.guild.name
+        additionalVars[Flunder.Command.Channel.Name] = event.channel.name
 
         commandHandler.executeGuildCommand(
             command,

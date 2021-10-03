@@ -1,4 +1,4 @@
-package de.menkalian.pisces.command.impl.audio
+package de.menkalian.pisces.command.impl.audio.playlist
 
 import de.menkalian.pisces.OnConfigValueCondition
 import de.menkalian.pisces.RequiresKey
@@ -7,6 +7,7 @@ import de.menkalian.pisces.command.CommonCommandBase
 import de.menkalian.pisces.command.ICommandHandler
 import de.menkalian.pisces.command.data.CommandParameter
 import de.menkalian.pisces.command.data.ECommandSource
+import de.menkalian.pisces.command.impl.audio.JoinCommand
 import de.menkalian.pisces.database.IDatabaseHandler
 import de.menkalian.pisces.message.IMessageHandler
 import de.menkalian.pisces.util.FixedVariables
@@ -16,29 +17,18 @@ import org.springframework.stereotype.Component
 
 @Component
 @Conditional(OnConfigValueCondition::class)
-@RequiresKey(["pisces.command.impl.audio.playlist.PlayList"])
-class PlayListCommand(
+@RequiresKey(["pisces.command.impl.audio.playlist.PlayListShuffled"])
+class PlayListShuffledCommand(
     override val databaseHandler: IDatabaseHandler,
     val messageHandler: IMessageHandler,
     val audioHandler: IAudioHandler,
     val joinCommand: JoinCommand
 ) : CommonCommandBase() {
     override fun initialize() {
-        aliases.add("pl")
+        aliases.add("spl")
 
         supportedContexts.addAll(ALL_GUILD_CONTEXTS)
         supportedSources.addAll(ALL_SOURCES)
-
-        addBooleanParameter(
-            "instant",
-            'i',
-            "Falls diese Option übergeben wurde, wird die aktuelle Queue übersprungen, die aktuelle Wiedergabe abgebrochen und der Song wird sofort abgespielt."
-        )
-        addBooleanParameter(
-            "now",
-            'n',
-            "Falls diese Option übergeben wurde, wird die aktuelle Queue übersprungen, die aktuelle Wiedergabe abgebrochen und der Song wird sofort abgespielt."
-        )
 
         addStringParameter(description = "Name der Playlist oder URL der externen Playlist, die abgespielt werden soll.")
 
@@ -46,7 +36,7 @@ class PlayListCommand(
     }
 
     override val name: String
-        get() = "playlist"
+        get() = "shuffledplaylist"
     override val description: String
         get() = "Fügt die angegebene Playlist zur Queue hinzu."
 
@@ -64,37 +54,38 @@ class PlayListCommand(
             joinCommand.execute(commandHandler, source, parameters, guildId, channelId, authorId, sourceInformation)
         }
 
-        val name: String = parameters.getTextArg()
-        val playlistHandle = databaseHandler.getPlaylistIfExists(guildId, name)
+        val playlistName: String = parameters.getTextArg()
+        if (!PlaylistHelper.ensurePlaylistValid(playlistName, guildId, channelId, messageHandler)) {
+            return
+        }
+
+        val playlistHandle = databaseHandler.getPlaylistIfExists(guildId, playlistName)
         if (playlistHandle != null) {
             val songs = databaseHandler.getPlaylistSongs(playlistHandle)
             val msg = messageHandler
                 .createMessage(guildId, channelId)
 
-            songs.forEachIndexed { index, track ->
-                val result = controller
-                    .playTrack(
-                        track.url,
-                        playInstant = index == 0 && parameters.isSkipQueue()
-                    )
-                msg.applyQueueResult(result)
-            }
+            songs
+                .shuffled()
+                .forEachIndexed { index, track ->
+                    val result = controller
+                        .playTrack(
+                            track.url,
+                            playInstant = index == 0
+                        )
+                    msg.applyQueueResult(result)
+                }
 
             msg
                 .withThumbnail("")
                 .withColor(red = 104.toByte(), green = 232.toByte(), blue = 39.toByte())
-                .withTitle("Die Playlist $name wurde geladen.")
+                .withTitle("Die Playlist $playlistName wurde geladen und in zufälliger Reihenfolge zur Queue hinzugefügt.")
                 .build()
         } else {
-            val result = controller.playTrack(
-                parameters.getTextArg(),
-                parameters.isSkipQueue(),
-                interruptCurrent = false,
-                playFullPlaylist = true
-            )
             messageHandler
                 .createMessage(guildId, channelId)
-                .applyQueueResult(result)
+                .withColor(red = 255.toByte())
+                .withTitle("Eine Playlist namens \"$playlistName\" existiert nicht auf dem Server")
                 .build()
         }
     }
@@ -104,9 +95,4 @@ class PlayListCommand(
             ?.asString() ?: ""
     }
 
-    private fun List<CommandParameter>.isSkipQueue(): Boolean {
-        return this
-            .filter { listOf("instant", "now").contains(it.name) }
-            .any { it.asBoolean() }
-    }
 }

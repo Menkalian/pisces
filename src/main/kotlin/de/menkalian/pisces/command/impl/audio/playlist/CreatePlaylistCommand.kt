@@ -1,4 +1,4 @@
-package de.menkalian.pisces.command.impl.audio
+package de.menkalian.pisces.command.impl.audio.playlist
 
 import de.menkalian.pisces.OnConfigValueCondition
 import de.menkalian.pisces.RequiresKey
@@ -9,34 +9,36 @@ import de.menkalian.pisces.command.data.CommandParameter
 import de.menkalian.pisces.command.data.ECommandSource
 import de.menkalian.pisces.database.IDatabaseHandler
 import de.menkalian.pisces.message.IMessageHandler
-import de.menkalian.pisces.util.Emoji
 import de.menkalian.pisces.util.FixedVariables
-import de.menkalian.pisces.util.addTrackInfoField
-import de.menkalian.pisces.util.toDurationString
 import org.springframework.context.annotation.Conditional
 import org.springframework.stereotype.Component
 
 @Component
 @Conditional(OnConfigValueCondition::class)
-@RequiresKey(["pisces.command.impl.audio.Queue"])
-class QueueCommand(
+@RequiresKey(["pisces.command.impl.audio.playlist.CreatePlaylist"])
+class CreatePlaylistCommand(
     override val databaseHandler: IDatabaseHandler,
     val messageHandler: IMessageHandler,
     val audioHandler: IAudioHandler
 ) : CommonCommandBase() {
     override fun initialize() {
-        aliases.add("q")
+        aliases.add("createpl")
+        aliases.add("mkpl")
+        aliases.add("makepl")
+        aliases.add("makeplaylist")
 
         supportedContexts.addAll(ALL_GUILD_CONTEXTS)
         supportedSources.addAll(ALL_SOURCES)
+
+        addStringParameter(description = "Name der Playlist, die erstellt werden soll.")
 
         super.initialize()
     }
 
     override val name: String
-        get() = "queue"
+        get() = "createPlaylist"
     override val description: String
-        get() = "Zeigt die aktuelle Wiedergabeliste an."
+        get() = "Erstellt eine neue Playlist."
 
     override fun execute(
         commandHandler: ICommandHandler,
@@ -47,26 +49,29 @@ class QueueCommand(
         authorId: Long,
         sourceInformation: FixedVariables
     ) {
-        val controller = audioHandler.getGuildAudioController(guildId)
-        val result = controller.getQueueInfo()
-
-        val msg = messageHandler
-            .createMessage(guildId, channelId)
-
-        if (result.isEmpty()) {
-            msg.withTitle("Aktuell ist die Wiedergabeliste leer. Füg doch etwas hinzu ${Emoji.SLIGHT_SMILE}.")
-        } else {
-            msg.withTitle("Aktuelle Wiedergabeliste")
-                .withText(
-                    "Gesamtdauer: %s".format(
-                        result.sumOf { it.length }.toDurationString()
-                    )
-                )
-            result.forEachIndexed { index, trackInfo ->
-                msg.addTrackInfoField(trackInfo.copy(title = "${index + 1}: ${trackInfo.title}"))
-            }
+        val playlistName: String = parameters.getTextArg()
+        if (!PlaylistHelper.ensurePlaylistValid(playlistName, guildId, channelId, messageHandler)) {
+            return
         }
 
-        msg.build()
+        val plExists = databaseHandler.getPlaylistIfExists(guildId, playlistName) != null
+        if (!plExists) {
+            databaseHandler.getOrCreatePlaylist(guildId, playlistName)
+        }
+
+        messageHandler
+            .createMessage(guildId, channelId)
+            .withTitle(
+                if (plExists)
+                    "Die Playlist \"$playlistName\" existiert bereits."
+                else
+                    "Die neue Playlist \"$playlistName\" wurde angelegt."
+            )
+            .build()
+    }
+
+    private fun List<CommandParameter>.getTextArg(): String {
+        return getDefaultArg()
+            ?.asString() ?: ""
     }
 }

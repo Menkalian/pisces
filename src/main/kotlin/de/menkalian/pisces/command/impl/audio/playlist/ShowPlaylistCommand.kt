@@ -1,4 +1,4 @@
-package de.menkalian.pisces.command.impl.audio
+package de.menkalian.pisces.command.impl.audio.playlist
 
 import de.menkalian.pisces.OnConfigValueCondition
 import de.menkalian.pisces.RequiresKey
@@ -58,7 +58,7 @@ class ShowPlaylistCommand(
             databaseHandler
                 .getPlaylists(guildId)
                 .forEach {
-                    msg.addField(it)
+                    msg.appendText("- $it\n")
                 }
         } else {
             val playlistHandle = databaseHandler.getPlaylistIfExists(guildId, name)
