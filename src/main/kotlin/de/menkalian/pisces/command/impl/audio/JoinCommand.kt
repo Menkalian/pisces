@@ -55,7 +55,7 @@ class JoinCommand(override val databaseHandler: IDatabaseHandler, val messageHan
                 .createMessage(guildId, channelId)
                 .withWarningColor()
                 .withTitle(
-                    if (targetId != null) {
+                    if (targetId == null) {
                         "Du bist in keinem Voice-Channel. Der Bot kann dir also nicht beitreten."
                     } else {
                         "Die Verbindung zum Voice-Channel ist fehlgeschlagen. Möglicherweise fehlen dem Bot die nötigen Rechte."
