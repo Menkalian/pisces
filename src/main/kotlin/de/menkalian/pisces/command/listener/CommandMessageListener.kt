@@ -2,25 +2,43 @@ package de.menkalian.pisces.command.listener
 
 import de.menkalian.pisces.OnConfigValueCondition
 import de.menkalian.pisces.RequiresKey
+import de.menkalian.pisces.command.ICommand
 import de.menkalian.pisces.command.ICommandHandler
+import de.menkalian.pisces.command.data.CommandParameter
 import de.menkalian.pisces.command.data.ECommandSource
+import de.menkalian.pisces.command.data.EParameterType
 import de.menkalian.pisces.database.IDatabaseHandler
+import de.menkalian.pisces.message.IMessageHandler
 import de.menkalian.pisces.util.Variables
+import de.menkalian.pisces.util.isEven
+import de.menkalian.pisces.util.logger
+import de.menkalian.pisces.util.withErrorColor
 import de.menkalian.pisces.variables.FlunderKey.Flunder
-import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent
-import net.dv8tion.jda.api.events.message.priv.PrivateMessageReceivedEvent
+import net.dv8tion.jda.api.events.message.MessageReceivedEvent
 import net.dv8tion.jda.api.hooks.ListenerAdapter
 import org.springframework.context.annotation.Conditional
 import org.springframework.stereotype.Service
+import java.time.LocalDate
+import java.time.LocalDateTime
+import java.time.LocalTime
+import java.time.format.DateTimeFormatter
 
 
 @Suppress("RedundantModalityModifier")
 @Service
 @Conditional(OnConfigValueCondition::class)
 @RequiresKey(["pisces.command.CommandMessageListener"])
-class CommandMessageListener(final val commandHandler: ICommandHandler, final val databaseHandler: IDatabaseHandler) : ListenerAdapter() {
+class CommandMessageListener(
+    final val commandHandler: ICommandHandler,
+    val databaseHandler: IDatabaseHandler,
+    val messageHandler: IMessageHandler
+) : ListenerAdapter() {
+
+    companion object {
+        private const val DEFAULT_PREFIX = "_"
+    }
+
     private val guildPrefixMap: MutableMap<Long, String> = hashMapOf()
-    private val anyMutex = Any()
 
     init {
         commandHandler.addGuildPrefixChangedListener { id, prefix ->
@@ -28,60 +46,169 @@ class CommandMessageListener(final val commandHandler: ICommandHandler, final va
         }
     }
 
-    override fun onGuildMessageReceived(event: GuildMessageReceivedEvent) {
-        if (!guildPrefixMap.containsKey(event.guild.idLong)) {
-            loadGuild(event.guild.idLong)
-        }
+    override fun onMessageReceived(event: MessageReceivedEvent) {
+        val guildId = if (event.isFromGuild) event.guild.idLong else 0L
+        val channelId = if (event.isFromGuild) event.channel.idLong else event.author.idLong
 
-        val prefix = guildPrefixMap[event.guild.idLong] ?: DEFAULT_PREFIX
+        val prefix = getPrefix(guildId)
         val msg = event.message.contentRaw
         if (msg.startsWith(prefix)) {
-            val command = msg.substring(prefix.length)
-            executeCommand(command, event)
+            val fullCommandString = msg.substring(prefix.length)
+            val resolvedCommand = commandHandler.getCommand(fullCommandString.parseCommand(), guildId)
+
+            if (resolvedCommand != null
+                && resolvedCommand supports event.channelType
+                && resolvedCommand supports ECommandSource.TEXT
+            ) {
+                val additionalVars: Variables = hashMapOf()
+                additionalVars[Flunder.Command.User.Name] = event.author.name
+
+                if (event.isFromGuild) {
+                    additionalVars[Flunder.Command.Guild.Name] = event.guild.name
+                    additionalVars[Flunder.Command.Channel.Name] = event.channel.name
+                }
+
+                val parameters =
+                    parseParameters(fullCommandString.parseParameterString(), resolvedCommand)
+
+                resolvedCommand.execute(
+                    commandHandler,
+                    ECommandSource.TEXT,
+                    parameters,
+                    guildId, channelId,
+                    event.author.idLong,
+                    additionalVars
+                )
+            } else {
+                notifyInvalidCommand(guildId, channelId)
+            }
         }
     }
 
-    override fun onPrivateMessageReceived(event: PrivateMessageReceivedEvent) {
-        if (!guildPrefixMap.containsKey(0L)) {
-            loadGuild(0L)
+    private fun parseParameters(parameterString: String, command: ICommand): List<CommandParameter> {
+        @Suppress("RegExpRedundantEscape")
+        val sectioned = parameterString
+            // Split by all non-escaped quotations
+            .split("(?<!\\\\)\\\"".toRegex())
+            // Unescape remaining quotations
+            .map { it.replace("\\\"", "\"") }
+            // even index -> unescaped -> split by whitespaces
+            // else -> escaped -> use as raw string
+            .flatMapIndexed { index, str ->
+                if (index.isEven()) {
+                    str.split("\\s+".toRegex())
+                } else {
+                    listOf(str)
+                }
+            }
+
+        val parsedParameters = command.parameters.map { it.copy() }
+        var highestIndex = -1
+
+        // Parse all the parameters except the default one
+        parsedParameters.forEach { param ->
+            if (param.name.isNotBlank()) {
+                var paramIndex = sectioned.indexOf("--" + param.name)
+                if (paramIndex == -1 && !param.short.isWhitespace()) {
+                    paramIndex = sectioned.indexOf("-" + param.short)
+                }
+
+                if (paramIndex != -1) {
+                    if (param.type != EParameterType.BOOLEAN) {
+                        try {
+                            highestIndex = maxOf(highestIndex, paramIndex + 1)
+                            param.currentValue = parseParameter(sectioned.getOrNull(paramIndex + 1), param.type)
+                        } catch (ex: Exception) {
+                            logger().error("Error when parsing parameter", ex)
+                            param.currentValue = param.defaultValue
+                        }
+                    } else {
+                        // Just the apperance of the parameter is enough to set the value
+                        highestIndex = maxOf(highestIndex, paramIndex)
+                        param.currentValue = true
+                    }
+                }
+            }
         }
-        val prefix = guildPrefixMap[0L] ?: DEFAULT_PREFIX
-        val msg = event.message.contentRaw
-        if (msg.startsWith(prefix)) {
-            val command = msg.substring(prefix.length)
-            executeCommand(command, event)
+
+        // Use the remaining string as default (nameless) argument/parameter
+        parsedParameters
+            .firstOrNull { it.name.isBlank() }
+            ?.let { param ->
+                if (sectioned.size > highestIndex + 1) {
+                    val parameterValue = sectioned
+                        .subList(highestIndex + 1, sectioned.size)
+                        .joinToString(" ")
+
+                    try {
+                        if (parameterValue.isNotBlank()) {
+                            param.currentValue = parseParameter(parameterValue, param.type)
+                        }
+                    } catch (ex: Exception) {
+                        logger().error("Error when parsing parameter", ex)
+                        param.currentValue = param.defaultValue
+                    }
+                }
+            }
+        return parsedParameters
+    }
+
+    private fun parseParameter(value: String?, type: EParameterType): Any {
+        logger().debug("Parsing \"$value\" as $type")
+
+        if (value == null)
+            throw IllegalArgumentException("Null value can not be parsed")
+
+        val datePattern = "dd.MM.yyyy"
+        val timePattern = "HH:mm:ss"
+        val userIdRegex = "<@!(\\d+)>".toRegex().toPattern()
+
+        return when (type) {
+            EParameterType.INTEGER   -> value.toIntOrNull() ?: throw IllegalArgumentException("Integer could not be extracted")
+            EParameterType.STRING    -> value.toString()
+            EParameterType.USER      -> {
+                val matcher = userIdRegex.matcher(value)
+                if (matcher.matches()) {
+                    val userId = matcher.group(1)
+                    userId.toLongOrNull() ?: throw IllegalArgumentException("Could not parse UserId")
+                } else {
+                    throw IllegalArgumentException("Could not parse UserId")
+                }
+            }
+            EParameterType.TIMESTAMP -> LocalDateTime.parse(value, DateTimeFormatter.ofPattern("$datePattern-$timePattern"))
+            EParameterType.DATE      -> LocalDate.parse(value, DateTimeFormatter.ofPattern(datePattern))
+            EParameterType.TIME      -> LocalTime.parse(value, DateTimeFormatter.ofPattern(timePattern))
+            EParameterType.BOOLEAN   -> true
         }
     }
 
-    private fun executeCommand(command: String, event: PrivateMessageReceivedEvent) {
-        val additionalVars: Variables = hashMapOf()
-        additionalVars[Flunder.Command.User.Name] = event.author.name
-
-        commandHandler.executePrivateCommand(command, event.author.idLong, additionalVars)
+    private fun notifyInvalidCommand(guildId: Long = 0L, channelId: Long) {
+        val sentMessage = messageHandler.createMessage(guildId, channelId)
+            .withTitle("Ungültiges Command")
+            .withText("Das Command wurde nicht erkannt und konnte daher nicht ausgeführt werden.")
+            .withErrorColor()
+            .build()
+        messageHandler.clearAllReactionListeners(sentMessage)
+        sentMessage.stopInvalidationTimer()
     }
 
-    private fun executeCommand(command: String, event: GuildMessageReceivedEvent) {
-        val additionalVars: Variables = hashMapOf()
-        additionalVars[Flunder.Command.User.Name] = event.author.name
-        additionalVars[Flunder.Command.Guild.Name] = event.guild.name
-        additionalVars[Flunder.Command.Channel.Name] = event.channel.name
+    private fun getPrefix(guildId: Long): String {
+        if (!guildPrefixMap.containsKey(guildId)) {
+            loadGuild(guildId)
+        }
 
-        commandHandler.executeGuildCommand(
-            command,
-            event.guild.idLong,
-            ECommandSource.TEXT,
-            event.channel.idLong,
-            event.channel.type,
-            event.author.idLong,
-            additionalVars
-        )
+        return guildPrefixMap[guildId] ?: DEFAULT_PREFIX
     }
 
     private fun loadGuild(id: Long) {
         guildPrefixMap[id] = databaseHandler.getSettingsValue(id, Flunder.Guild.Settings.Prefix.toString(), DEFAULT_PREFIX)
     }
 
-    companion object {
-        private const val DEFAULT_PREFIX = "_"
+    private fun String.parseCommand(): String {
+        return split(" ", limit = 2)[0]
+    }
+
+    private fun String.parseParameterString(): String {
+        return split(" ", limit = 2).getOrNull(1) ?: ""
     }
 }
