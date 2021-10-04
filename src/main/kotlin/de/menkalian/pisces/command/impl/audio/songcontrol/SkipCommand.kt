@@ -1,4 +1,4 @@
-package de.menkalian.pisces.command.impl.audio.playback
+package de.menkalian.pisces.command.impl.audio.songcontrol
 
 import de.menkalian.pisces.OnConfigValueCondition
 import de.menkalian.pisces.RequiresKey

@@ -56,16 +56,17 @@
                     <vela:feature vela:name="Repeat" />
                     <vela:feature vela:name="PermanentShuffle" />
 
-                    <vela:feature vela:name="Now" />
-                    <vela:feature vela:name="Search" />
-                    <vela:feature vela:name="Queue" />
-
                     <vela:feature vela:name="Skip" />
                     <vela:feature vela:name="Reskip" />
                     <vela:feature vela:name="Stop" />
                     <vela:feature vela:name="Wind" />
 
+                    <vela:feature vela:name="Now" />
+                    <vela:feature vela:name="Search" />
                     <vela:feature vela:name="Reset" />
+
+
+                    <vela:feature vela:name="Queue" />
                     <vela:feature vela:name="Shuffle" />
                     <vela:feature vela:name="ClearQueue" />
                     <vela:feature vela:name="Unqueue" />
