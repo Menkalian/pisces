@@ -19,7 +19,6 @@ class CreditsCommand(
     override val databaseHandler: IDatabaseHandler,
     val messageHandler: IMessageHandler
 ) : CommonCommandBase() {
-
     override fun initialize() {
         supportedContexts.addAll(ALL_CONTEXTS)
         supportedSources.addAll(ALL_SOURCES)

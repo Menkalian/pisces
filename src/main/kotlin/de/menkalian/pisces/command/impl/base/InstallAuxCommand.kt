@@ -8,32 +8,43 @@ import de.menkalian.pisces.command.ICommandHandler
 import de.menkalian.pisces.command.data.CommandParameter
 import de.menkalian.pisces.command.data.ECommandSource
 import de.menkalian.pisces.database.IDatabaseHandler
+import de.menkalian.pisces.discord.IDiscordHandler
 import de.menkalian.pisces.message.IMessageHandler
 import de.menkalian.pisces.util.FixedVariables
+import de.menkalian.pisces.util.asInlineCode
+import de.menkalian.pisces.util.withSuccessColor
+import de.menkalian.pisces.util.withWarningColor
+import org.springframework.beans.factory.BeanFactory
 import org.springframework.context.annotation.Conditional
 import org.springframework.stereotype.Component
 
 @Component
 @Conditional(OnConfigValueCondition::class)
-@RequiresKey(["pisces.command.impl.base.Info"])
-class InfoCommand(
+@RequiresKey(["pisces.command.impl.base.InstallAux"])
+class InstallAuxCommand(
     override val databaseHandler: IDatabaseHandler,
     val messageHandler: IMessageHandler,
-    val audioHandler: IAudioHandler
+    val audioHandler: IAudioHandler,
+    val beanFactory: BeanFactory
 ) : CommonCommandBase() {
+    private lateinit var discordHandler: IDiscordHandler
+
     override fun initialize() {
-        aliases.add("status")
+        aliases.add("banmeitho")
+        aliases.add("handtuch")
 
         supportedContexts.addAll(ALL_CONTEXTS)
         supportedSources.addAll(ALL_SOURCES)
+
+        discordHandler = beanFactory.getBean(IDiscordHandler::class.java)
 
         super.initialize()
     }
 
     override val name: String
-        get() = "info"
+        get() = "installaux"
     override val description: String
-        get() = "Informationen zum aktuellen Status des Bots (auf dem Server)."
+        get() = "Ernsthaftes Command ohne einen dummen Dev-Witz dahinter"
 
     override fun execute(
         commandHandler: ICommandHandler,
@@ -44,22 +55,20 @@ class InfoCommand(
         authorId: Long,
         sourceInformation: FixedVariables
     ) {
-        val controller = audioHandler.getGuildAudioController(guildId)
-        messageHandler
-            .createMessage(guildId, channelId)
-            .withTitle("Statusinformationen")
-            .withText(
-                """
-                    Wiederholung %saktiviert
-                    Permanenter Zufallsmix %saktiviert
-                    Wiedergabe %spausiert
-                """.trimIndent()
-                    .format(
-                        if (controller.toggleRepeat(false)) "" else "de",
-                        if (controller.togglePermanentShuffle(false)) "" else "de",
-                        if (controller.togglePause(false)) "" else "nicht ",
-                    )
-            )
-            .build()
+        try {
+            discordHandler.jda.installAuxiliaryPort().queue()
+            messageHandler
+                .createMessage(guildId, channelId)
+                .withTitle("Erfolgreich Aux-Kabel installiert")
+                .withSuccessColor()
+                .build()
+        } catch (ex: Exception) {
+            messageHandler
+                .createMessage(guildId, channelId)
+                .withTitle("Aktion fehlgeschlagen. Eine Flunder kann kein Aux-Kabel bedienen.")
+                .withText("Fehlermeldung: ${ex.message?.asInlineCode()}")
+                .withWarningColor()
+                .build()
+        }
     }
 }
