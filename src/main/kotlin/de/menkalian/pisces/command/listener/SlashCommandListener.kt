@@ -56,7 +56,7 @@ class SlashCommandListener(
                             && it supports ChannelType.TEXT
                 }
                 .forEach {
-                    val commandData = CommandData(it.name.lowercase(), it.description.shortenTo(100))
+                    val commandData = CommandData(it.name.lowercase().shortenTo(32), it.description.shortenTo(100))
 
                     it.parameters.forEach { param ->
                         val optionType = when (param.type) {
@@ -69,7 +69,7 @@ class SlashCommandListener(
                             EParameterType.TIME      -> OptionType.STRING
                         }
                         val name = if (param.name.isEmpty()) "args" else param.name
-                        commandData.addOption(optionType, name.lowercase(), param.description.shortenTo(100))
+                        commandData.addOption(optionType, name.lowercase().shortenTo(32), param.description.shortenTo(100))
                     }
 
                     updateAction.addCommands(commandData)
