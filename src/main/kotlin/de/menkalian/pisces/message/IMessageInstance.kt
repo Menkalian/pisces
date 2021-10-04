@@ -152,7 +152,9 @@ interface IMessageInstance {
          *
          * @param userId User-ID des/der Nutzer*in, deren Reaktion für das Auslösen des Events verantwortlich war.
          * @param messageInstance Nachrichteninstanz für die das Event aufgetreten ist.
+         *
+         * @return Ob die Reaktion nach der Verarbeitung wieder entfernt werden soll (falls diese hinzugefügt wurde)
          */
-        fun onAction(userId: Long, messageInstance: IMessageInstance)
+        fun onAction(userId: Long, messageInstance: IMessageInstance): Boolean
     }
 }

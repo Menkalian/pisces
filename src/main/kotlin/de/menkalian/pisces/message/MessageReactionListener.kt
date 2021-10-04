@@ -53,9 +53,13 @@ class MessageReactionListener : ListenerAdapter() {
 
     override fun onMessageReactionAdd(event: MessageReactionAddEvent) {
         if (instances.containsKey(event.messageIdLong)) {
-            listeners[event.messageIdLong]?.forEach {
-                if (event.reactionEmote.isEmoji)
-                    it.onReactionAdded(event.userIdLong, instances[event.messageIdLong]!!, event.reactionEmote.emoji)
+            val doRemove = listeners[event.messageIdLong]?.any {
+                event.reactionEmote.isEmoji
+                        && it.onReactionAdded(event.userIdLong, instances[event.messageIdLong]!!, event.reactionEmote.emoji)
+            } ?: false
+
+            if (doRemove) {
+                event.reaction.removeReaction().queue()
             }
         }
     }

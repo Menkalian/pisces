@@ -33,6 +33,21 @@ fun String.shortenTo(maxLength: Int, abbreviationChar: Char = '…'): String {
 }
 
 /**
+ * Kürzt den String auf die angegebene Länge.
+ * Wenn die Länge überschritten wird, ist das letze Zeichen im String [abbreviationChar].
+ *
+ * @param maxLength Maximale Länge des Strings
+ * @param abbreviationChar Zeichen zur Anzeige, dass eine Kürzung vorgenommen wurde
+ * @return gekürzter String
+ */
+fun String.shortenTo(maxLength: Int, abbreviationChar: Char = '…'): String {
+    if (length <= maxLength)
+        return this
+    else
+        return this.substring(0 until maxLength - 1) + abbreviationChar
+}
+
+/**
  * Formatiert einen Long-Wert (in Millisekunden) in eine Zeitangabe der Form `HH:MM:SS.mmm`.
  */
 fun Long.toDurationString(): String {

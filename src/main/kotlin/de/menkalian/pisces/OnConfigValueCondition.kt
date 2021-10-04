@@ -22,7 +22,7 @@ class OnConfigValueCondition : Condition {
                 ?.toList() ?: listOf()
 
             val activate = configKeys.all(config::verifyFeatureKey)
-            logger().debug("Component with necessary features ${configKeys} was ${if (activate) "" else "not "}enabled.")
+            logger().debug("Component with necessary features $configKeys was ${if (activate) "" else "not "}enabled.")
             return activate
         }
         return false

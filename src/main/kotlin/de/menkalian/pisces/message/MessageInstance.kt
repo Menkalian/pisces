@@ -75,26 +75,28 @@ class MessageInstance(
     private val currentPageIncrementAction = { uid: Long, _: IMessageInstance ->
         if (uid != discordHandler.jda.selfUser.idLong) {
             currentPage++
-            clearUserReactions(Emoji.ARROW_DOWN)
-            clearUserReactions(Emoji.ARROW_UP)
             updateRenderedMessage()
+            true
+        } else {
+            false
         }
     }
     private val currentPageDecrementAction = { uid: Long, _: IMessageInstance ->
         if (uid != discordHandler.jda.selfUser.idLong) {
             currentPage--
-            clearUserReactions(Emoji.ARROW_DOWN)
-            clearUserReactions(Emoji.ARROW_UP)
             updateRenderedMessage()
+            true
+        } else {
+            false
         }
     }
 
     private val reactionAddedActions: MutableMap<String, MutableList<IMessageInstance.IReactionAction>> = mutableMapOf()
     private val reactionRemovedActions: MutableMap<String, MutableList<IMessageInstance.IReactionAction>> = mutableMapOf()
     private val messageReactionListener = object : IMessageHandler.IReactionListener {
-        override fun onReactionAdded(userId: Long, messageInstance: IMessageInstance, reaction: String) {
+        override fun onReactionAdded(userId: Long, messageInstance: IMessageInstance, reaction: String): Boolean {
             inactivityTimer.reset()
-            reactionAddedActions[reaction]?.forEach { it.onAction(userId, messageInstance) }
+            return reactionAddedActions[reaction]?.any { it.onAction(userId, messageInstance) } ?: false
         }
 
         override fun onReactionRemoved(userId: Long, messageInstance: IMessageInstance, reaction: String) {
@@ -114,10 +116,11 @@ class MessageInstance(
                 .getGuildById(guildId)
                 ?.getGuildChannelById(channelId)
             if (targetChannel?.isEligibleChannel() == true && targetChannel is TextChannel) {
-                logger().info("Sending message to $targetChannel")
+                logger().info("Sending $this to $targetChannel")
                 jdaMessageInstance = targetChannel
                     .sendMessageEmbeds(renderMessage())
                     .complete()!!
+                logger().debug("Successfully sent $this as message ${jdaMessageInstance.idLong}")
             } else {
                 throw IllegalArgumentException("Provided IDs (guild=$guildId, channel=$channelId) are not a valid target.")
             }
@@ -127,10 +130,11 @@ class MessageInstance(
                 .complete()
                 ?.openPrivateChannel()
                 ?.complete()
-            logger().info("Sending message to $targetChannel")
+            logger().info("Sending $this to $targetChannel")
             jdaMessageInstance = targetChannel
                 ?.sendMessageEmbeds(renderMessage())
                 ?.complete()!!
+            logger().debug("Successfully sent $this as message ${jdaMessageInstance.idLong}")
         }
 
         updateScrollReactions()
@@ -186,13 +190,13 @@ class MessageInstance(
     //endregion
 
     override fun stopInvalidationTimer() {
-        logger().debug("Stopped invalidation-timer for $jdaMessageInstance")
+        logger().debug("Stopped invalidation-timer for $this")
         inactivityTimer.stop()
     }
 
     override fun addReaction(reaction: String) {
         if (hasReactionRights(false)) {
-            logger().debug("Adding reaction $reaction to $jdaMessageInstance")
+            logger().debug("Adding reaction $reaction to $this")
             jdaMessageInstance.addReaction(reaction).complete()
         }
     }
@@ -206,14 +210,14 @@ class MessageInstance(
 
     override fun removeReaction(reaction: String) {
         if (hasReactionRights(true)) {
-            logger().debug("Removing all reactions \"$reaction\" from $jdaMessageInstance")
+            logger().debug("Removing all reactions \"$reaction\" from $this")
             jdaMessageInstance.clearReactions(reaction).complete()
         }
     }
 
     override fun removeAllReactions() {
         if (hasReactionRights(true)) {
-            logger().debug("Removing all reactions from $jdaMessageInstance")
+            logger().debug("Removing all reactions from $this")
             jdaMessageInstance.clearReactions().complete()
         }
     }
@@ -268,6 +272,7 @@ class MessageInstance(
      */
     private fun updateRenderedMessage() {
         synchronized(messageEditMutex) {
+            logger().info("Updating $this")
             jdaMessageInstance
                 .editMessageEmbeds(renderMessage())
                 .complete()
@@ -281,6 +286,7 @@ class MessageInstance(
      */
     private fun buildPages() {
         synchronized(pagesMutex) {
+            logger().debug("Rebuilding pages for $this")
             pages.clear()
 
             val baseLength = title.length + author.name.length + footerText.length
@@ -310,6 +316,7 @@ class MessageInstance(
 
             // Add the final page
             pages.add(currentPage)
+            logger().trace("Built pages $pages")
         }
     }
 
@@ -318,6 +325,7 @@ class MessageInstance(
      * Diese Methode läuft teilweise synchronisiert durch [pagesMutex]
      */
     private fun renderMessage(): MessageEmbed {
+        logger().debug("Creating MessageEmbed from $this")
         val builder = EmbedBuilder()
 
         builder.setTitle(title)
@@ -354,6 +362,7 @@ class MessageInstance(
     private fun updateScrollReactions() {
         val pageRange = 0 until pages.size
         currentPage = currentPage.coerceIn(pageRange)
+        logger().debug("$this displays currently page #$currentPage")
 
         if (currentPage != pageRange.first) {
             addReaction(Emoji.ARROW_UP)

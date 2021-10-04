@@ -48,6 +48,6 @@ class JdaDiscordHandler(
         startDeinitialization()
         innerJda.shutdown()
         // Waiting for the shutdown to finish
-        Thread.sleep(300)
+        Thread.sleep(2000)
     }
 }

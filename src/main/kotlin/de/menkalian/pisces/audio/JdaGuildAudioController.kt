@@ -71,7 +71,6 @@ class JdaGuildAudioController(
 
         this.logger().trace("Configuring AudioPlayer")
         player.addListener(this)
-
         this.logger().trace("AudioPlayer setup complete.")
 
         this.logger().debug("Setting up JDA GuildAudioManager")
@@ -142,6 +141,7 @@ class JdaGuildAudioController(
 
     override fun stop() {
         synchronized(playerAndQueueLock) {
+            logger().debug("Destroying AudioPlayer (it will be fine)")
             player.destroy()
         }
     }
