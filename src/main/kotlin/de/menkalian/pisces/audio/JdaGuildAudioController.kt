@@ -464,7 +464,7 @@ class JdaGuildAudioController(
     private fun addTrack(track: AudioTrack, playInstant: Boolean, interruptCurrent: Boolean) {
         synchronized(playerAndQueueLock) {
             if (interruptCurrent) {
-                val interruptedTrack = player.playingTrack.cloneWithPosition()
+                val interruptedTrack = player.playingTrack?.cloneWithPosition()
                 player.startTrack(track, false)
                 interruptedTrack?.let {
                     interruptedStack.addFirst(it)
