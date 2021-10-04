@@ -30,8 +30,7 @@ import javax.persistence.UniqueConstraint
 )
 @Entity
 data class SongEntryDto(
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO) var id: Long = -1,
+    @Id @GeneratedValue(strategy = GenerationType.AUTO) var id: Long = -1,
     val url: String,
     val name: String,
     val duration: Long,

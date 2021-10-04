@@ -19,12 +19,12 @@ abstract class CommonCommandBase : ICommand {
 
     companion object {
         val ALL_CONTEXTS = ECommandChannelContext.values().toList()
-        val ALL_GUILD_CONTEXTS = listOf<ECommandChannelContext>(
+        val ALL_GUILD_CONTEXTS = listOf(
             ECommandChannelContext.GUILD_ALL,
             ECommandChannelContext.GUILD_STORE,
             ECommandChannelContext.GUILD_TEXT
         )
-        val ALL_PRIVATE_CONTEXTS = listOf<ECommandChannelContext>(
+        val ALL_PRIVATE_CONTEXTS = listOf(
             ECommandChannelContext.PRIVATE
         )
 
@@ -33,7 +33,7 @@ abstract class CommonCommandBase : ICommand {
 
     internal open fun initialize() {
         aliases.forEach {
-            databaseHandler.addCommandShortcut(0L, it, name)
+            databaseHandler.addCommandShortcut(0L, it.lowercase(), name.lowercase())
         }
     }
 

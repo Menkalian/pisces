@@ -9,6 +9,7 @@ import de.menkalian.pisces.command.data.ECommandSource
 import de.menkalian.pisces.database.IDatabaseHandler
 import de.menkalian.pisces.message.IMessageHandler
 import de.menkalian.pisces.util.FixedVariables
+import de.menkalian.pisces.util.withErrorColor
 import org.springframework.context.annotation.Conditional
 import org.springframework.stereotype.Component
 
@@ -42,15 +43,12 @@ class UsageCommand(override val databaseHandler: IDatabaseHandler, val messageHa
         authorId: Long,
         sourceInformation: FixedVariables
     ) {
-        val commandName = databaseHandler.getFormalCommandName(guildId, parameters.getDefaultArg()?.asString() ?: "")
-
+        val commandName = parameters.getDefaultArg()?.asString() ?: ""
         val helpMessage = messageHandler
             .createMessage(guildId, channelId)
             .withTitle("Erweiterte Informationen zu *$commandName*")
 
-        val command = commandHandler.commands.firstOrNull {
-            it.name == commandName
-        }
+        val command = commandHandler.getCommand(commandName, guildId)
 
         if (command != null) {
             helpMessage
@@ -58,7 +56,7 @@ class UsageCommand(override val databaseHandler: IDatabaseHandler, val messageHa
 
             command.parameters.forEach {
                 val title = when {
-                    it.name.isBlank()       -> "Zusatzargument (hinter allen anderen Parametern anzugeben)"
+                    it.name.isBlank()       -> "Zusatzargument (hinter allen anderen Argumenten anzugeben)"
                     it.short.isWhitespace() -> "--${it.name}"
                     else                    -> "--${it.name}, -${it.short}"
                 }
@@ -67,7 +65,7 @@ class UsageCommand(override val databaseHandler: IDatabaseHandler, val messageHa
         } else {
             helpMessage
                 .withText("Der angefragte Befehl existiert nicht (oder ist im aktuellen Build deaktiviert).")
-                .withColor(red = 255.toByte())
+                .withErrorColor()
         }
 
         helpMessage.build()

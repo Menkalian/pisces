@@ -10,6 +10,7 @@ class DefaultFeatureConfig : FeatureConfig() {
 
         pisces.command.apply {
             impl.audio.enableRecursive() // Enable all audio-commands
+            impl.settings.enableRecursive()
         }
 
         pisces.database.apply {

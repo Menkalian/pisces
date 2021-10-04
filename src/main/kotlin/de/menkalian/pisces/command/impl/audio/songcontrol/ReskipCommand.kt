@@ -1,4 +1,4 @@
-package de.menkalian.pisces.command.impl.audio
+package de.menkalian.pisces.command.impl.audio.songcontrol
 
 import de.menkalian.pisces.OnConfigValueCondition
 import de.menkalian.pisces.RequiresKey
@@ -12,29 +12,24 @@ import de.menkalian.pisces.database.IDatabaseHandler
 import de.menkalian.pisces.message.IMessageHandler
 import de.menkalian.pisces.util.FixedVariables
 import de.menkalian.pisces.util.addTrackInfoField
+import de.menkalian.pisces.util.withWarningColor
 import org.springframework.context.annotation.Conditional
 import org.springframework.stereotype.Component
 
 @Component
 @Conditional(OnConfigValueCondition::class)
-@RequiresKey(["pisces.command.impl.audio.Skip"])
-class SkipCommand(
+@RequiresKey(["pisces.command.impl.audio.Reskip"])
+class ReskipCommand(
     override val databaseHandler: IDatabaseHandler,
     val messageHandler: IMessageHandler,
     val audioHandler: IAudioHandler
 ) : CommonCommandBase() {
     override fun initialize() {
-        aliases.add("next")
-        aliases.add("_")
+        aliases.add("skiprepeat")
+        aliases.add("_r")
 
         supportedContexts.addAll(ALL_GUILD_CONTEXTS)
         supportedSources.addAll(ALL_SOURCES)
-
-        addBooleanParameter(
-            "requeue",
-            'r',
-            "Falls diese Option übergeben wurde, werden die übersprungenen Lieder wieder an die aktuelle Queue angehängt."
-        )
 
         addIntParameter(description = "Anzahl der Lieder, die übersprungen werden sollen.", defaultValue = 1)
 
@@ -42,9 +37,9 @@ class SkipCommand(
     }
 
     override val name: String
-        get() = "skip"
+        get() = "reskip"
     override val description: String
-        get() = "Überspringt den aktuellen Song und (falls gewünscht) noch weitere von der Wiedergabeliste."
+        get() = "Überspringt den aktuellen Song und (falls gewünscht) noch weitere von der Wiedergabeliste und queued diese erneut."
 
     override fun execute(
         commandHandler: ICommandHandler,
@@ -59,7 +54,7 @@ class SkipCommand(
 
         val result = controller.skipTracks(
             skipAmount = parameters.getAmount(),
-            requeue = parameters.isRequeue()
+            requeue = true
         )
 
         val msg = messageHandler
@@ -69,20 +64,20 @@ class SkipCommand(
             result.isEmpty() -> {
                 msg
                     .withTitle("Es wurden keine Tracks übersprungen")
-                    .withColor(red = 255.toByte(), green = 136.toByte())
+                    .withWarningColor()
                     .withText("Möglicherweise ist die Queue aktuell leer oder der Aufruf des Befehls war fehlerhaft.")
             }
             result.size == 1 -> {
                 val track = result.first()
                 msg
-                    .withTitle("Ein Track wurde erfolgreich übersprungen")
+                    .withTitle("Ein Track wurde erfolgreich übersprungen und wieder gequeued")
                     .addTrackInfoField(track)
                 if (track.sourcetype == AudioSourceType.YOUTUBE)
                     msg.withThumbnail("https://img.youtube.com/vi/${track.sourceIdentifier}/default.jpg")
 
             }
             else             -> {
-                msg.withTitle("Mehrere Tracks wurden erfolgreich übersprungen.")
+                msg.withTitle("Mehrere Tracks wurden erfolgreich übersprungen und erneut gequeued.")
                 result.forEachIndexed { index, trackInfo ->
                     msg.addField("${index + 1}. ${trackInfo.title}")
                 }
@@ -95,11 +90,5 @@ class SkipCommand(
     private fun List<CommandParameter>.getAmount(): Int {
         return getDefaultArg()
             ?.asInt() ?: 1
-    }
-
-    private fun List<CommandParameter>.isRequeue(): Boolean {
-        return this
-            .filter { listOf("requeue").contains(it.name) }
-            .any { it.asBoolean() }
     }
 }

@@ -268,7 +268,7 @@ class JdaGuildAudioController(
     }
 
     override fun skipTracks(requeue: Boolean, skipAmount: Int): List<TrackInfo> {
-        if (skipAmount < 1)
+        if (skipAmount < 1 || player.playingTrack == null)
             return listOf()
 
         return synchronized(playerAndQueueLock) {
@@ -464,7 +464,7 @@ class JdaGuildAudioController(
     private fun addTrack(track: AudioTrack, playInstant: Boolean, interruptCurrent: Boolean) {
         synchronized(playerAndQueueLock) {
             if (interruptCurrent) {
-                val interruptedTrack = player.playingTrack
+                val interruptedTrack = player.playingTrack?.cloneWithPosition()
                 player.startTrack(track, false)
                 interruptedTrack?.let {
                     interruptedStack.addFirst(it)
@@ -513,4 +513,13 @@ class JdaGuildAudioController(
      * Durch diese Methode ist eine bessere Nutzung des Null-Check, bzw. Elvis-Operators möglich, als es mit einem Konstruktor der Fall wäre.
      */
     private fun AudioTrack.makeInfo(): TrackInfo = TrackInfo(this)
+
+    /**
+     * Klont den [AudioTrack] und übernimmt die aktuelle Position in die geklonte Instanz.
+     */
+    private fun AudioTrack.cloneWithPosition(): AudioTrack? {
+        val newInstance = makeClone()
+        newInstance?.position = position
+        return newInstance
+    }
 }

@@ -106,6 +106,12 @@ class JpaDatabaseHandler(
         )
     }
 
+    override fun getPlaylists(guildId: Long): List<String> {
+        return playlistRepo
+            .findAllByGuildId(guildId)
+            .map { it.name }
+    }
+
     override fun getOrCreatePlaylist(guildId: Long, name: String): PlaylistHandle {
         val existingPlaylist = playlistRepo.findByGuildIdAndName(guildId, name)
 
@@ -124,6 +130,9 @@ class JpaDatabaseHandler(
             )
         return PlaylistHandle(this, playlist.name, playlist.guildId)
     }
+
+    override fun getPlaylistIfExists(guildId: Long, name: String): PlaylistHandle? =
+        playlistRepo.findByGuildIdAndName(guildId, name)?.let { PlaylistHandle(this, it.name, it.guildId) }
 
     override fun getPlaylistSongs(handle: PlaylistHandle): List<DatabaseSongEntry> {
         return findPlaylistByHandle(handle)
@@ -164,6 +173,15 @@ class JpaDatabaseHandler(
         }
     }
 
+    override fun renamePlaylist(handle: PlaylistHandle, name: String): PlaylistHandle {
+        logger().info("Renaming playlist $handle to $name")
+        findPlaylistByHandle(handle)?.let {
+            it.name = name
+            playlistRepo.save(it)
+        }
+        return PlaylistHandle(this, name, handle.guildId)
+    }
+
     @Transactional
     override fun setUserJoinsound(userId: Long, audioTrackInfo: TrackInfo) {
         val songEntry = songEntryRepository.findByIdOrNull(createSavedSongEntryIfNotExists(audioTrackInfo)) ?: return
@@ -192,9 +210,6 @@ class JpaDatabaseHandler(
 
     override fun deinitialize() {
         startDeinitialization()
-
-        // cleanup song entries
-        clearAllUnreferencedSongEntries()
     }
 
     /**

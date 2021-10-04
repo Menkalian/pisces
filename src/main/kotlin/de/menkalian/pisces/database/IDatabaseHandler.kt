@@ -79,6 +79,14 @@ interface IDatabaseHandler : IHandler {
 
     // Playlists
     /**
+     * Ermittelt eine Liste der existierenden Playlists für einen Server.
+     *
+     * @param guildId Server-ID des Servers für den die Playlists ermittelt werden sollen.
+     * @return Liste der existierenden Namen
+     */
+    fun getPlaylists(guildId: Long): List<String>
+
+    /**
      * Legt eine neue Playlist an, oder gibt ein Handle zurück, das die existierende Playlist referenziert.
      *
      * @param guildId Server-ID des Servers für den die Playlist angelegt werden soll.
@@ -86,6 +94,15 @@ interface IDatabaseHandler : IHandler {
      * @return Handle für die Playlist
      */
     fun getOrCreatePlaylist(guildId: Long, name: String): PlaylistHandle
+
+    /**
+     * Gibt die Playlist mit dem Namen zurück falls diese existiert.
+     *
+     * @param guildId Server-ID des Servers für den die Playlist angelegt werden soll.
+     * @param name Name der Playlist, einmalig pro Server.
+     * @return Handle für die Playlist
+     */
+    fun getPlaylistIfExists(guildId: Long, name: String): PlaylistHandle?
 
     /**
      * Gibt eine Liste der SongEntries zurück, die für die Playlist hinterlegt sind.
@@ -118,6 +135,15 @@ interface IDatabaseHandler : IHandler {
      * @param handle Handle für die Playlist
      */
     fun deletePlaylist(handle: PlaylistHandle)
+
+    /**
+     * Benennt die angegebene Playlist um.
+     *
+     * @param handle Handle für die Playlist
+     * @param name Neuer Name der Playlist
+     * @return Aktualisiertes PlaylistHandle
+     */
+    fun renamePlaylist(handle: PlaylistHandle, name: String): PlaylistHandle
 
     // Joinsound
     /**

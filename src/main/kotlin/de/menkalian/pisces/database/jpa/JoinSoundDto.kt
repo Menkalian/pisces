@@ -2,6 +2,7 @@ package de.menkalian.pisces.database.jpa
 
 import org.hibernate.Hibernate
 import javax.persistence.Entity
+import javax.persistence.FetchType
 import javax.persistence.Id
 import javax.persistence.ManyToOne
 import javax.persistence.Table
@@ -16,7 +17,7 @@ import javax.persistence.Table
 @Entity
 data class JoinSoundDto(
     @Id val userId: Long,
-    @ManyToOne var song: SongEntryDto
+    @ManyToOne(fetch = FetchType.EAGER) var song: SongEntryDto
 ) {
     override fun equals(other: Any?): Boolean {
         if (this === other) return true

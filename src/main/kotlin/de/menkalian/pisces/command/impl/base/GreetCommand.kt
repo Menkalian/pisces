@@ -10,6 +10,7 @@ import de.menkalian.pisces.database.IDatabaseHandler
 import de.menkalian.pisces.message.IMessageHandler
 import de.menkalian.pisces.util.Emoji
 import de.menkalian.pisces.util.FixedVariables
+import de.menkalian.pisces.util.withErrorColor
 import org.springframework.context.annotation.Conditional
 import org.springframework.stereotype.Component
 
@@ -55,7 +56,7 @@ class GreetCommand(
                 .createMessage(guildId, channelId)
                 .withTitle("Mission failed")
                 .withText("Du hast entweder keinen Nutzer angegeben, oder diesem Nutzer konnte keine Nachricht gesendet werden.")
-                .withColor(255.toByte())
+                .withErrorColor()
                 .build()
         }
     }

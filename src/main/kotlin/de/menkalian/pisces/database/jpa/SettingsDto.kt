@@ -25,7 +25,7 @@ import javax.persistence.UniqueConstraint
 )
 @Entity
 data class SettingsDto(
-    @Id @GeneratedValue(strategy = GenerationType.AUTO) val id: Long = -1,
+    @Id @GeneratedValue(strategy = GenerationType.AUTO) var id: Long = -1,
     @Column(name = "GUILD_ID") val guildId: Long,
     @Column(name = "VARIABLE_NAME") val variableName: String,
     var value: String

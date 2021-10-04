@@ -25,6 +25,13 @@ fun String.asSpoiler() = "||$this||"
  */
 fun String.asInlineCode() = "`$this`"
 
+fun String.shortenTo(maxLength: Int, abbreviationChar: Char = '…'): String {
+    if (length <= maxLength)
+        return this
+    else
+        return this.substring(0 until maxLength - 1) + abbreviationChar
+}
+
 /**
  * Formatiert einen Long-Wert (in Millisekunden) in eine Zeitangabe der Form `HH:MM:SS.mmm`.
  */

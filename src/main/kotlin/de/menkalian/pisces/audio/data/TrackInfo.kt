@@ -11,7 +11,7 @@ import com.sedmelluq.discord.lavaplayer.track.AudioTrack
  * @property author Bekannter Urheber des Tracks
  * @property state Aktueller Zustand des Tracks
  * @property position Aktuelle Position der Trackwiedergabe
- * @property length Gesamtlänge des Tracks
+ * @property length Gesamtlänge des Tracks in Millisekunden
  * @property isStream Ob der Track aus einem Stream gelesen wird
  * @property sourcetype Typ der Quelle des Tracks
  * @property sourceIdentifier Quellabhängige Identifikation des Tracks (z.B. Video-ID für [AudioSourceType.YOUTUBE])
