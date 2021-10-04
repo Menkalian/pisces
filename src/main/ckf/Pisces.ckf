@@ -1,0 +1,16 @@
+Flunder
+  Command
+    Guild
+      Name
+    Channel
+      Name
+    User
+      Name
+  Guild
+    Channel
+      Default
+        Id
+    Settings
+      Prefix
+      Repeat
+      Shuffle

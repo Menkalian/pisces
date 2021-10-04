@@ -27,13 +27,13 @@ class AudioSendHandlerFactory(val config: IConfig) {
     fun createAudioPlayerSendHandler(player: AudioPlayer): IExtendedAudioSendHandler {
         logger().info("Creating LavaplayerAudioSendHandler with player {$player}")
 
-        if(config.featureConfig.pisces.audio.ExtendedAudioSendHandler.isEnabled.not())
+        if (config.featureConfig.pisces.audio.ExtendedAudioSendHandler.isEnabled.not())
             throw IllegalArgumentException("ExtendedAudioPlayerSendHandler inactive in configuration")
 
         return config.featureConfig.pisces.audio.ExtendedAudioSendHandler.run {
-            when(activeImplementation) {
+            when (activeImplementation) {
                 UnfilteredLavaplayerAudioSendHandler -> UnfilteredLavaplayerAudioSendHandler(player)
-                else -> throw IllegalArgumentException("Active configuration unsupported: ${activeImplementation::class.simpleName}")
+                else                                 -> throw IllegalArgumentException("Active configuration unsupported: ${activeImplementation::class.simpleName}")
             }
         }
     }

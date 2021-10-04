@@ -1,0 +1,1285 @@
+package de.menkalian.pisces.util
+
+/**
+ * Constant for Emoji FACE_SMILING_GRINNINGFACE
+ * *AUTO GENERATED*
+ */
+const val FACE_SMILING_GRINNINGFACE = "\ud83d\ude00"
+
+/**
+ * Constant for Emoji FACE_SMILING_GRINNINGFACEWITHBIGEYES
+ * *AUTO GENERATED*
+ */
+const val FACE_SMILING_GRINNINGFACEWITHBIGEYES = "\ud83d\ude03"
+
+/**
+ * Constant for Emoji FACE_SMILING_GRINNINGFACEWITHSMILINGEYES
+ * *AUTO GENERATED*
+ */
+const val FACE_SMILING_GRINNINGFACEWITHSMILINGEYES = "\ud83d\ude04"
+
+/**
+ * Constant for Emoji FACE_SMILING_BEAMINGFACEWITHSMILINGEYES
+ * *AUTO GENERATED*
+ */
+const val FACE_SMILING_BEAMINGFACEWITHSMILINGEYES = "\ud83d\ude01"
+
+/**
+ * Constant for Emoji FACE_SMILING_GRINNINGSQUINTINGFACE
+ * *AUTO GENERATED*
+ */
+const val FACE_SMILING_GRINNINGSQUINTINGFACE = "\ud83d\ude06"
+
+/**
+ * Constant for Emoji FACE_SMILING_GRINNINGFACEWITHSWEAT
+ * *AUTO GENERATED*
+ */
+const val FACE_SMILING_GRINNINGFACEWITHSWEAT = "\ud83d\ude05"
+
+/**
+ * Constant for Emoji FACE_SMILING_ROLLINGONTHEFLOORLAUGHING
+ * *AUTO GENERATED*
+ */
+const val FACE_SMILING_ROLLINGONTHEFLOORLAUGHING = "\ud83e\udd23"
+
+/**
+ * Constant for Emoji FACE_SMILING_FACEWITHTEARSOFJOY
+ * *AUTO GENERATED*
+ */
+const val FACE_SMILING_FACEWITHTEARSOFJOY = "\ud83d\ude02"
+
+/**
+ * Constant for Emoji FACE_SMILING_SLIGHTLYSMILINGFACE
+ * *AUTO GENERATED*
+ */
+const val FACE_SMILING_SLIGHTLYSMILINGFACE = "\ud83d\ude42"
+
+/**
+ * Constant for Emoji FACE_SMILING_UPSIDE_DOWNFACE
+ * *AUTO GENERATED*
+ */
+const val FACE_SMILING_UPSIDE_DOWNFACE = "\ud83d\ude43"
+
+/**
+ * Constant for Emoji FACE_SMILING_WINKINGFACE
+ * *AUTO GENERATED*
+ */
+const val FACE_SMILING_WINKINGFACE = "\ud83d\ude09"
+
+/**
+ * Constant for Emoji FACE_SMILING_SMILINGFACEWITHSMILINGEYES
+ * *AUTO GENERATED*
+ */
+const val FACE_SMILING_SMILINGFACEWITHSMILINGEYES = "\ud83d\ude0a"
+
+/**
+ * Constant for Emoji FACE_SMILING_SMILINGFACEWITHHALO
+ * *AUTO GENERATED*
+ */
+const val FACE_SMILING_SMILINGFACEWITHHALO = "\ud83d\ude07"
+
+/**
+ * Constant for Emoji FACE_AFFECTION_SMILINGFACEWITHHEARTS
+ * *AUTO GENERATED*
+ */
+const val FACE_AFFECTION_SMILINGFACEWITHHEARTS = "\ud83e\udd70"
+
+/**
+ * Constant for Emoji FACE_AFFECTION_SMILINGFACEWITHHEART_EYES
+ * *AUTO GENERATED*
+ */
+const val FACE_AFFECTION_SMILINGFACEWITHHEART_EYES = "\ud83d\ude0d"
+
+/**
+ * Constant for Emoji FACE_AFFECTION_STAR_STRUCK
+ * *AUTO GENERATED*
+ */
+const val FACE_AFFECTION_STAR_STRUCK = "\ud83e\udd29"
+
+/**
+ * Constant for Emoji FACE_AFFECTION_FACEBLOWINGAKISS
+ * *AUTO GENERATED*
+ */
+const val FACE_AFFECTION_FACEBLOWINGAKISS = "\ud83d\ude18"
+
+/**
+ * Constant for Emoji FACE_AFFECTION_KISSINGFACE
+ * *AUTO GENERATED*
+ */
+const val FACE_AFFECTION_KISSINGFACE = "\ud83d\ude17"
+
+/**
+ * Constant for Emoji FACE_AFFECTION_SMILINGFACE
+ * *AUTO GENERATED*
+ */
+const val FACE_AFFECTION_SMILINGFACE = "\u9786"
+
+/**
+ * Constant for Emoji FACE_AFFECTION_KISSINGFACEWITHCLOSEDEYES
+ * *AUTO GENERATED*
+ */
+const val FACE_AFFECTION_KISSINGFACEWITHCLOSEDEYES = "\ud83d\ude1a"
+
+/**
+ * Constant for Emoji FACE_AFFECTION_KISSINGFACEWITHSMILINGEYES
+ * *AUTO GENERATED*
+ */
+const val FACE_AFFECTION_KISSINGFACEWITHSMILINGEYES = "\ud83d\ude19"
+
+/**
+ * Constant for Emoji FACE_TONGUE_FACESAVORINGFOOD
+ * *AUTO GENERATED*
+ */
+const val FACE_TONGUE_FACESAVORINGFOOD = "\ud83d\ude0b"
+
+/**
+ * Constant for Emoji FACE_TONGUE_FACEWITHTONGUE
+ * *AUTO GENERATED*
+ */
+const val FACE_TONGUE_FACEWITHTONGUE = "\ud83d\ude1b"
+
+/**
+ * Constant for Emoji FACE_TONGUE_WINKINGFACEWITHTONGUE
+ * *AUTO GENERATED*
+ */
+const val FACE_TONGUE_WINKINGFACEWITHTONGUE = "\ud83d\ude1c"
+
+/**
+ * Constant for Emoji FACE_TONGUE_ZANYFACE
+ * *AUTO GENERATED*
+ */
+const val FACE_TONGUE_ZANYFACE = "\ud83e\udd2a"
+
+/**
+ * Constant for Emoji FACE_TONGUE_SQUINTINGFACEWITHTONGUE
+ * *AUTO GENERATED*
+ */
+const val FACE_TONGUE_SQUINTINGFACEWITHTONGUE = "\ud83d\ude1d"
+
+/**
+ * Constant for Emoji FACE_TONGUE_MONEY_MOUTHFACE
+ * *AUTO GENERATED*
+ */
+const val FACE_TONGUE_MONEY_MOUTHFACE = "\ud83e\udd11"
+
+/**
+ * Constant for Emoji FACE_HAND_HUGGINGFACE
+ * *AUTO GENERATED*
+ */
+const val FACE_HAND_HUGGINGFACE = "\ud83e\udd17"
+
+/**
+ * Constant for Emoji FACE_HAND_FACEWITHHANDOVERMOUTH
+ * *AUTO GENERATED*
+ */
+const val FACE_HAND_FACEWITHHANDOVERMOUTH = "\ud83e\udd2d"
+
+/**
+ * Constant for Emoji FACE_HAND_SHUSHINGFACE
+ * *AUTO GENERATED*
+ */
+const val FACE_HAND_SHUSHINGFACE = "\ud83e\udd2b"
+
+/**
+ * Constant for Emoji FACE_HAND_THINKINGFACE
+ * *AUTO GENERATED*
+ */
+const val FACE_HAND_THINKINGFACE = "\ud83e\udd14"
+
+/**
+ * Constant for Emoji FACE_NEUTRAL_SKEPTICAL_ZIPPER_MOUTHFACE
+ * *AUTO GENERATED*
+ */
+const val FACE_NEUTRAL_SKEPTICAL_ZIPPER_MOUTHFACE = "\ud83e\udd10"
+
+/**
+ * Constant for Emoji FACE_NEUTRAL_SKEPTICAL_FACEWITHRAISEDEYEBROW
+ * *AUTO GENERATED*
+ */
+const val FACE_NEUTRAL_SKEPTICAL_FACEWITHRAISEDEYEBROW = "\ud83e\udd28"
+
+/**
+ * Constant for Emoji FACE_NEUTRAL_SKEPTICAL_NEUTRALFACE
+ * *AUTO GENERATED*
+ */
+const val FACE_NEUTRAL_SKEPTICAL_NEUTRALFACE = "\ud83d\ude10"
+
+/**
+ * Constant for Emoji FACE_NEUTRAL_SKEPTICAL_EXPRESSIONLESSFACE
+ * *AUTO GENERATED*
+ */
+const val FACE_NEUTRAL_SKEPTICAL_EXPRESSIONLESSFACE = "\ud83d\ude11"
+
+/**
+ * Constant for Emoji FACE_NEUTRAL_SKEPTICAL_FACEWITHOUTMOUTH
+ * *AUTO GENERATED*
+ */
+const val FACE_NEUTRAL_SKEPTICAL_FACEWITHOUTMOUTH = "\ud83d\ude36"
+
+/**
+ * Constant for Emoji FACE_NEUTRAL_SKEPTICAL_SMIRKINGFACE
+ * *AUTO GENERATED*
+ */
+const val FACE_NEUTRAL_SKEPTICAL_SMIRKINGFACE = "\ud83d\ude0f"
+
+/**
+ * Constant for Emoji FACE_NEUTRAL_SKEPTICAL_UNAMUSEDFACE
+ * *AUTO GENERATED*
+ */
+const val FACE_NEUTRAL_SKEPTICAL_UNAMUSEDFACE = "\ud83d\ude12"
+
+/**
+ * Constant for Emoji FACE_NEUTRAL_SKEPTICAL_FACEWITHROLLINGEYES
+ * *AUTO GENERATED*
+ */
+const val FACE_NEUTRAL_SKEPTICAL_FACEWITHROLLINGEYES = "\ud83d\ude44"
+
+/**
+ * Constant for Emoji FACE_NEUTRAL_SKEPTICAL_GRIMACINGFACE
+ * *AUTO GENERATED*
+ */
+const val FACE_NEUTRAL_SKEPTICAL_GRIMACINGFACE = "\ud83d\ude2c"
+
+/**
+ * Constant for Emoji FACE_NEUTRAL_SKEPTICAL_LYINGFACE
+ * *AUTO GENERATED*
+ */
+const val FACE_NEUTRAL_SKEPTICAL_LYINGFACE = "\ud83e\udd25"
+
+/**
+ * Constant for Emoji FACE_SLEEPY_RELIEVEDFACE
+ * *AUTO GENERATED*
+ */
+const val FACE_SLEEPY_RELIEVEDFACE = "\ud83d\ude0c"
+
+/**
+ * Constant for Emoji FACE_SLEEPY_PENSIVEFACE
+ * *AUTO GENERATED*
+ */
+const val FACE_SLEEPY_PENSIVEFACE = "\ud83d\ude14"
+
+/**
+ * Constant for Emoji FACE_SLEEPY_SLEEPYFACE
+ * *AUTO GENERATED*
+ */
+const val FACE_SLEEPY_SLEEPYFACE = "\ud83d\ude2a"
+
+/**
+ * Constant for Emoji FACE_SLEEPY_DROOLINGFACE
+ * *AUTO GENERATED*
+ */
+const val FACE_SLEEPY_DROOLINGFACE = "\ud83e\udd24"
+
+/**
+ * Constant for Emoji FACE_SLEEPY_SLEEPINGFACE
+ * *AUTO GENERATED*
+ */
+const val FACE_SLEEPY_SLEEPINGFACE = "\ud83d\ude34"
+
+/**
+ * Constant for Emoji FACE_UNWELL_FACEWITHMEDICALMASK
+ * *AUTO GENERATED*
+ */
+const val FACE_UNWELL_FACEWITHMEDICALMASK = "\ud83d\ude37"
+
+/**
+ * Constant for Emoji FACE_UNWELL_FACEWITHTHERMOMETER
+ * *AUTO GENERATED*
+ */
+const val FACE_UNWELL_FACEWITHTHERMOMETER = "\ud83e\udd12"
+
+/**
+ * Constant for Emoji FACE_UNWELL_FACEWITHHEAD_BANDAGE
+ * *AUTO GENERATED*
+ */
+const val FACE_UNWELL_FACEWITHHEAD_BANDAGE = "\ud83e\udd15"
+
+/**
+ * Constant for Emoji FACE_UNWELL_NAUSEATEDFACE
+ * *AUTO GENERATED*
+ */
+const val FACE_UNWELL_NAUSEATEDFACE = "\ud83e\udd22"
+
+/**
+ * Constant for Emoji FACE_UNWELL_FACEVOMITING
+ * *AUTO GENERATED*
+ */
+const val FACE_UNWELL_FACEVOMITING = "\ud83e\udd2e"
+
+/**
+ * Constant for Emoji FACE_UNWELL_SNEEZINGFACE
+ * *AUTO GENERATED*
+ */
+const val FACE_UNWELL_SNEEZINGFACE = "\ud83e\udd27"
+
+/**
+ * Constant for Emoji FACE_UNWELL_HOTFACE
+ * *AUTO GENERATED*
+ */
+const val FACE_UNWELL_HOTFACE = "\ud83e\udd75"
+
+/**
+ * Constant for Emoji FACE_UNWELL_COLDFACE
+ * *AUTO GENERATED*
+ */
+const val FACE_UNWELL_COLDFACE = "\ud83e\udd76"
+
+/**
+ * Constant for Emoji FACE_UNWELL_WOOZYFACE
+ * *AUTO GENERATED*
+ */
+const val FACE_UNWELL_WOOZYFACE = "\ud83e\udd74"
+
+/**
+ * Constant for Emoji FACE_UNWELL_DIZZYFACE
+ * *AUTO GENERATED*
+ */
+const val FACE_UNWELL_DIZZYFACE = "\ud83d\ude35"
+
+/**
+ * Constant for Emoji FACE_UNWELL_EXPLODINGHEAD
+ * *AUTO GENERATED*
+ */
+const val FACE_UNWELL_EXPLODINGHEAD = "\ud83e\udd2f"
+
+/**
+ * Constant for Emoji FACE_HAT_COWBOYHATFACE
+ * *AUTO GENERATED*
+ */
+const val FACE_HAT_COWBOYHATFACE = "\ud83e\udd20"
+
+/**
+ * Constant for Emoji FACE_HAT_PARTYINGFACE
+ * *AUTO GENERATED*
+ */
+const val FACE_HAT_PARTYINGFACE = "\ud83e\udd73"
+
+/**
+ * Constant for Emoji FACE_GLASSES_SMILINGFACEWITHSUNGLASSES
+ * *AUTO GENERATED*
+ */
+const val FACE_GLASSES_SMILINGFACEWITHSUNGLASSES = "\ud83d\ude0e"
+
+/**
+ * Constant for Emoji FACE_GLASSES_NERDFACE
+ * *AUTO GENERATED*
+ */
+const val FACE_GLASSES_NERDFACE = "\ud83e\udd13"
+
+/**
+ * Constant for Emoji FACE_GLASSES_FACEWITHMONOCLE
+ * *AUTO GENERATED*
+ */
+const val FACE_GLASSES_FACEWITHMONOCLE = "\ud83e\uddd0"
+
+/**
+ * Constant for Emoji FACE_CONCERNED_CONFUSEDFACE
+ * *AUTO GENERATED*
+ */
+const val FACE_CONCERNED_CONFUSEDFACE = "\ud83d\ude15"
+
+/**
+ * Constant for Emoji FACE_CONCERNED_WORRIEDFACE
+ * *AUTO GENERATED*
+ */
+const val FACE_CONCERNED_WORRIEDFACE = "\ud83d\ude1f"
+
+/**
+ * Constant for Emoji FACE_CONCERNED_SLIGHTLYFROWNINGFACE
+ * *AUTO GENERATED*
+ */
+const val FACE_CONCERNED_SLIGHTLYFROWNINGFACE = "\ud83d\ude41"
+
+/**
+ * Constant for Emoji FACE_CONCERNED_FROWNINGFACE
+ * *AUTO GENERATED*
+ */
+const val FACE_CONCERNED_FROWNINGFACE = "\u9785"
+
+/**
+ * Constant for Emoji FACE_CONCERNED_FACEWITHOPENMOUTH
+ * *AUTO GENERATED*
+ */
+const val FACE_CONCERNED_FACEWITHOPENMOUTH = "\ud83d\ude2e"
+
+/**
+ * Constant for Emoji FACE_CONCERNED_HUSHEDFACE
+ * *AUTO GENERATED*
+ */
+const val FACE_CONCERNED_HUSHEDFACE = "\ud83d\ude2f"
+
+/**
+ * Constant for Emoji FACE_CONCERNED_ASTONISHEDFACE
+ * *AUTO GENERATED*
+ */
+const val FACE_CONCERNED_ASTONISHEDFACE = "\ud83d\ude32"
+
+/**
+ * Constant for Emoji FACE_CONCERNED_FLUSHEDFACE
+ * *AUTO GENERATED*
+ */
+const val FACE_CONCERNED_FLUSHEDFACE = "\ud83d\ude33"
+
+/**
+ * Constant for Emoji FACE_CONCERNED_PLEADINGFACE
+ * *AUTO GENERATED*
+ */
+const val FACE_CONCERNED_PLEADINGFACE = "\ud83e\udd7a"
+
+/**
+ * Constant for Emoji FACE_CONCERNED_FROWNINGFACEWITHOPENMOUTH
+ * *AUTO GENERATED*
+ */
+const val FACE_CONCERNED_FROWNINGFACEWITHOPENMOUTH = "\ud83d\ude26"
+
+/**
+ * Constant for Emoji FACE_CONCERNED_ANGUISHEDFACE
+ * *AUTO GENERATED*
+ */
+const val FACE_CONCERNED_ANGUISHEDFACE = "\ud83d\ude27"
+
+/**
+ * Constant for Emoji FACE_CONCERNED_FEARFULFACE
+ * *AUTO GENERATED*
+ */
+const val FACE_CONCERNED_FEARFULFACE = "\ud83d\ude28"
+
+/**
+ * Constant for Emoji FACE_CONCERNED_ANXIOUSFACEWITHSWEAT
+ * *AUTO GENERATED*
+ */
+const val FACE_CONCERNED_ANXIOUSFACEWITHSWEAT = "\ud83d\ude30"
+
+/**
+ * Constant for Emoji FACE_CONCERNED_SADBUTRELIEVEDFACE
+ * *AUTO GENERATED*
+ */
+const val FACE_CONCERNED_SADBUTRELIEVEDFACE = "\ud83d\ude25"
+
+/**
+ * Constant for Emoji FACE_CONCERNED_CRYINGFACE
+ * *AUTO GENERATED*
+ */
+const val FACE_CONCERNED_CRYINGFACE = "\ud83d\ude22"
+
+/**
+ * Constant for Emoji FACE_CONCERNED_LOUDLYCRYINGFACE
+ * *AUTO GENERATED*
+ */
+const val FACE_CONCERNED_LOUDLYCRYINGFACE = "\ud83d\ude2d"
+
+/**
+ * Constant for Emoji FACE_CONCERNED_FACESCREAMINGINFEAR
+ * *AUTO GENERATED*
+ */
+const val FACE_CONCERNED_FACESCREAMINGINFEAR = "\ud83d\ude31"
+
+/**
+ * Constant for Emoji FACE_CONCERNED_CONFOUNDEDFACE
+ * *AUTO GENERATED*
+ */
+const val FACE_CONCERNED_CONFOUNDEDFACE = "\ud83d\ude16"
+
+/**
+ * Constant for Emoji FACE_CONCERNED_PERSEVERINGFACE
+ * *AUTO GENERATED*
+ */
+const val FACE_CONCERNED_PERSEVERINGFACE = "\ud83d\ude23"
+
+/**
+ * Constant for Emoji FACE_CONCERNED_DISAPPOINTEDFACE
+ * *AUTO GENERATED*
+ */
+const val FACE_CONCERNED_DISAPPOINTEDFACE = "\ud83d\ude1e"
+
+/**
+ * Constant for Emoji FACE_CONCERNED_DOWNCASTFACEWITHSWEAT
+ * *AUTO GENERATED*
+ */
+const val FACE_CONCERNED_DOWNCASTFACEWITHSWEAT = "\ud83d\ude13"
+
+/**
+ * Constant for Emoji FACE_CONCERNED_WEARYFACE
+ * *AUTO GENERATED*
+ */
+const val FACE_CONCERNED_WEARYFACE = "\ud83d\ude29"
+
+/**
+ * Constant for Emoji FACE_CONCERNED_TIREDFACE
+ * *AUTO GENERATED*
+ */
+const val FACE_CONCERNED_TIREDFACE = "\ud83d\ude2b"
+
+/**
+ * Constant for Emoji FACE_CONCERNED_YAWNINGFACE
+ * *AUTO GENERATED*
+ */
+const val FACE_CONCERNED_YAWNINGFACE = "\ud83e\udd71"
+
+/**
+ * Constant for Emoji FACE_NEGATIVE_FACEWITHSTEAMFROMNOSE
+ * *AUTO GENERATED*
+ */
+const val FACE_NEGATIVE_FACEWITHSTEAMFROMNOSE = "\ud83d\ude24"
+
+/**
+ * Constant for Emoji FACE_NEGATIVE_POUTINGFACE
+ * *AUTO GENERATED*
+ */
+const val FACE_NEGATIVE_POUTINGFACE = "\ud83d\ude21"
+
+/**
+ * Constant for Emoji FACE_NEGATIVE_ANGRYFACE
+ * *AUTO GENERATED*
+ */
+const val FACE_NEGATIVE_ANGRYFACE = "\ud83d\ude20"
+
+/**
+ * Constant for Emoji FACE_NEGATIVE_FACEWITHSYMBOLSONMOUTH
+ * *AUTO GENERATED*
+ */
+const val FACE_NEGATIVE_FACEWITHSYMBOLSONMOUTH = "\ud83e\udd2c"
+
+/**
+ * Constant for Emoji FACE_NEGATIVE_SMILINGFACEWITHHORNS
+ * *AUTO GENERATED*
+ */
+const val FACE_NEGATIVE_SMILINGFACEWITHHORNS = "\ud83d\ude08"
+
+/**
+ * Constant for Emoji FACE_NEGATIVE_ANGRYFACEWITHHORNS
+ * *AUTO GENERATED*
+ */
+const val FACE_NEGATIVE_ANGRYFACEWITHHORNS = "\ud83d\udc7f"
+
+/**
+ * Constant for Emoji FACE_NEGATIVE_SKULL
+ * *AUTO GENERATED*
+ */
+const val FACE_NEGATIVE_SKULL = "\ud83d\udc80"
+
+/**
+ * Constant for Emoji FACE_NEGATIVE_SKULLANDCROSSBONES
+ * *AUTO GENERATED*
+ */
+const val FACE_NEGATIVE_SKULLANDCROSSBONES = "\u9760"
+
+/**
+ * Constant for Emoji FACE_COSTUME_PILEOFPOO
+ * *AUTO GENERATED*
+ */
+const val FACE_COSTUME_PILEOFPOO = "\ud83d\udca9"
+
+/**
+ * Constant for Emoji FACE_COSTUME_CLOWNFACE
+ * *AUTO GENERATED*
+ */
+const val FACE_COSTUME_CLOWNFACE = "\ud83e\udd21"
+
+/**
+ * Constant for Emoji FACE_COSTUME_OGRE
+ * *AUTO GENERATED*
+ */
+const val FACE_COSTUME_OGRE = "\ud83d\udc79"
+
+/**
+ * Constant for Emoji FACE_COSTUME_GOBLIN
+ * *AUTO GENERATED*
+ */
+const val FACE_COSTUME_GOBLIN = "\ud83d\udc7a"
+
+/**
+ * Constant for Emoji FACE_COSTUME_GHOST
+ * *AUTO GENERATED*
+ */
+const val FACE_COSTUME_GHOST = "\ud83d\udc7b"
+
+/**
+ * Constant for Emoji FACE_COSTUME_ALIEN
+ * *AUTO GENERATED*
+ */
+const val FACE_COSTUME_ALIEN = "\ud83d\udc7d"
+
+/**
+ * Constant for Emoji FACE_COSTUME_ALIENMONSTER
+ * *AUTO GENERATED*
+ */
+const val FACE_COSTUME_ALIENMONSTER = "\ud83d\udc7e"
+
+/**
+ * Constant for Emoji FACE_COSTUME_ROBOT
+ * *AUTO GENERATED*
+ */
+const val FACE_COSTUME_ROBOT = "\ud83e\udd16"
+
+/**
+ * Constant for Emoji CAT_FACE_GRINNINGCAT
+ * *AUTO GENERATED*
+ */
+const val CAT_FACE_GRINNINGCAT = "\ud83d\ude3a"
+
+/**
+ * Constant for Emoji CAT_FACE_GRINNINGCATWITHSMILINGEYES
+ * *AUTO GENERATED*
+ */
+const val CAT_FACE_GRINNINGCATWITHSMILINGEYES = "\ud83d\ude38"
+
+/**
+ * Constant for Emoji CAT_FACE_CATWITHTEARSOFJOY
+ * *AUTO GENERATED*
+ */
+const val CAT_FACE_CATWITHTEARSOFJOY = "\ud83d\ude39"
+
+/**
+ * Constant for Emoji CAT_FACE_SMILINGCATWITHHEART_EYES
+ * *AUTO GENERATED*
+ */
+const val CAT_FACE_SMILINGCATWITHHEART_EYES = "\ud83d\ude3b"
+
+/**
+ * Constant for Emoji CAT_FACE_CATWITHWRYSMILE
+ * *AUTO GENERATED*
+ */
+const val CAT_FACE_CATWITHWRYSMILE = "\ud83d\ude3c"
+
+/**
+ * Constant for Emoji CAT_FACE_KISSINGCAT
+ * *AUTO GENERATED*
+ */
+const val CAT_FACE_KISSINGCAT = "\ud83d\ude3d"
+
+/**
+ * Constant for Emoji CAT_FACE_WEARYCAT
+ * *AUTO GENERATED*
+ */
+const val CAT_FACE_WEARYCAT = "\ud83d\ude40"
+
+/**
+ * Constant for Emoji CAT_FACE_CRYINGCAT
+ * *AUTO GENERATED*
+ */
+const val CAT_FACE_CRYINGCAT = "\ud83d\ude3f"
+
+/**
+ * Constant for Emoji CAT_FACE_POUTINGCAT
+ * *AUTO GENERATED*
+ */
+const val CAT_FACE_POUTINGCAT = "\ud83d\ude3e"
+
+/**
+ * Constant for Emoji MONKEY_FACE_SEE_NO_EVILMONKEY
+ * *AUTO GENERATED*
+ */
+const val MONKEY_FACE_SEE_NO_EVILMONKEY = "\ud83d\ude48"
+
+/**
+ * Constant for Emoji MONKEY_FACE_HEAR_NO_EVILMONKEY
+ * *AUTO GENERATED*
+ */
+const val MONKEY_FACE_HEAR_NO_EVILMONKEY = "\ud83d\ude49"
+
+/**
+ * Constant for Emoji MONKEY_FACE_SPEAK_NO_EVILMONKEY
+ * *AUTO GENERATED*
+ */
+const val MONKEY_FACE_SPEAK_NO_EVILMONKEY = "\ud83d\ude4a"
+
+/**
+ * Constant for Emoji EMOTION_KISSMARK
+ * *AUTO GENERATED*
+ */
+const val EMOTION_KISSMARK = "\ud83d\udc8b"
+
+/**
+ * Constant for Emoji EMOTION_LOVELETTER
+ * *AUTO GENERATED*
+ */
+const val EMOTION_LOVELETTER = "\ud83d\udc8c"
+
+/**
+ * Constant for Emoji EMOTION_HEARTWITHARROW
+ * *AUTO GENERATED*
+ */
+const val EMOTION_HEARTWITHARROW = "\ud83d\udc98"
+
+/**
+ * Constant for Emoji EMOTION_HEARTWITHRIBBON
+ * *AUTO GENERATED*
+ */
+const val EMOTION_HEARTWITHRIBBON = "\ud83d\udc9d"
+
+/**
+ * Constant for Emoji EMOTION_SPARKLINGHEART
+ * *AUTO GENERATED*
+ */
+const val EMOTION_SPARKLINGHEART = "\ud83d\udc96"
+
+/**
+ * Constant for Emoji EMOTION_GROWINGHEART
+ * *AUTO GENERATED*
+ */
+const val EMOTION_GROWINGHEART = "\ud83d\udc97"
+
+/**
+ * Constant for Emoji EMOTION_BEATINGHEART
+ * *AUTO GENERATED*
+ */
+const val EMOTION_BEATINGHEART = "\ud83d\udc93"
+
+/**
+ * Constant for Emoji EMOTION_REVOLVINGHEARTS
+ * *AUTO GENERATED*
+ */
+const val EMOTION_REVOLVINGHEARTS = "\ud83d\udc9e"
+
+/**
+ * Constant for Emoji EMOTION_TWOHEARTS
+ * *AUTO GENERATED*
+ */
+const val EMOTION_TWOHEARTS = "\ud83d\udc95"
+
+/**
+ * Constant for Emoji EMOTION_HEARTDECORATION
+ * *AUTO GENERATED*
+ */
+const val EMOTION_HEARTDECORATION = "\ud83d\udc9f"
+
+/**
+ * Constant for Emoji EMOTION_HEARTEXCLAMATION
+ * *AUTO GENERATED*
+ */
+const val EMOTION_HEARTEXCLAMATION = "\u10083"
+
+/**
+ * Constant for Emoji EMOTION_BROKENHEART
+ * *AUTO GENERATED*
+ */
+const val EMOTION_BROKENHEART = "\ud83d\udc94"
+
+/**
+ * Constant for Emoji EMOTION_REDHEART
+ * *AUTO GENERATED*
+ */
+const val EMOTION_REDHEART = "\u10084"
+
+/**
+ * Constant for Emoji EMOTION_ORANGEHEART
+ * *AUTO GENERATED*
+ */
+const val EMOTION_ORANGEHEART = "\ud83e\udde1"
+
+/**
+ * Constant for Emoji EMOTION_YELLOWHEART
+ * *AUTO GENERATED*
+ */
+const val EMOTION_YELLOWHEART = "\ud83d\udc9b"
+
+/**
+ * Constant for Emoji EMOTION_GREENHEART
+ * *AUTO GENERATED*
+ */
+const val EMOTION_GREENHEART = "\ud83d\udc9a"
+
+/**
+ * Constant for Emoji EMOTION_BLUEHEART
+ * *AUTO GENERATED*
+ */
+const val EMOTION_BLUEHEART = "\ud83d\udc99"
+
+/**
+ * Constant for Emoji EMOTION_PURPLEHEART
+ * *AUTO GENERATED*
+ */
+const val EMOTION_PURPLEHEART = "\ud83d\udc9c"
+
+/**
+ * Constant for Emoji EMOTION_BROWNHEART
+ * *AUTO GENERATED*
+ */
+const val EMOTION_BROWNHEART = "\ud83e\udd0e"
+
+/**
+ * Constant for Emoji EMOTION_BLACKHEART
+ * *AUTO GENERATED*
+ */
+const val EMOTION_BLACKHEART = "\ud83d\udda4"
+
+/**
+ * Constant for Emoji EMOTION_WHITEHEART
+ * *AUTO GENERATED*
+ */
+const val EMOTION_WHITEHEART = "\ud83e\udd0d"
+
+/**
+ * Constant for Emoji EMOTION_HUNDREDPOINTS
+ * *AUTO GENERATED*
+ */
+const val EMOTION_HUNDREDPOINTS = "\ud83d\udcaf"
+
+/**
+ * Constant for Emoji EMOTION_ANGERSYMBOL
+ * *AUTO GENERATED*
+ */
+const val EMOTION_ANGERSYMBOL = "\ud83d\udca2"
+
+/**
+ * Constant for Emoji EMOTION_COLLISION
+ * *AUTO GENERATED*
+ */
+const val EMOTION_COLLISION = "\ud83d\udca5"
+
+/**
+ * Constant for Emoji EMOTION_DIZZY
+ * *AUTO GENERATED*
+ */
+const val EMOTION_DIZZY = "\ud83d\udcab"
+
+/**
+ * Constant for Emoji EMOTION_SWEATDROPLETS
+ * *AUTO GENERATED*
+ */
+const val EMOTION_SWEATDROPLETS = "\ud83d\udca6"
+
+/**
+ * Constant for Emoji EMOTION_DASHINGAWAY
+ * *AUTO GENERATED*
+ */
+const val EMOTION_DASHINGAWAY = "\ud83d\udca8"
+
+/**
+ * Constant for Emoji EMOTION_HOLE
+ * *AUTO GENERATED*
+ */
+const val EMOTION_HOLE = "\ud83d\udd73"
+
+/**
+ * Constant for Emoji EMOTION_BOMB
+ * *AUTO GENERATED*
+ */
+const val EMOTION_BOMB = "\ud83d\udca3"
+
+/**
+ * Constant for Emoji EMOTION_SPEECHBALLOON
+ * *AUTO GENERATED*
+ */
+const val EMOTION_SPEECHBALLOON = "\ud83d\udcac"
+
+/**
+ * Constant for Emoji EMOTION_LEFTSPEECHBUBBLE
+ * *AUTO GENERATED*
+ */
+const val EMOTION_LEFTSPEECHBUBBLE = "\ud83d\udde8"
+
+/**
+ * Constant for Emoji EMOTION_RIGHTANGERBUBBLE
+ * *AUTO GENERATED*
+ */
+const val EMOTION_RIGHTANGERBUBBLE = "\ud83d\uddef"
+
+/**
+ * Constant for Emoji EMOTION_THOUGHTBALLOON
+ * *AUTO GENERATED*
+ */
+const val EMOTION_THOUGHTBALLOON = "\ud83d\udcad"
+
+/**
+ * Constant for Emoji EMOTION_ZZZ
+ * *AUTO GENERATED*
+ */
+const val EMOTION_ZZZ = "\ud83d\udca4"
+
+/**
+ * Constant for Emoji HAND_FINGERS_OPEN_WAVINGHAND
+ * *AUTO GENERATED*
+ */
+const val HAND_FINGERS_OPEN_WAVINGHAND = "\ud83d\udc4b"
+
+/**
+ * Constant for Emoji HAND_FINGERS_OPEN_RAISEDBACKOFHAND
+ * *AUTO GENERATED*
+ */
+const val HAND_FINGERS_OPEN_RAISEDBACKOFHAND = "\ud83e\udd1a"
+
+/**
+ * Constant for Emoji HAND_FINGERS_OPEN_HANDWITHFINGERSSPLAYED
+ * *AUTO GENERATED*
+ */
+const val HAND_FINGERS_OPEN_HANDWITHFINGERSSPLAYED = "\ud83d\udd90"
+
+/**
+ * Constant for Emoji HAND_FINGERS_OPEN_RAISEDHAND
+ * *AUTO GENERATED*
+ */
+const val HAND_FINGERS_OPEN_RAISEDHAND = "\u9995"
+
+/**
+ * Constant for Emoji HAND_FINGERS_OPEN_VULCANSALUTE
+ * *AUTO GENERATED*
+ */
+const val HAND_FINGERS_OPEN_VULCANSALUTE = "\ud83d\udd96"
+
+/**
+ * Constant for Emoji HAND_FINGERS_PARTIAL_OKHAND
+ * *AUTO GENERATED*
+ */
+const val HAND_FINGERS_PARTIAL_OKHAND = "\ud83d\udc4c"
+
+/**
+ * Constant for Emoji HAND_FINGERS_PARTIAL_PINCHINGHAND
+ * *AUTO GENERATED*
+ */
+const val HAND_FINGERS_PARTIAL_PINCHINGHAND = "\ud83e\udd0f"
+
+/**
+ * Constant for Emoji HAND_FINGERS_PARTIAL_VICTORYHAND
+ * *AUTO GENERATED*
+ */
+const val HAND_FINGERS_PARTIAL_VICTORYHAND = "\u9996"
+
+/**
+ * Constant for Emoji HAND_FINGERS_PARTIAL_CROSSEDFINGERS
+ * *AUTO GENERATED*
+ */
+const val HAND_FINGERS_PARTIAL_CROSSEDFINGERS = "\ud83e\udd1e"
+
+/**
+ * Constant for Emoji HAND_FINGERS_PARTIAL_LOVE_YOUGESTURE
+ * *AUTO GENERATED*
+ */
+const val HAND_FINGERS_PARTIAL_LOVE_YOUGESTURE = "\ud83e\udd1f"
+
+/**
+ * Constant for Emoji HAND_FINGERS_PARTIAL_SIGNOFTHEHORNS
+ * *AUTO GENERATED*
+ */
+const val HAND_FINGERS_PARTIAL_SIGNOFTHEHORNS = "\ud83e\udd18"
+
+/**
+ * Constant for Emoji HAND_FINGERS_PARTIAL_CALLMEHAND
+ * *AUTO GENERATED*
+ */
+const val HAND_FINGERS_PARTIAL_CALLMEHAND = "\ud83e\udd19"
+
+/**
+ * Constant for Emoji HAND_SINGLE_FINGER_BACKHANDINDEXPOINTINGLEFT
+ * *AUTO GENERATED*
+ */
+const val HAND_SINGLE_FINGER_BACKHANDINDEXPOINTINGLEFT = "\ud83d\udc48"
+
+/**
+ * Constant for Emoji HAND_SINGLE_FINGER_BACKHANDINDEXPOINTINGRIGHT
+ * *AUTO GENERATED*
+ */
+const val HAND_SINGLE_FINGER_BACKHANDINDEXPOINTINGRIGHT = "\ud83d\udc49"
+
+/**
+ * Constant for Emoji HAND_SINGLE_FINGER_BACKHANDINDEXPOINTINGUP
+ * *AUTO GENERATED*
+ */
+const val HAND_SINGLE_FINGER_BACKHANDINDEXPOINTINGUP = "\ud83d\udc46"
+
+/**
+ * Constant for Emoji HAND_SINGLE_FINGER_MIDDLEFINGER
+ * *AUTO GENERATED*
+ */
+const val HAND_SINGLE_FINGER_MIDDLEFINGER = "\ud83d\udd95"
+
+/**
+ * Constant for Emoji HAND_SINGLE_FINGER_BACKHANDINDEXPOINTINGDOWN
+ * *AUTO GENERATED*
+ */
+const val HAND_SINGLE_FINGER_BACKHANDINDEXPOINTINGDOWN = "\ud83d\udc47"
+
+/**
+ * Constant for Emoji HAND_SINGLE_FINGER_INDEXPOINTINGUP
+ * *AUTO GENERATED*
+ */
+const val HAND_SINGLE_FINGER_INDEXPOINTINGUP = "\u9757"
+
+/**
+ * Constant for Emoji HAND_FINGERS_CLOSED_THUMBSUP
+ * *AUTO GENERATED*
+ */
+const val HAND_FINGERS_CLOSED_THUMBSUP = "\ud83d\udc4d"
+
+/**
+ * Constant for Emoji HAND_FINGERS_CLOSED_THUMBSDOWN
+ * *AUTO GENERATED*
+ */
+const val HAND_FINGERS_CLOSED_THUMBSDOWN = "\ud83d\udc4e"
+
+/**
+ * Constant for Emoji HAND_FINGERS_CLOSED_RAISEDFIST
+ * *AUTO GENERATED*
+ */
+const val HAND_FINGERS_CLOSED_RAISEDFIST = "\u9994"
+
+/**
+ * Constant for Emoji HAND_FINGERS_CLOSED_ONCOMINGFIST
+ * *AUTO GENERATED*
+ */
+const val HAND_FINGERS_CLOSED_ONCOMINGFIST = "\ud83d\udc4a"
+
+/**
+ * Constant for Emoji HAND_FINGERS_CLOSED_LEFT_FACINGFIST
+ * *AUTO GENERATED*
+ */
+const val HAND_FINGERS_CLOSED_LEFT_FACINGFIST = "\ud83e\udd1b"
+
+/**
+ * Constant for Emoji HAND_FINGERS_CLOSED_RIGHT_FACINGFIST
+ * *AUTO GENERATED*
+ */
+const val HAND_FINGERS_CLOSED_RIGHT_FACINGFIST = "\ud83e\udd1c"
+
+/**
+ * Constant for Emoji HANDS_CLAPPINGHANDS
+ * *AUTO GENERATED*
+ */
+const val HANDS_CLAPPINGHANDS = "\ud83d\udc4f"
+
+/**
+ * Constant for Emoji HANDS_RAISINGHANDS
+ * *AUTO GENERATED*
+ */
+const val HANDS_RAISINGHANDS = "\ud83d\ude4c"
+
+/**
+ * Constant for Emoji HANDS_OPENHANDS
+ * *AUTO GENERATED*
+ */
+const val HANDS_OPENHANDS = "\ud83d\udc50"
+
+/**
+ * Constant for Emoji HANDS_PALMSUPTOGETHER
+ * *AUTO GENERATED*
+ */
+const val HANDS_PALMSUPTOGETHER = "\ud83e\udd32"
+
+/**
+ * Constant for Emoji HANDS_HANDSHAKE
+ * *AUTO GENERATED*
+ */
+const val HANDS_HANDSHAKE = "\ud83e\udd1d"
+
+/**
+ * Constant for Emoji HANDS_FOLDEDHANDS
+ * *AUTO GENERATED*
+ */
+const val HANDS_FOLDEDHANDS = "\ud83d\ude4f"
+
+/**
+ * Constant for Emoji HAND_PROP_WRITINGHAND
+ * *AUTO GENERATED*
+ */
+const val HAND_PROP_WRITINGHAND = "\u9997"
+
+/**
+ * Constant for Emoji HAND_PROP_NAILPOLISH
+ * *AUTO GENERATED*
+ */
+const val HAND_PROP_NAILPOLISH = "\ud83d\udc85"
+
+/**
+ * Constant for Emoji HAND_PROP_SELFIE
+ * *AUTO GENERATED*
+ */
+const val HAND_PROP_SELFIE = "\ud83e\udd33"
+
+/**
+ * Constant for Emoji BODY_PARTS_FLEXEDBICEPS
+ * *AUTO GENERATED*
+ */
+const val BODY_PARTS_FLEXEDBICEPS = "\ud83d\udcaa"
+
+/**
+ * Constant for Emoji BODY_PARTS_MECHANICALARM
+ * *AUTO GENERATED*
+ */
+const val BODY_PARTS_MECHANICALARM = "\ud83e\uddbe"
+
+/**
+ * Constant for Emoji BODY_PARTS_MECHANICALLEG
+ * *AUTO GENERATED*
+ */
+const val BODY_PARTS_MECHANICALLEG = "\ud83e\uddbf"
+
+/**
+ * Constant for Emoji BODY_PARTS_LEG
+ * *AUTO GENERATED*
+ */
+const val BODY_PARTS_LEG = "\ud83e\uddb5"
+
+/**
+ * Constant for Emoji BODY_PARTS_FOOT
+ * *AUTO GENERATED*
+ */
+const val BODY_PARTS_FOOT = "\ud83e\uddb6"
+
+/**
+ * Constant for Emoji BODY_PARTS_EAR
+ * *AUTO GENERATED*
+ */
+const val BODY_PARTS_EAR = "\ud83d\udc42"
+
+/**
+ * Constant for Emoji BODY_PARTS_EARWITHHEARINGAID
+ * *AUTO GENERATED*
+ */
+const val BODY_PARTS_EARWITHHEARINGAID = "\ud83e\uddbb"
+
+/**
+ * Constant for Emoji BODY_PARTS_NOSE
+ * *AUTO GENERATED*
+ */
+const val BODY_PARTS_NOSE = "\ud83d\udc43"
+
+/**
+ * Constant for Emoji BODY_PARTS_BRAIN
+ * *AUTO GENERATED*
+ */
+const val BODY_PARTS_BRAIN = "\ud83e\udde0"
+
+/**
+ * Constant for Emoji BODY_PARTS_TOOTH
+ * *AUTO GENERATED*
+ */
+const val BODY_PARTS_TOOTH = "\ud83e\uddb7"
+
+/**
+ * Constant for Emoji BODY_PARTS_BONE
+ * *AUTO GENERATED*
+ */
+const val BODY_PARTS_BONE = "\ud83e\uddb4"
+
+/**
+ * Constant for Emoji BODY_PARTS_EYES
+ * *AUTO GENERATED*
+ */
+const val BODY_PARTS_EYES = "\ud83d\udc40"
+
+/**
+ * Constant for Emoji BODY_PARTS_EYE
+ * *AUTO GENERATED*
+ */
+const val BODY_PARTS_EYE = "\ud83d\udc41"
+
+/**
+ * Constant for Emoji BODY_PARTS_TONGUE
+ * *AUTO GENERATED*
+ */
+const val BODY_PARTS_TONGUE = "\ud83d\udc45"
+
+/**
+ * Constant for Emoji BODY_PARTS_MOUTH
+ * *AUTO GENERATED*
+ */
+const val BODY_PARTS_MOUTH = "\ud83d\udc44"
+
+/**
+ * Constant for Emoji PERSON_BABY
+ * *AUTO GENERATED*
+ */
+const val PERSON_BABY = "\ud83d\udc76"
+
+/**
+ * Constant for Emoji PERSON_CHILD
+ * *AUTO GENERATED*
+ */
+const val PERSON_CHILD = "\ud83e\uddd2"
+
+/**
+ * Constant for Emoji PERSON_BOY
+ * *AUTO GENERATED*
+ */
+const val PERSON_BOY = "\ud83d\udc66"
+
+/**
+ * Constant for Emoji PERSON_GIRL
+ * *AUTO GENERATED*
+ */
+const val PERSON_GIRL = "\ud83d\udc67"
+
+/**
+ * Constant for Emoji PERSON_PERSON
+ * *AUTO GENERATED*
+ */
+const val PERSON_PERSON = "\ud83e\uddd1"
+
+/**
+ * Constant for Emoji PERSON_PERSON_BLONDHAIR
+ * *AUTO GENERATED*
+ */
+const val PERSON_PERSON_BLONDHAIR = "\ud83d\udc71"
+
+/**
+ * Constant for Emoji PERSON_MAN
+ * *AUTO GENERATED*
+ */
+const val PERSON_MAN = "\ud83d\udc68"
+
+/**
+ * Constant for Emoji PERSON_MAN_BEARD
+ * *AUTO GENERATED*
+ */
+const val PERSON_MAN_BEARD = "\ud83e\uddd4"
+
+/**
+ * Constant for Emoji PERSON_WOMAN
+ * *AUTO GENERATED*
+ */
+const val PERSON_WOMAN = "\ud83d\udc69"
+
+/**
+ * Constant for Emoji PERSON_OLDERPERSON
+ * *AUTO GENERATED*
+ */
+const val PERSON_OLDERPERSON = "\ud83e\uddd3"
+
+/**
+ * Constant for Emoji PERSON_OLDMAN
+ * *AUTO GENERATED*
+ */
+const val PERSON_OLDMAN = "\ud83d\udc74"
+
+/**
+ * Constant for Emoji PERSON_OLDWOMAN
+ * *AUTO GENERATED*
+ */
+const val PERSON_OLDWOMAN = "\ud83d\udc75"
+
+/**
+ * Constant for Emoji PERSON_GESTURE_PERSONFROWNING
+ * *AUTO GENERATED*
+ */
+const val PERSON_GESTURE_PERSONFROWNING = "\ud83d\ude4d"
+
+/**
+ * Constant for Emoji PERSON_GESTURE_PERSONPOUTING
+ * *AUTO GENERATED*
+ */
+const val PERSON_GESTURE_PERSONPOUTING = "\ud83d\ude4e"
+
+/**
+ * Constant for Emoji PERSON_GESTURE_PERSONGESTURINGNO
+ * *AUTO GENERATED*
+ */
+const val PERSON_GESTURE_PERSONGESTURINGNO = "\ud83d\ude45"
+
+/**
+ * Constant for Emoji PERSON_GESTURE_PERSONGESTURINGOK
+ * *AUTO GENERATED*
+ */
+const val PERSON_GESTURE_PERSONGESTURINGOK = "\ud83d\ude46"
+
+/**
+ * Constant for Emoji PERSON_GESTURE_PERSONTIPPINGHAND
+ * *AUTO GENERATED*
+ */
+const val PERSON_GESTURE_PERSONTIPPINGHAND = "\ud83d\udc81"
+
+/**
+ * Constant for Emoji PERSON_GESTURE_PERSONRAISINGHAND
+ * *AUTO GENERATED*
+ */
+const val PERSON_GESTURE_PERSONRAISINGHAND = "\ud83d\ude4b"

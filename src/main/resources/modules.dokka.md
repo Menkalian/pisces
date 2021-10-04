@@ -6,6 +6,20 @@ Dieses Package enthält die grundlegende `Spring-Boot`-Applikation, sowie einige
 
 Gekapselter Code zum Handling der Audiofunktionalitäten. Das [IHandler][de.menkalian.pisces.IHandler]-Interface der Komponente ist [IAudioHandler][de.menkalian.pisces.audio.IAudioHandler]. Über diesen Handler werden [IGuildAudioController][de.menkalian.pisces.audio.IGuildAudioController]-Instanzen bereitgestellt, die Audiofunktionalitäten pro Discord-Server bereitstellen.
 
+# Package de.menkalian.pisces.audio.data
+
+Datenobjekte für die Audiofunktionalitäten.
+Diese Objekte sind unabhängig von der verwendeten Audiobibliothek (aktuell Lavaplayer) und bieten daher eine Abstraktion, um andere Module unabhängig von Lavaplayer zu halten.
+
+# Package de.menkalian.pisces.audio.sending
+
+Enthält Klassen zur eigentlichen Implementierung des Sendevorgangs.
+Die Implementierung dieser Klassen können sich beispielsweise darin unterscheiden wie die Audiodaten verarbeitet werden oder woher diese bezogen werden.
+
+# Package de.menkalian.pisces.audio.sending.filter
+
+Platzhalter für eine zukünftige (experimentelle) Funktion zur Manipulation der Audiodaten durch Filter.
+
 # Package de.menkalian.pisces.command
 
 Gekapselter Code zur Behandlung der Kommandos. Das [IHandler][de.menkalian.pisces.IHandler]-Interface der Komponente ist [ICommandHandler][de.menkalian.pisces.command.ICommandHandler]. Dieser Handler verwaltet die [ICommand][de.menkalian.pisces.command.ICommand]-Instanzen und deren Ausführung.
@@ -20,6 +34,10 @@ Kapselung der Datenbankzugriffe. Das [IHandler][de.menkalian.pisces.IHandler]-In
 
 * HSQLDB über `spring-data-jpa`
 
+# Package de.menkalian.pisces.database.jpa
+
+JPA-Objekte und Repository-Interfaces. Die Repository-Interfaces werden von Spring automatisch implementiert und als Bean zur Verfügung gestellt.
+
 # Package de.menkalian.pisces.discord
 
 Kapselt die Anmeldung und grundsätzlichen Zugriff auf die Discord-API. Das [IHandler][de.menkalian.pisces.IHandler]-Interface der Komponente ist [IDiscordHandler][de.menkalian.pisces.discord.IDiscordHandler]. Da nicht die vollständige Discord-API neu abgebildet wird, ist die Hauptaufgabe dieser Schnittstelle die aktuelle Instanz des API-Handlers (aktuell `JDA`) bereitzustellen.
@@ -27,6 +45,10 @@ Kapselt die Anmeldung und grundsätzlichen Zugriff auf die Discord-API. Das [IHa
 # Package de.menkalian.pisces.message
 
 Kapselt das Senden und die Manipulation von Nachrichten und Reaktionen. Das [IHandler][de.menkalian.pisces.IHandler]-Interface der Komponente ist [IDiscordHandler][de.menkalian.pisces.message.IMessageHandler].
+
+# Package de.menkalian.pisces.message.spec
+
+Datenklassen zur Beschreibung von Nachrichten. Das Ziel ist, dass die Commands nur den *Inhalt* der Nachrichten definieren, während sich die [Instanz der Nachricht][de.menkalian.pisces.message.IMessageInstance] um die *Darstellung* kümmert.
 
 # Package de.menkalian.pisces.util
 

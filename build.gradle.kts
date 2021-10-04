@@ -41,9 +41,13 @@ tasks.getByName("kotlinSourcesJar") {
     dependsOn(tasks.generateKeyObjects)
     dependsOn(tasks.generateFeaturetoggleCode)
 }
+tasks.bootJar.configure {
+    archiveClassifier.set("boot")
+}
 
 keygen {
     targetPackage = "de.menkalian.pisces.variables"
+    finalLayerAsString = true
 }
 featuretoggle {
     targetPackage = "de.menkalian.pisces.config"
@@ -91,10 +95,10 @@ dependencies {
 
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
 
-    runtimeOnly("org.hsqldb:hsqldb")
+    runtimeOnly("org.mariadb.jdbc:mariadb-java-client")
 
     // JDA
-    implementation("net.dv8tion:JDA:4.3.0_310")
+    implementation("net.dv8tion:JDA:4.3.0_333")
     implementation("com.sedmelluq:lavaplayer:1.3.78")
 
     testImplementation(springboot("test"))

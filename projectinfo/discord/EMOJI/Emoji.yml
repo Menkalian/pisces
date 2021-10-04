@@ -1,0 +1,643 @@
+emoji:
+  -
+    name: FACE_SMILING_GRINNINGFACE
+    value: \ud83d\ude00
+  -
+    name: FACE_SMILING_GRINNINGFACEWITHBIGEYES
+    value: \ud83d\ude03
+  -
+    name: FACE_SMILING_GRINNINGFACEWITHSMILINGEYES
+    value: \ud83d\ude04
+  -
+    name: FACE_SMILING_BEAMINGFACEWITHSMILINGEYES
+    value: \ud83d\ude01
+  -
+    name: FACE_SMILING_GRINNINGSQUINTINGFACE
+    value: \ud83d\ude06
+  -
+    name: FACE_SMILING_GRINNINGFACEWITHSWEAT
+    value: \ud83d\ude05
+  -
+    name: FACE_SMILING_ROLLINGONTHEFLOORLAUGHING
+    value: \ud83e\udd23
+  -
+    name: FACE_SMILING_FACEWITHTEARSOFJOY
+    value: \ud83d\ude02
+  -
+    name: FACE_SMILING_SLIGHTLYSMILINGFACE
+    value: \ud83d\ude42
+  -
+    name: FACE_SMILING_UPSIDE_DOWNFACE
+    value: \ud83d\ude43
+  -
+    name: FACE_SMILING_WINKINGFACE
+    value: \ud83d\ude09
+  -
+    name: FACE_SMILING_SMILINGFACEWITHSMILINGEYES
+    value: \ud83d\ude0a
+  -
+    name: FACE_SMILING_SMILINGFACEWITHHALO
+    value: \ud83d\ude07
+  -
+    name: FACE_AFFECTION_SMILINGFACEWITHHEARTS
+    value: \ud83e\udd70
+  -
+    name: FACE_AFFECTION_SMILINGFACEWITHHEART_EYES
+    value: \ud83d\ude0d
+  -
+    name: FACE_AFFECTION_STAR_STRUCK
+    value: \ud83e\udd29
+  -
+    name: FACE_AFFECTION_FACEBLOWINGAKISS
+    value: \ud83d\ude18
+  -
+    name: FACE_AFFECTION_KISSINGFACE
+    value: \ud83d\ude17
+  -
+    name: FACE_AFFECTION_SMILINGFACE
+    value: \u9786
+  -
+    name: FACE_AFFECTION_KISSINGFACEWITHCLOSEDEYES
+    value: \ud83d\ude1a
+  -
+    name: FACE_AFFECTION_KISSINGFACEWITHSMILINGEYES
+    value: \ud83d\ude19
+  -
+    name: FACE_TONGUE_FACESAVORINGFOOD
+    value: \ud83d\ude0b
+  -
+    name: FACE_TONGUE_FACEWITHTONGUE
+    value: \ud83d\ude1b
+  -
+    name: FACE_TONGUE_WINKINGFACEWITHTONGUE
+    value: \ud83d\ude1c
+  -
+    name: FACE_TONGUE_ZANYFACE
+    value: \ud83e\udd2a
+  -
+    name: FACE_TONGUE_SQUINTINGFACEWITHTONGUE
+    value: \ud83d\ude1d
+  -
+    name: FACE_TONGUE_MONEY_MOUTHFACE
+    value: \ud83e\udd11
+  -
+    name: FACE_HAND_HUGGINGFACE
+    value: \ud83e\udd17
+  -
+    name: FACE_HAND_FACEWITHHANDOVERMOUTH
+    value: \ud83e\udd2d
+  -
+    name: FACE_HAND_SHUSHINGFACE
+    value: \ud83e\udd2b
+  -
+    name: FACE_HAND_THINKINGFACE
+    value: \ud83e\udd14
+  -
+    name: FACE_NEUTRAL_SKEPTICAL_ZIPPER_MOUTHFACE
+    value: \ud83e\udd10
+  -
+    name: FACE_NEUTRAL_SKEPTICAL_FACEWITHRAISEDEYEBROW
+    value: \ud83e\udd28
+  -
+    name: FACE_NEUTRAL_SKEPTICAL_NEUTRALFACE
+    value: \ud83d\ude10
+  -
+    name: FACE_NEUTRAL_SKEPTICAL_EXPRESSIONLESSFACE
+    value: \ud83d\ude11
+  -
+    name: FACE_NEUTRAL_SKEPTICAL_FACEWITHOUTMOUTH
+    value: \ud83d\ude36
+  -
+    name: FACE_NEUTRAL_SKEPTICAL_SMIRKINGFACE
+    value: \ud83d\ude0f
+  -
+    name: FACE_NEUTRAL_SKEPTICAL_UNAMUSEDFACE
+    value: \ud83d\ude12
+  -
+    name: FACE_NEUTRAL_SKEPTICAL_FACEWITHROLLINGEYES
+    value: \ud83d\ude44
+  -
+    name: FACE_NEUTRAL_SKEPTICAL_GRIMACINGFACE
+    value: \ud83d\ude2c
+  -
+    name: FACE_NEUTRAL_SKEPTICAL_LYINGFACE
+    value: \ud83e\udd25
+  -
+    name: FACE_SLEEPY_RELIEVEDFACE
+    value: \ud83d\ude0c
+  -
+    name: FACE_SLEEPY_PENSIVEFACE
+    value: \ud83d\ude14
+  -
+    name: FACE_SLEEPY_SLEEPYFACE
+    value: \ud83d\ude2a
+  -
+    name: FACE_SLEEPY_DROOLINGFACE
+    value: \ud83e\udd24
+  -
+    name: FACE_SLEEPY_SLEEPINGFACE
+    value: \ud83d\ude34
+  -
+    name: FACE_UNWELL_FACEWITHMEDICALMASK
+    value: \ud83d\ude37
+  -
+    name: FACE_UNWELL_FACEWITHTHERMOMETER
+    value: \ud83e\udd12
+  -
+    name: FACE_UNWELL_FACEWITHHEAD_BANDAGE
+    value: \ud83e\udd15
+  -
+    name: FACE_UNWELL_NAUSEATEDFACE
+    value: \ud83e\udd22
+  -
+    name: FACE_UNWELL_FACEVOMITING
+    value: \ud83e\udd2e
+  -
+    name: FACE_UNWELL_SNEEZINGFACE
+    value: \ud83e\udd27
+  -
+    name: FACE_UNWELL_HOTFACE
+    value: \ud83e\udd75
+  -
+    name: FACE_UNWELL_COLDFACE
+    value: \ud83e\udd76
+  -
+    name: FACE_UNWELL_WOOZYFACE
+    value: \ud83e\udd74
+  -
+    name: FACE_UNWELL_DIZZYFACE
+    value: \ud83d\ude35
+  -
+    name: FACE_UNWELL_EXPLODINGHEAD
+    value: \ud83e\udd2f
+  -
+    name: FACE_HAT_COWBOYHATFACE
+    value: \ud83e\udd20
+  -
+    name: FACE_HAT_PARTYINGFACE
+    value: \ud83e\udd73
+  -
+    name: FACE_GLASSES_SMILINGFACEWITHSUNGLASSES
+    value: \ud83d\ude0e
+  -
+    name: FACE_GLASSES_NERDFACE
+    value: \ud83e\udd13
+  -
+    name: FACE_GLASSES_FACEWITHMONOCLE
+    value: \ud83e\uddd0
+  -
+    name: FACE_CONCERNED_CONFUSEDFACE
+    value: \ud83d\ude15
+  -
+    name: FACE_CONCERNED_WORRIEDFACE
+    value: \ud83d\ude1f
+  -
+    name: FACE_CONCERNED_SLIGHTLYFROWNINGFACE
+    value: \ud83d\ude41
+  -
+    name: FACE_CONCERNED_FROWNINGFACE
+    value: \u9785
+  -
+    name: FACE_CONCERNED_FACEWITHOPENMOUTH
+    value: \ud83d\ude2e
+  -
+    name: FACE_CONCERNED_HUSHEDFACE
+    value: \ud83d\ude2f
+  -
+    name: FACE_CONCERNED_ASTONISHEDFACE
+    value: \ud83d\ude32
+  -
+    name: FACE_CONCERNED_FLUSHEDFACE
+    value: \ud83d\ude33
+  -
+    name: FACE_CONCERNED_PLEADINGFACE
+    value: \ud83e\udd7a
+  -
+    name: FACE_CONCERNED_FROWNINGFACEWITHOPENMOUTH
+    value: \ud83d\ude26
+  -
+    name: FACE_CONCERNED_ANGUISHEDFACE
+    value: \ud83d\ude27
+  -
+    name: FACE_CONCERNED_FEARFULFACE
+    value: \ud83d\ude28
+  -
+    name: FACE_CONCERNED_ANXIOUSFACEWITHSWEAT
+    value: \ud83d\ude30
+  -
+    name: FACE_CONCERNED_SADBUTRELIEVEDFACE
+    value: \ud83d\ude25
+  -
+    name: FACE_CONCERNED_CRYINGFACE
+    value: \ud83d\ude22
+  -
+    name: FACE_CONCERNED_LOUDLYCRYINGFACE
+    value: \ud83d\ude2d
+  -
+    name: FACE_CONCERNED_FACESCREAMINGINFEAR
+    value: \ud83d\ude31
+  -
+    name: FACE_CONCERNED_CONFOUNDEDFACE
+    value: \ud83d\ude16
+  -
+    name: FACE_CONCERNED_PERSEVERINGFACE
+    value: \ud83d\ude23
+  -
+    name: FACE_CONCERNED_DISAPPOINTEDFACE
+    value: \ud83d\ude1e
+  -
+    name: FACE_CONCERNED_DOWNCASTFACEWITHSWEAT
+    value: \ud83d\ude13
+  -
+    name: FACE_CONCERNED_WEARYFACE
+    value: \ud83d\ude29
+  -
+    name: FACE_CONCERNED_TIREDFACE
+    value: \ud83d\ude2b
+  -
+    name: FACE_CONCERNED_YAWNINGFACE
+    value: \ud83e\udd71
+  -
+    name: FACE_NEGATIVE_FACEWITHSTEAMFROMNOSE
+    value: \ud83d\ude24
+  -
+    name: FACE_NEGATIVE_POUTINGFACE
+    value: \ud83d\ude21
+  -
+    name: FACE_NEGATIVE_ANGRYFACE
+    value: \ud83d\ude20
+  -
+    name: FACE_NEGATIVE_FACEWITHSYMBOLSONMOUTH
+    value: \ud83e\udd2c
+  -
+    name: FACE_NEGATIVE_SMILINGFACEWITHHORNS
+    value: \ud83d\ude08
+  -
+    name: FACE_NEGATIVE_ANGRYFACEWITHHORNS
+    value: \ud83d\udc7f
+  -
+    name: FACE_NEGATIVE_SKULL
+    value: \ud83d\udc80
+  -
+    name: FACE_NEGATIVE_SKULLANDCROSSBONES
+    value: \u9760
+  -
+    name: FACE_COSTUME_PILEOFPOO
+    value: \ud83d\udca9
+  -
+    name: FACE_COSTUME_CLOWNFACE
+    value: \ud83e\udd21
+  -
+    name: FACE_COSTUME_OGRE
+    value: \ud83d\udc79
+  -
+    name: FACE_COSTUME_GOBLIN
+    value: \ud83d\udc7a
+  -
+    name: FACE_COSTUME_GHOST
+    value: \ud83d\udc7b
+  -
+    name: FACE_COSTUME_ALIEN
+    value: \ud83d\udc7d
+  -
+    name: FACE_COSTUME_ALIENMONSTER
+    value: \ud83d\udc7e
+  -
+    name: FACE_COSTUME_ROBOT
+    value: \ud83e\udd16
+  -
+    name: CAT_FACE_GRINNINGCAT
+    value: \ud83d\ude3a
+  -
+    name: CAT_FACE_GRINNINGCATWITHSMILINGEYES
+    value: \ud83d\ude38
+  -
+    name: CAT_FACE_CATWITHTEARSOFJOY
+    value: \ud83d\ude39
+  -
+    name: CAT_FACE_SMILINGCATWITHHEART_EYES
+    value: \ud83d\ude3b
+  -
+    name: CAT_FACE_CATWITHWRYSMILE
+    value: \ud83d\ude3c
+  -
+    name: CAT_FACE_KISSINGCAT
+    value: \ud83d\ude3d
+  -
+    name: CAT_FACE_WEARYCAT
+    value: \ud83d\ude40
+  -
+    name: CAT_FACE_CRYINGCAT
+    value: \ud83d\ude3f
+  -
+    name: CAT_FACE_POUTINGCAT
+    value: \ud83d\ude3e
+  -
+    name: MONKEY_FACE_SEE_NO_EVILMONKEY
+    value: \ud83d\ude48
+  -
+    name: MONKEY_FACE_HEAR_NO_EVILMONKEY
+    value: \ud83d\ude49
+  -
+    name: MONKEY_FACE_SPEAK_NO_EVILMONKEY
+    value: \ud83d\ude4a
+  -
+    name: EMOTION_KISSMARK
+    value: \ud83d\udc8b
+  -
+    name: EMOTION_LOVELETTER
+    value: \ud83d\udc8c
+  -
+    name: EMOTION_HEARTWITHARROW
+    value: \ud83d\udc98
+  -
+    name: EMOTION_HEARTWITHRIBBON
+    value: \ud83d\udc9d
+  -
+    name: EMOTION_SPARKLINGHEART
+    value: \ud83d\udc96
+  -
+    name: EMOTION_GROWINGHEART
+    value: \ud83d\udc97
+  -
+    name: EMOTION_BEATINGHEART
+    value: \ud83d\udc93
+  -
+    name: EMOTION_REVOLVINGHEARTS
+    value: \ud83d\udc9e
+  -
+    name: EMOTION_TWOHEARTS
+    value: \ud83d\udc95
+  -
+    name: EMOTION_HEARTDECORATION
+    value: \ud83d\udc9f
+  -
+    name: EMOTION_HEARTEXCLAMATION
+    value: \u10083
+  -
+    name: EMOTION_BROKENHEART
+    value: \ud83d\udc94
+  -
+    name: EMOTION_REDHEART
+    value: \u10084
+  -
+    name: EMOTION_ORANGEHEART
+    value: \ud83e\udde1
+  -
+    name: EMOTION_YELLOWHEART
+    value: \ud83d\udc9b
+  -
+    name: EMOTION_GREENHEART
+    value: \ud83d\udc9a
+  -
+    name: EMOTION_BLUEHEART
+    value: \ud83d\udc99
+  -
+    name: EMOTION_PURPLEHEART
+    value: \ud83d\udc9c
+  -
+    name: EMOTION_BROWNHEART
+    value: \ud83e\udd0e
+  -
+    name: EMOTION_BLACKHEART
+    value: \ud83d\udda4
+  -
+    name: EMOTION_WHITEHEART
+    value: \ud83e\udd0d
+  -
+    name: EMOTION_HUNDREDPOINTS
+    value: \ud83d\udcaf
+  -
+    name: EMOTION_ANGERSYMBOL
+    value: \ud83d\udca2
+  -
+    name: EMOTION_COLLISION
+    value: \ud83d\udca5
+  -
+    name: EMOTION_DIZZY
+    value: \ud83d\udcab
+  -
+    name: EMOTION_SWEATDROPLETS
+    value: \ud83d\udca6
+  -
+    name: EMOTION_DASHINGAWAY
+    value: \ud83d\udca8
+  -
+    name: EMOTION_HOLE
+    value: \ud83d\udd73
+  -
+    name: EMOTION_BOMB
+    value: \ud83d\udca3
+  -
+    name: EMOTION_SPEECHBALLOON
+    value: \ud83d\udcac
+  -
+    name: EMOTION_LEFTSPEECHBUBBLE
+    value: \ud83d\udde8
+  -
+    name: EMOTION_RIGHTANGERBUBBLE
+    value: \ud83d\uddef
+  -
+    name: EMOTION_THOUGHTBALLOON
+    value: \ud83d\udcad
+  -
+    name: EMOTION_ZZZ
+    value: \ud83d\udca4
+  -
+    name: HAND_FINGERS_OPEN_WAVINGHAND
+    value: \ud83d\udc4b
+  -
+    name: HAND_FINGERS_OPEN_RAISEDBACKOFHAND
+    value: \ud83e\udd1a
+  -
+    name: HAND_FINGERS_OPEN_HANDWITHFINGERSSPLAYED
+    value: \ud83d\udd90
+  -
+    name: HAND_FINGERS_OPEN_RAISEDHAND
+    value: \u9995
+  -
+    name: HAND_FINGERS_OPEN_VULCANSALUTE
+    value: \ud83d\udd96
+  -
+    name: HAND_FINGERS_PARTIAL_OKHAND
+    value: \ud83d\udc4c
+  -
+    name: HAND_FINGERS_PARTIAL_PINCHINGHAND
+    value: \ud83e\udd0f
+  -
+    name: HAND_FINGERS_PARTIAL_VICTORYHAND
+    value: \u9996
+  -
+    name: HAND_FINGERS_PARTIAL_CROSSEDFINGERS
+    value: \ud83e\udd1e
+  -
+    name: HAND_FINGERS_PARTIAL_LOVE_YOUGESTURE
+    value: \ud83e\udd1f
+  -
+    name: HAND_FINGERS_PARTIAL_SIGNOFTHEHORNS
+    value: \ud83e\udd18
+  -
+    name: HAND_FINGERS_PARTIAL_CALLMEHAND
+    value: \ud83e\udd19
+  -
+    name: HAND_SINGLE_FINGER_BACKHANDINDEXPOINTINGLEFT
+    value: \ud83d\udc48
+  -
+    name: HAND_SINGLE_FINGER_BACKHANDINDEXPOINTINGRIGHT
+    value: \ud83d\udc49
+  -
+    name: HAND_SINGLE_FINGER_BACKHANDINDEXPOINTINGUP
+    value: \ud83d\udc46
+  -
+    name: HAND_SINGLE_FINGER_MIDDLEFINGER
+    value: \ud83d\udd95
+  -
+    name: HAND_SINGLE_FINGER_BACKHANDINDEXPOINTINGDOWN
+    value: \ud83d\udc47
+  -
+    name: HAND_SINGLE_FINGER_INDEXPOINTINGUP
+    value: \u9757
+  -
+    name: HAND_FINGERS_CLOSED_THUMBSUP
+    value: \ud83d\udc4d
+  -
+    name: HAND_FINGERS_CLOSED_THUMBSDOWN
+    value: \ud83d\udc4e
+  -
+    name: HAND_FINGERS_CLOSED_RAISEDFIST
+    value: \u9994
+  -
+    name: HAND_FINGERS_CLOSED_ONCOMINGFIST
+    value: \ud83d\udc4a
+  -
+    name: HAND_FINGERS_CLOSED_LEFT_FACINGFIST
+    value: \ud83e\udd1b
+  -
+    name: HAND_FINGERS_CLOSED_RIGHT_FACINGFIST
+    value: \ud83e\udd1c
+  -
+    name: HANDS_CLAPPINGHANDS
+    value: \ud83d\udc4f
+  -
+    name: HANDS_RAISINGHANDS
+    value: \ud83d\ude4c
+  -
+    name: HANDS_OPENHANDS
+    value: \ud83d\udc50
+  -
+    name: HANDS_PALMSUPTOGETHER
+    value: \ud83e\udd32
+  -
+    name: HANDS_HANDSHAKE
+    value: \ud83e\udd1d
+  -
+    name: HANDS_FOLDEDHANDS
+    value: \ud83d\ude4f
+  -
+    name: HAND_PROP_WRITINGHAND
+    value: \u9997
+  -
+    name: HAND_PROP_NAILPOLISH
+    value: \ud83d\udc85
+  -
+    name: HAND_PROP_SELFIE
+    value: \ud83e\udd33
+  -
+    name: BODY_PARTS_FLEXEDBICEPS
+    value: \ud83d\udcaa
+  -
+    name: BODY_PARTS_MECHANICALARM
+    value: \ud83e\uddbe
+  -
+    name: BODY_PARTS_MECHANICALLEG
+    value: \ud83e\uddbf
+  -
+    name: BODY_PARTS_LEG
+    value: \ud83e\uddb5
+  -
+    name: BODY_PARTS_FOOT
+    value: \ud83e\uddb6
+  -
+    name: BODY_PARTS_EAR
+    value: \ud83d\udc42
+  -
+    name: BODY_PARTS_EARWITHHEARINGAID
+    value: \ud83e\uddbb
+  -
+    name: BODY_PARTS_NOSE
+    value: \ud83d\udc43
+  -
+    name: BODY_PARTS_BRAIN
+    value: \ud83e\udde0
+  -
+    name: BODY_PARTS_TOOTH
+    value: \ud83e\uddb7
+  -
+    name: BODY_PARTS_BONE
+    value: \ud83e\uddb4
+  -
+    name: BODY_PARTS_EYES
+    value: \ud83d\udc40
+  -
+    name: BODY_PARTS_EYE
+    value: \ud83d\udc41
+  -
+    name: BODY_PARTS_TONGUE
+    value: \ud83d\udc45
+  -
+    name: BODY_PARTS_MOUTH
+    value: \ud83d\udc44
+  -
+    name: PERSON_BABY
+    value: \ud83d\udc76
+  -
+    name: PERSON_CHILD
+    value: \ud83e\uddd2
+  -
+    name: PERSON_BOY
+    value: \ud83d\udc66
+  -
+    name: PERSON_GIRL
+    value: \ud83d\udc67
+  -
+    name: PERSON_PERSON
+    value: \ud83e\uddd1
+  -
+    name: PERSON_PERSON_BLONDHAIR
+    value: \ud83d\udc71
+  -
+    name: PERSON_MAN
+    value: \ud83d\udc68
+  -
+    name: PERSON_MAN_BEARD
+    value: \ud83e\uddd4
+  -
+    name: PERSON_WOMAN
+    value: \ud83d\udc69
+  -
+    name: PERSON_OLDERPERSON
+    value: \ud83e\uddd3
+  -
+    name: PERSON_OLDMAN
+    value: \ud83d\udc74
+  -
+    name: PERSON_OLDWOMAN
+    value: \ud83d\udc75
+  -
+    name: PERSON_GESTURE_PERSONFROWNING
+    value: \ud83d\ude4d
+  -
+    name: PERSON_GESTURE_PERSONPOUTING
+    value: \ud83d\ude4e
+  -
+    name: PERSON_GESTURE_PERSONGESTURINGNO
+    value: \ud83d\ude45
+  -
+    name: PERSON_GESTURE_PERSONGESTURINGOK
+    value: \ud83d\ude46
+  -
+    name: PERSON_GESTURE_PERSONTIPPINGHAND
+    value: \ud83d\udc81
+  -
+    name: PERSON_GESTURE_PERSONRAISINGHAND
+    value: \ud83d\ude4b

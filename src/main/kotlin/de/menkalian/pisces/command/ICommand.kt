@@ -1,26 +1,31 @@
 package de.menkalian.pisces.command
 
+import de.menkalian.pisces.command.data.CommandParameter
+import de.menkalian.pisces.command.data.ECommandSource
+import de.menkalian.pisces.util.FixedVariables
 import net.dv8tion.jda.api.entities.ChannelType
 
+/**
+ * Schnittstelle eines Befehls.
+ * Befehle sind die Schnittstelle zwischen dem Benutzer und den Bots.
+ *
+ * Über Dependency-Injection werden automatisch alle Kommandos, die als Spring-Bean vorliegen
+ */
 interface ICommand {
-    enum class ECommandChannelContext {
-        PRIVATE,
-        GUILD_ALL,
-        GUILD_TEXT,
-        GUILD_STORE;
+    val name: String
+    val description: String
+    val parameters: List<CommandParameter>
 
-        fun supports(type: ChannelType) =
-            type.isMessage && when (this) {
-                PRIVATE     -> type == ChannelType.PRIVATE
-                GUILD_ALL   -> type.isGuild
-                GUILD_TEXT  -> type == ChannelType.TEXT
-                GUILD_STORE -> type == ChannelType.STORE
-            }
-    }
+    infix fun supports(type: ChannelType): Boolean
+    infix fun supports(source: ECommandSource): Boolean
 
-    val supportedContexts: List<ECommandChannelContext>
-    infix fun supports(type: ChannelType) =
-        supportedContexts.any { it.supports(type) }
-
-
+    fun execute(
+        commandHandler: ICommandHandler,
+        source: ECommandSource,
+        parameters: List<CommandParameter>,
+        guildId: Long = 0L,
+        channelId: Long,
+        authorId: Long,
+        sourceInformation: FixedVariables = hashMapOf()
+    )
 }
