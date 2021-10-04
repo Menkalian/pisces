@@ -25,13 +25,6 @@ fun String.asSpoiler() = "||$this||"
  */
 fun String.asInlineCode() = "`$this`"
 
-fun String.shortenTo(maxLength: Int, abbreviationChar: Char = '…'): String {
-    if (length <= maxLength)
-        return this
-    else
-        return this.substring(0 until maxLength - 1) + abbreviationChar
-}
-
 /**
  * Kürzt den String auf die angegebene Länge.
  * Wenn die Länge überschritten wird, ist das letze Zeichen im String [abbreviationChar].
