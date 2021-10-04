@@ -5,16 +5,18 @@ import de.menkalian.pisces.audio.data.EPlayTrackResult
 import de.menkalian.pisces.audio.data.TrackInfo
 import de.menkalian.pisces.message.spec.MessageSpec
 
-fun <T> MessageSpec<T>.addTrackInfoField(trackInfo: TrackInfo): T {
+fun <T> MessageSpec<T>.addTrackInfoField(trackInfo: TrackInfo, withPosition: Boolean = false): T {
     return addField(
         trackInfo.title,
         """
-                Urheber: %s
-                Länge:   %s
-                URI:     %s
-            """.trimIndent()
+            Urheber: %s
+            %s: `%s%s`
+            URI: %s
+        """.trimIndent()
             .format(
                 trackInfo.author,
+                if (withPosition) "Position" else "Länge",
+                if (withPosition) trackInfo.position.toDurationString() + "/" else "",
                 trackInfo.length.toDurationString(),
                 trackInfo.sourceUri
             )
