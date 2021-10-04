@@ -56,6 +56,7 @@ class SetJoinsoundCommand(override val databaseHandler: IDatabaseHandler, val au
                 .build()
             return
         }
+
         val controller = audioHandler.getGuildAudioController(guildId)
 
         val foundAudio = controller.lookupTracks(parameters.getDefaultArg()?.asString() ?: "")
