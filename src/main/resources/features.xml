@@ -65,7 +65,6 @@
                     <vela:feature vela:name="Search" />
                     <vela:feature vela:name="Reset" />
 
-
                     <vela:feature vela:name="Queue" />
                     <vela:feature vela:name="Shuffle" />
                     <vela:feature vela:name="ClearQueue" />
