@@ -49,11 +49,6 @@
                         <vela:feature vela:name="Show" />
                     </vela:set>
 
-                    <vela:set vela:name="joinsound">
-                        <vela:feature vela:name="Get" />
-                        <vela:feature vela:name="Set" />
-                    </vela:set>
-
                     <vela:feature vela:name="Join" />
                     <vela:feature vela:name="Leave" />
 
@@ -86,6 +81,10 @@
                     <vela:feature vela:default="true" vela:name="Usage" />
                 </set>
                 <set vela:name="settings">
+                    <vela:set vela:name="joinsound">
+                        <vela:feature vela:name="Get" />
+                        <vela:feature vela:name="Set" />
+                    </vela:set>
                     <vela:set vela:name="repeat">
                         <vela:feature vela:name="Get" />
                         <vela:feature vela:name="Set" />
