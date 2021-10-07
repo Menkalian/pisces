@@ -62,7 +62,7 @@ class MessageBuilder(
      */
     fun clear(): MessageBuilder {
         logger().debug("Clearing $this")
-        withAuthor(discordHandler.jda.selfUser.name, "https://pisces.menkalian.de", discordHandler.jda.selfUser.avatarUrl)
+        withAuthor(discordHandler.selfUser.name, "https://pisces.menkalian.de", discordHandler.selfUser.avatarUrl)
         withTitle("Message")
         withText("")
         clearFields()
@@ -70,7 +70,7 @@ class MessageBuilder(
         withTimestamp(OffsetDateTime.now())
         withImage("")
         withThumbnail("")
-        withFooter("Visit Pisces on Gitlab", discordHandler.jda.selfUser.avatarUrl)
+        withFooter("Visit Pisces on Gitlab", discordHandler.selfUser.avatarUrl)
 
         return this
     }

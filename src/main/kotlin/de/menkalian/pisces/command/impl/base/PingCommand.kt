@@ -53,8 +53,8 @@ class PingCommand(
             .createMessage(guildId, channelId)
             .withTitle("Ping! Pong!")
             .withText(
-                "Verbindungslatenz zum Discord Gateway: ${discordHandler.jda.gatewayPing} ms\n" +
-                        "Antwortlatenz der API: ${discordHandler.jda.restPing.complete()} ms"
+                "Verbindungslatenz zum Discord Gateway: ${discordHandler.gatewayPing} ms\n" +
+                        "Antwortlatenz der API: ${discordHandler.restPing} ms"
             )
             .build()
     }

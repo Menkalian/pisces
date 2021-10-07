@@ -73,7 +73,7 @@ class MessageInstance(
     private var currentPage = 0
 
     private val currentPageIncrementAction = { uid: Long, _: IMessageInstance ->
-        if (uid != discordHandler.jda.selfUser.idLong) {
+        if (uid != discordHandler.selfUser.id) {
             currentPage++
             updateRenderedMessage()
             true
@@ -82,7 +82,7 @@ class MessageInstance(
         }
     }
     private val currentPageDecrementAction = { uid: Long, _: IMessageInstance ->
-        if (uid != discordHandler.jda.selfUser.idLong) {
+        if (uid != discordHandler.selfUser.id) {
             currentPage--
             updateRenderedMessage()
             true
@@ -112,8 +112,8 @@ class MessageInstance(
 
         if (guildId != null && guildId != 0L) {
             // Send as guildMessage
-            val targetChannel = discordHandler.jda
-                .getGuildById(guildId)
+            val targetChannel = discordHandler
+                .getJdaGuild(guildId)
                 ?.getGuildChannelById(channelId)
             if (targetChannel?.isEligibleChannel() == true && targetChannel is TextChannel) {
                 logger().info("Sending $this to $targetChannel")
@@ -125,9 +125,8 @@ class MessageInstance(
                 throw IllegalArgumentException("Provided IDs (guild=$guildId, channel=$channelId) are not a valid target.")
             }
         } else {
-            val targetChannel = discordHandler.jda
-                .retrieveUserById(channelId)
-                .complete()
+            val targetChannel = discordHandler
+                .getJdaUser(channelId)
                 ?.openPrivateChannel()
                 ?.complete()
             logger().info("Sending $this to $targetChannel")
@@ -385,7 +384,7 @@ class MessageInstance(
      */
     private fun hasReactionRights(checkRemove: Boolean): Boolean {
         if (jdaMessageInstance.channelType.isGuild) {
-            val guildMember = jdaMessageInstance.guild.getMember(discordHandler.jda.selfUser)
+            val guildMember = jdaMessageInstance.guild.getMemberById(discordHandler.selfUser.id)
             return jdaMessageInstance.channelType.isGuild
                     && guildMember?.hasPermission(jdaMessageInstance.textChannel, Permission.MESSAGE_ADD_REACTION) == true
                     && (!checkRemove || guildMember.hasPermission(jdaMessageInstance.textChannel, Permission.MESSAGE_MANAGE))

@@ -56,7 +56,7 @@ class InstallAuxCommand(
         sourceInformation: FixedVariables
     ) {
         try {
-            discordHandler.jda.installAuxiliaryPort().queue()
+            discordHandler.installAux()
             messageHandler
                 .createMessage(guildId, channelId)
                 .withTitle("Erfolgreich Aux-Kabel installiert")
