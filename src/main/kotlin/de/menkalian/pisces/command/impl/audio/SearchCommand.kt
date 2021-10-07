@@ -16,7 +16,7 @@ import org.springframework.stereotype.Component
 
 @Component
 @Conditional(OnConfigValueCondition::class)
-@RequiresKey(["pisces.command.impl.audio.playing.Search"])
+@RequiresKey(["pisces.command.impl.audio.Search"])
 class SearchCommand(
     override val databaseHandler: IDatabaseHandler,
     val messageHandler: IMessageHandler,
