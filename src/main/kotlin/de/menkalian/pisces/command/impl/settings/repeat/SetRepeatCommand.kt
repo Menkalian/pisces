@@ -13,11 +13,16 @@ import de.menkalian.pisces.variables.FlunderKey.Flunder
 import org.springframework.context.annotation.Conditional
 import org.springframework.stereotype.Component
 
+/**
+ * Implementierung eines Befehls zum Setzen der aktuellen Wiederholungs-Einstellungen
+ */
 @Component
 @Conditional(OnConfigValueCondition::class)
 @RequiresKey(["pisces.command.impl.settings.repeat.Set"])
 class SetRepeatCommand(override val databaseHandler: IDatabaseHandler, val settingsHelper: SettingsCommandHelper) : CommonCommandBase() {
     override fun initialize() {
+        innerCategory = "Tool"
+
         aliases.add("setDefRepeat")
         aliases.add("setDR")
 

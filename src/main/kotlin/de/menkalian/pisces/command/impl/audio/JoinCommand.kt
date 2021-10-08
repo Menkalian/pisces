@@ -14,11 +14,16 @@ import de.menkalian.pisces.util.withWarningColor
 import org.springframework.context.annotation.Conditional
 import org.springframework.stereotype.Component
 
+/**
+ * Implementierung eines Befehls der den Bot dem aktuellen Voicechat joinen lässt
+ */
 @Component
 @Conditional(OnConfigValueCondition::class)
 @RequiresKey(["pisces.command.impl.audio.Join"])
 class JoinCommand(override val databaseHandler: IDatabaseHandler, val messageHandler: IMessageHandler, val audioHandler: IAudioHandler) : CommonCommandBase() {
     override fun initialize() {
+        innerCategory = "Audio"
+
         aliases.add("j")
         aliases.add("kommmalher")
 

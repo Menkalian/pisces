@@ -15,6 +15,9 @@ import de.menkalian.pisces.variables.FlunderKey.Flunder
 import org.springframework.context.annotation.Conditional
 import org.springframework.stereotype.Component
 
+/**
+ * Implementierung eines Befehls, der die Inhalte der Playlists anzeigt
+ */
 @Component
 @Conditional(OnConfigValueCondition::class)
 @RequiresKey(["pisces.command.impl.audio.playlist.Show"])
@@ -23,6 +26,8 @@ class ShowPlaylistCommand(
     val messageHandler: IMessageHandler
 ) : CommonCommandBase() {
     override fun initialize() {
+        innerCategory = "Playlist"
+
         aliases.add("showpl")
 
         supportedContexts.addAll(ALL_GUILD_CONTEXTS)

@@ -13,11 +13,16 @@ import de.menkalian.pisces.variables.FlunderKey.Flunder
 import org.springframework.context.annotation.Conditional
 import org.springframework.stereotype.Component
 
+/**
+ * Implementierung eines Befehls zum Setzen der aktuellen Präfix-Einstellungen
+ */
 @Component
 @Conditional(OnConfigValueCondition::class)
 @RequiresKey(["pisces.command.impl.settings.prefix.Set"])
 class SetPrefixCommand(override val databaseHandler: IDatabaseHandler, val settingsHelper: SettingsCommandHelper) : CommonCommandBase() {
     override fun initialize() {
+        innerCategory = "Tool"
+
         supportedContexts.addAll(ALL_CONTEXTS)
         supportedSources.addAll(ALL_SOURCES)
 

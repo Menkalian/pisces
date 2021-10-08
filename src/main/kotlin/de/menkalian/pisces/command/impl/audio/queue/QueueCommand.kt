@@ -16,6 +16,9 @@ import de.menkalian.pisces.util.toDurationString
 import org.springframework.context.annotation.Conditional
 import org.springframework.stereotype.Component
 
+/**
+ * Implementierung eines Befehls zur Anzeige der aktuellen Wiedergabeliste
+ */
 @Component
 @Conditional(OnConfigValueCondition::class)
 @RequiresKey(["pisces.command.impl.audio.Queue"])
@@ -25,6 +28,8 @@ class QueueCommand(
     val audioHandler: IAudioHandler
 ) : CommonCommandBase() {
     override fun initialize() {
+        innerCategory = "Wiedergabeliste"
+
         aliases.add("q")
 
         supportedContexts.addAll(ALL_GUILD_CONTEXTS)

@@ -10,12 +10,20 @@ import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.LocalTime
 
+/**
+ * Grundlegende Implementierung für alle Befehle.
+ * Diese Implementierung ist von [ICommand] abgetrennt, um die lesbare Schnittstelle (und die öffentlichen Member) möglichst minimal zu halten.
+ */
 abstract class CommonCommandBase : ICommand {
     protected abstract val databaseHandler: IDatabaseHandler
     override val parameters: MutableList<CommandParameter> = mutableListOf()
     protected open val aliases: MutableList<String> = mutableListOf()
     protected open val supportedContexts: MutableList<ECommandChannelContext> = mutableListOf()
     protected open val supportedSources: MutableList<ECommandSource> = mutableListOf()
+
+    override val category: String
+        get() = innerCategory
+    protected var innerCategory: String = "Standard"
 
     companion object {
         val ALL_CONTEXTS = ECommandChannelContext.values().toList()
@@ -43,6 +51,10 @@ abstract class CommonCommandBase : ICommand {
     override infix fun supports(source: ECommandSource) =
         supportedSources.contains(source)
 
+    /**
+     * Fügt einen Parameter des Typs [EParameterType.BOOLEAN] hinzu.
+     * Der Standardwert ist hier **immer** `false`
+     */
     protected fun addBooleanParameter(
         name: String = "",
         short: Char = ' ',
@@ -59,6 +71,9 @@ abstract class CommonCommandBase : ICommand {
         )
     }
 
+    /**
+     * Fügt einen Parameter des Typs [EParameterType.INTEGER] hinzu.
+     */
     protected fun addIntParameter(
         name: String = "",
         short: Char = ' ',
@@ -76,6 +91,9 @@ abstract class CommonCommandBase : ICommand {
         )
     }
 
+    /**
+     * Fügt einen Parameter des Typs [EParameterType.STRING] hinzu.
+     */
     protected fun addStringParameter(
         name: String = "",
         short: Char = ' ',
@@ -93,6 +111,10 @@ abstract class CommonCommandBase : ICommand {
         )
     }
 
+    /**
+     * Fügt einen Parameter des Typs [EParameterType.USER] hinzu.
+     * Der Standardwert ist hier **immer** `-1L` (ungültige User-ID)
+     */
     protected fun addUserParameter(
         name: String = "",
         short: Char = ' ',
@@ -109,6 +131,9 @@ abstract class CommonCommandBase : ICommand {
         )
     }
 
+    /**
+     * Fügt einen Parameter des Typs [EParameterType.TIMESTAMP] hinzu.
+     */
     protected fun addTimestampParameter(
         name: String = "",
         short: Char = ' ',
@@ -126,6 +151,9 @@ abstract class CommonCommandBase : ICommand {
         )
     }
 
+    /**
+     * Fügt einen Parameter des Typs [EParameterType.TIME] hinzu.
+     */
     protected fun addTimeParameter(
         name: String = "",
         short: Char = ' ',
@@ -143,6 +171,9 @@ abstract class CommonCommandBase : ICommand {
         )
     }
 
+    /**
+     * Fügt einen Parameter des Typs [EParameterType.DATE] hinzu.
+     */
     protected fun addDateParameter(
         name: String = "",
         short: Char = ' ',
@@ -160,5 +191,8 @@ abstract class CommonCommandBase : ICommand {
         )
     }
 
+    /**
+     * Liest das Standardargument ([CommandParameter.name] ist leer) aus einer Parameterliste.
+     */
     protected fun List<CommandParameter>.getDefaultArg() = firstOrNull { it.name.isBlank() }
 }

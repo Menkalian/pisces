@@ -1,5 +1,6 @@
 package de.menkalian.pisces.message
 
+import de.menkalian.pisces.util.logger
 import net.dv8tion.jda.api.events.message.react.MessageReactionAddEvent
 import net.dv8tion.jda.api.events.message.react.MessageReactionRemoveEvent
 import net.dv8tion.jda.api.hooks.ListenerAdapter
@@ -53,12 +54,14 @@ class MessageReactionListener : ListenerAdapter() {
 
     override fun onMessageReactionAdd(event: MessageReactionAddEvent) {
         if (instances.containsKey(event.messageIdLong)) {
+            logger().info("Reaction added: ${event.reactionEmote} was added to message ${event.messageIdLong}")
             val doRemove = listeners[event.messageIdLong]?.any {
                 event.reactionEmote.isEmoji
                         && it.onReactionAdded(event.userIdLong, instances[event.messageIdLong]!!, event.reactionEmote.emoji)
             } ?: false
 
             if (doRemove) {
+                logger().debug("Removing added reaction, since it was processed successfully")
                 event.reaction.removeReaction().queue()
             }
         }
@@ -66,6 +69,7 @@ class MessageReactionListener : ListenerAdapter() {
 
     override fun onMessageReactionRemove(event: MessageReactionRemoveEvent) {
         if (instances.containsKey(event.messageIdLong)) {
+            logger().info("Reaction removed: ${event.reactionEmote} was removed from message ${event.messageIdLong}")
             listeners[event.messageIdLong]?.forEach {
                 if (event.reactionEmote.isEmoji)
                     it.onReactionRemoved(event.userIdLong, instances[event.messageIdLong]!!, event.reactionEmote.emoji)

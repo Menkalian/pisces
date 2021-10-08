@@ -17,6 +17,9 @@ import de.menkalian.pisces.util.withSuccessColor
 import org.springframework.context.annotation.Conditional
 import org.springframework.stereotype.Component
 
+/**
+ * Implementierung eines Befehls zur zufälligen Wiedergabe einer Playlist
+ */
 @Component
 @Conditional(OnConfigValueCondition::class)
 @RequiresKey(["pisces.command.impl.audio.playlist.PlayListShuffled"])
@@ -27,6 +30,8 @@ class PlayListShuffledCommand(
     val joinCommand: JoinCommand
 ) : CommonCommandBase() {
     override fun initialize() {
+        innerCategory = "Wiedergabe"
+
         aliases.add("spl")
 
         supportedContexts.addAll(ALL_GUILD_CONTEXTS)

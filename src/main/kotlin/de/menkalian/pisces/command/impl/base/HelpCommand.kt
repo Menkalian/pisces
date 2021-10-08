@@ -9,14 +9,20 @@ import de.menkalian.pisces.command.data.ECommandSource
 import de.menkalian.pisces.database.IDatabaseHandler
 import de.menkalian.pisces.message.IMessageHandler
 import de.menkalian.pisces.util.FixedVariables
+import de.menkalian.pisces.util.asInlineCode
 import org.springframework.context.annotation.Conditional
 import org.springframework.stereotype.Component
 
+/**
+ * Implementierung eines Befehls, der alle anderen Befehle auflistet und Informationen zu diesen anzeigt
+ */
 @Component
 @Conditional(OnConfigValueCondition::class)
 @RequiresKey(["pisces.command.impl.base.Help"])
 class HelpCommand(override val databaseHandler: IDatabaseHandler, val messageHandler: IMessageHandler) : CommonCommandBase() {
     override fun initialize() {
+        innerCategory = "Information"
+
         aliases.add("?")
         aliases.add("h")
         aliases.add("hilfe")
@@ -45,8 +51,13 @@ class HelpCommand(override val databaseHandler: IDatabaseHandler, val messageHan
             .createMessage(guildId, channelId)
             .withTitle("Liste der unterstützten Commands")
 
-        commandHandler.commands.forEach {
-            helpMessage.addField(it.name, it.description, false)
+        commandHandler.commands.groupBy { it.category }.forEach {
+            helpMessage.addField("Kategorie: ${it.key.asInlineCode()}")
+            it.value
+                .sortedBy { command -> command.name }
+                .forEach { command ->
+                    helpMessage.addField(command.name, command.description, false)
+                }
         }
 
         helpMessage.build()

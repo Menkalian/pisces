@@ -14,6 +14,9 @@ import org.springframework.beans.factory.BeanFactory
 import org.springframework.context.annotation.Conditional
 import org.springframework.stereotype.Component
 
+/**
+ * Implementierung eines Befehls zur Prüfung der Verbindung zwischen dem Bot und den Discord-Servern
+ */
 @Component
 @Conditional(OnConfigValueCondition::class)
 @RequiresKey(["pisces.command.impl.base.Ping"])
@@ -25,6 +28,8 @@ class PingCommand(
     private lateinit var discordHandler: IDiscordHandler
 
     override fun initialize() {
+        innerCategory = "Information"
+
         aliases.add("pong")
 
         supportedContexts.addAll(ALL_CONTEXTS)

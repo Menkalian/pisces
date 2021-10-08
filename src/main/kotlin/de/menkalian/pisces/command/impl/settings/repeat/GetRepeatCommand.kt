@@ -13,11 +13,16 @@ import de.menkalian.pisces.variables.FlunderKey.Flunder
 import org.springframework.context.annotation.Conditional
 import org.springframework.stereotype.Component
 
+/**
+ * Implementierung eines Befehls zur Ausgabe der aktuellen Wiederholungs-Einstellungen
+ */
 @Component
 @Conditional(OnConfigValueCondition::class)
 @RequiresKey(["pisces.command.impl.settings.repeat.Get"])
 class GetRepeatCommand(override val databaseHandler: IDatabaseHandler, val settingsHelper: SettingsCommandHelper) : CommonCommandBase() {
     override fun initialize() {
+        innerCategory = "Tool"
+
         aliases.add("getDefRepeat")
         aliases.add("getDR")
 

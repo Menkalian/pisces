@@ -16,6 +16,9 @@ import de.menkalian.pisces.util.withWarningColor
 import org.springframework.context.annotation.Conditional
 import org.springframework.stereotype.Component
 
+/**
+ * Implementierung eines Befehls, der eine beliebige Anzahl von Tracks überspringt und diese anschließend erneut queued
+ */
 @Component
 @Conditional(OnConfigValueCondition::class)
 @RequiresKey(["pisces.command.impl.audio.Reskip"])
@@ -25,6 +28,8 @@ class ReskipCommand(
     val audioHandler: IAudioHandler
 ) : CommonCommandBase() {
     override fun initialize() {
+        innerCategory = "Steuerung"
+
         aliases.add("skiprepeat")
         aliases.add("_r")
 

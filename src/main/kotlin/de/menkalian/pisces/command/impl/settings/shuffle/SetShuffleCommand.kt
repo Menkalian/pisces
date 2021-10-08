@@ -13,11 +13,16 @@ import de.menkalian.pisces.variables.FlunderKey.Flunder
 import org.springframework.context.annotation.Conditional
 import org.springframework.stereotype.Component
 
+/**
+ * Implementierung eines Befehls zum Setzen der aktuellen Zufallsmix-Einstellungen
+ */
 @Component
 @Conditional(OnConfigValueCondition::class)
 @RequiresKey(["pisces.command.impl.settings.shuffle.Set"])
 class SetShuffleCommand(override val databaseHandler: IDatabaseHandler, val settingsHelper: SettingsCommandHelper) : CommonCommandBase() {
     override fun initialize() {
+        innerCategory = "Tool"
+
         aliases.add("setDefPermanentShuffle")
         aliases.add("setDefPShuffle")
         aliases.add("setDPS")

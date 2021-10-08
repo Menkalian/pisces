@@ -14,11 +14,16 @@ import de.menkalian.pisces.util.withWarningColor
 import org.springframework.context.annotation.Conditional
 import org.springframework.stereotype.Component
 
+/**
+ * Implementierung eines Befehls, der den Bot den aktuellen Voicechannel verlassen lässt
+ */
 @Component
 @Conditional(OnConfigValueCondition::class)
 @RequiresKey(["pisces.command.impl.audio.Leave"])
 class LeaveCommand(override val databaseHandler: IDatabaseHandler, val messageHandler: IMessageHandler, val audioHandler: IAudioHandler) : CommonCommandBase() {
     override fun initialize() {
+        innerCategory = "Audio"
+
         aliases.add("l")
         aliases.add("daIstDieTür")
 

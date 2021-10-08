@@ -19,12 +19,17 @@ import de.menkalian.pisces.util.withWarningColor
 import org.springframework.context.annotation.Conditional
 import org.springframework.stereotype.Component
 
+/**
+ * Implementierung eines Befehls zum Setzen der aktuellen Joinsound-Einstellungen
+ */
 @Component
 @Conditional(OnConfigValueCondition::class)
 @RequiresKey(["pisces.command.impl.settings.joinsound.Set"])
 class SetJoinsoundCommand(override val databaseHandler: IDatabaseHandler, val audioHandler: IAudioHandler, val messageHandler: IMessageHandler) :
     CommonCommandBase() {
     override fun initialize() {
+        innerCategory = "Tool"
+
         aliases.add("setJs")
 
         supportedContexts.addAll(ALL_CONTEXTS)

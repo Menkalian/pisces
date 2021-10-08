@@ -16,11 +16,16 @@ import de.menkalian.pisces.variables.FlunderKey.Flunder
 import org.springframework.context.annotation.Conditional
 import org.springframework.stereotype.Component
 
+/**
+ * Implementierung eines Befehls zur Ausgabe der aktuellen Joinsound-Einstellungen
+ */
 @Component
 @Conditional(OnConfigValueCondition::class)
 @RequiresKey(["pisces.command.impl.settings.joinsound.Get"])
 class GetJoinsoundCommand(override val databaseHandler: IDatabaseHandler, val messageHandler: IMessageHandler) : CommonCommandBase() {
     override fun initialize() {
+        innerCategory = "Tool"
+
         aliases.add("getjs")
 
         supportedContexts.addAll(ALL_CONTEXTS)
