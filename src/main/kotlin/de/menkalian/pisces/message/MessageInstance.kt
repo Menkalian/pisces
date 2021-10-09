@@ -136,8 +136,8 @@ class MessageInstance(
             logger().debug("Successfully sent $this as message ${jdaMessageInstance.idLong}")
         }
 
-        updateScrollReactions()
         messageHandler.addReactionListener(this, messageReactionListener)
+        updateScrollReactions()
 
         initialized = true
     }
@@ -289,7 +289,8 @@ class MessageInstance(
             pages.clear()
 
             val baseLength = title.length + author.name.length + footerText.length
-            val lengthPerPage = MessageEmbed.EMBED_MAX_LENGTH_BOT - baseLength
+            // For some reason discord only displays EMBED_MAX_LENGTH_CLIENT (also 6k characters are very hard to properly read, so 2k are better for this)
+            val lengthPerPage = minOf(MessageEmbed.EMBED_MAX_LENGTH_CLIENT, MessageEmbed.EMBED_MAX_LENGTH_BOT) - baseLength
 
             var remainingLength: Int
             var currentPage = MessagePage()
@@ -315,7 +316,7 @@ class MessageInstance(
 
             // Add the final page
             pages.add(currentPage)
-            logger().trace("Built pages $pages")
+            logger().trace("Built ${pages.size} page(s) $pages")
         }
     }
 

@@ -51,7 +51,13 @@ class HelpCommand(override val databaseHandler: IDatabaseHandler, val messageHan
             .createMessage(guildId, channelId)
             .withTitle("Liste der unterstützten Commands")
 
+        var msgHasFields = false
         commandHandler.commands.groupBy { it.category }.forEach {
+            if (msgHasFields) {
+                helpMessage.addBlankField(false)
+            } else {
+                msgHasFields = true
+            }
             helpMessage.addField("Kategorie: ${it.key.asInlineCode()}")
             it.value
                 .sortedBy { command -> command.name }

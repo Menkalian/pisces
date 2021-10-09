@@ -26,7 +26,8 @@ class DefaultCommandHandler(
     override fun initialize() {
         logger().info("Starting initialization for ${commands.size} commands")
         commands.forEach {
-            logger().info(
+            it.initialize()
+            logger().trace(
                 """
                     Found command: ${it.name}
                     Description: ${it.description}
@@ -35,7 +36,6 @@ class DefaultCommandHandler(
                 """.trimIndent()
 
             )
-            it.initialize()
         }
         finishInitialization()
     }
