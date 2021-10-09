@@ -8,21 +8,71 @@ Gekapselter Code zum Handling der Audiofunktionalitäten. Das [IHandler][de.menk
 
 # Package de.menkalian.pisces.audio.data
 
-Datenobjekte für die Audiofunktionalitäten.
-Diese Objekte sind unabhängig von der verwendeten Audiobibliothek (aktuell Lavaplayer) und bieten daher eine Abstraktion, um andere Module unabhängig von Lavaplayer zu halten.
+Datenobjekte für die Audiofunktionalitäten. Diese Objekte sind unabhängig von der verwendeten Audiobibliothek (aktuell Lavaplayer) und bieten daher eine Abstraktion, um andere Module unabhängig von Lavaplayer zu halten.
 
 # Package de.menkalian.pisces.audio.sending
 
-Enthält Klassen zur eigentlichen Implementierung des Sendevorgangs.
-Die Implementierung dieser Klassen können sich beispielsweise darin unterscheiden wie die Audiodaten verarbeitet werden oder woher diese bezogen werden.
+Enthält Klassen zur eigentlichen Implementierung des Sendevorgangs. Die Implementierung dieser Klassen können sich beispielsweise darin unterscheiden wie die Audiodaten verarbeitet werden oder woher diese bezogen werden.
 
 # Package de.menkalian.pisces.audio.sending.filter
 
-Platzhalter für eine zukünftige (experimentelle) Funktion zur Manipulation der Audiodaten durch Filter.
+Platzhalter für eine zukünftige (experimentelle) Funktion zur Manipulation der Audiodaten durch Filter
 
 # Package de.menkalian.pisces.command
 
 Gekapselter Code zur Behandlung der Kommandos. Das [IHandler][de.menkalian.pisces.IHandler]-Interface der Komponente ist [ICommandHandler][de.menkalian.pisces.command.ICommandHandler]. Dieser Handler verwaltet die [ICommand][de.menkalian.pisces.command.ICommand]-Instanzen und deren Ausführung.
+
+# Package de.menkalian.pisces.command.data
+
+Datenstrukturen und Enums zur Befehlsbehandlung
+
+# Package de.menkalian.pisces.command.impl.audio
+
+Befehlsimplementierungen für Befehle, die direkt zur Audio-/Soundbehandlung verbunden sind
+
+# Package de.menkalian.pisces.command.impl.audio.playback
+
+Befehlsimplementierungen für Befehle, die zum Starten von Audiowiedergaben verwendet werden
+
+# Package de.menkalian.pisces.command.impl.audio.playlist
+
+Befehlsimplementierungen für Befehle, die mit Playlisten (oder deren Wiedergabe) zusammenhängen
+
+# Package de.menkalian.pisces.command.impl.audio.queue
+
+Befehlsimplementierungen für Befehle, die die aktuelle Wiedergabeliste betreffen
+
+# Package de.menkalian.pisces.command.impl.audio.songcontrol
+
+Befehlsimplementierungen für Befehle, die die aktuelle Wiedergabe beeinflussen
+
+# Package de.menkalian.pisces.command.impl.base
+
+Befehlsimplementierungen für grundlegende Befehle (z.B. `help`/`usage`)
+
+# Package de.menkalian.pisces.command.impl.settings
+
+Befehlsimplementierungen für Befehle, die Einstellungen verändern
+
+# Package de.menkalian.pisces.command.impl.settings.joinsound
+
+Befehlsimplementierungen für Einstellungsbefehle die Joinsounds betreffen
+
+# Package de.menkalian.pisces.command.impl.settings.prefix
+
+Befehlsimplementierungen für Einstellungsbefehle die das Befehlspräfix betreffen
+
+# Package de.menkalian.pisces.command.impl.settings.repeat
+
+Befehlsimplementierungen für Einstellungsbefehl, die das Wiederholungsverhalten betreffen
+
+# Package de.menkalian.pisces.command.impl.settings.shuffle
+
+Befehlsimplementierungen für Einstellungsbefehle die den Zufallsmix betreffen
+
+# Package de.menkalian.pisces.command.listener
+
+Implementierungen von JDA-Listenern
 
 # Package de.menkalian.pisces.config
 
@@ -33,6 +83,11 @@ Programmatische Konfiguration der Applikation. Dieses Package enthält kein [IHa
 Kapselung der Datenbankzugriffe. Das [IHandler][de.menkalian.pisces.IHandler]-Interface der Komponente ist [IDatabaseHandler][de.menkalian.pisces.database.IDatabaseHandler]. Aktuell unterstützt die Applikation die folgenden DBMS:
 
 * HSQLDB über `spring-data-jpa`
+* MariaDB über `spring-data-jpa`
+
+# Package de.menkalian.pisces.database.data
+
+Datenklassen zur vereinfachten Repräsentation von Objekten, die in der Datenbank abgelegt werden (oder daraus gelesen wurden)
 
 # Package de.menkalian.pisces.database.jpa
 

@@ -9,6 +9,8 @@ import net.dv8tion.jda.api.JDA
 import net.dv8tion.jda.api.JDABuilder
 import net.dv8tion.jda.api.OnlineStatus
 import net.dv8tion.jda.api.entities.Activity
+import net.dv8tion.jda.api.entities.Guild
+import net.dv8tion.jda.api.entities.User
 import net.dv8tion.jda.api.hooks.EventListener
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.context.annotation.Conditional
@@ -26,8 +28,29 @@ class JdaDiscordHandler(
 
     private lateinit var innerJda: JDA
 
-    override val jda: JDA
-        get() = innerJda
+    override val selfUser: SelfUser
+        get() = innerJda.selfUser.let {
+            SelfUser(it.idLong, it.name, it.avatarUrl ?: it.effectiveAvatarUrl)
+        }
+
+    override val gatewayPing: Long
+        get() = innerJda.gatewayPing
+
+    override val restPing: Long
+        get() = innerJda.restPing.complete()
+
+    override fun getJdaGuild(id: Long): Guild? {
+        return innerJda.getGuildById(id)
+    }
+
+    override fun getJdaUser(id: Long): User? {
+        return innerJda.getUserById(id)
+            ?: innerJda.retrieveUserById(id).complete() ?: null
+    }
+
+    override fun installAux() {
+        innerJda.installAuxiliaryPort().complete()
+    }
 
     override fun initialize() {
         innerJda = JDABuilder
@@ -48,6 +71,6 @@ class JdaDiscordHandler(
         startDeinitialization()
         innerJda.shutdown()
         // Waiting for the shutdown to finish
-        Thread.sleep(300)
+        Thread.sleep(2000)
     }
 }

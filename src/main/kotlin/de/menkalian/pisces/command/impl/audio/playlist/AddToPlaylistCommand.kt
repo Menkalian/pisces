@@ -14,6 +14,9 @@ import de.menkalian.pisces.util.applyQueueResult
 import org.springframework.context.annotation.Conditional
 import org.springframework.stereotype.Component
 
+/**
+ * Implementierung eines Befehls zum Hinzufügen eines Songs zu einer Playlist
+ */
 @Component
 @Conditional(OnConfigValueCondition::class)
 @RequiresKey(["pisces.command.impl.audio.playlist.AddToPlaylist"])
@@ -23,6 +26,8 @@ class AddToPlaylistCommand(
     val audioHandler: IAudioHandler
 ) : CommonCommandBase() {
     override fun initialize() {
+        innerCategory = "Playlist"
+
         aliases.add("atp")
         aliases.add("addtopl")
         aliases.add("addpl")

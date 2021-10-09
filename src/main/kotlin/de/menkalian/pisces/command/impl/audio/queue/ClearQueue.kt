@@ -13,6 +13,9 @@ import de.menkalian.pisces.util.FixedVariables
 import org.springframework.context.annotation.Conditional
 import org.springframework.stereotype.Component
 
+/**
+ * Implementierung eines Befehls zum Leeren der aktuellen Wiedergabeliste
+ */
 @Component
 @Conditional(OnConfigValueCondition::class)
 @RequiresKey(["pisces.command.impl.audio.ClearQueue"])
@@ -22,6 +25,8 @@ class ClearQueue(
     val audioHandler: IAudioHandler
 ) : CommonCommandBase() {
     override fun initialize() {
+        innerCategory = "Wiedergabeliste"
+
         aliases.add("unqueueAll")
         aliases.add("uqa")
 

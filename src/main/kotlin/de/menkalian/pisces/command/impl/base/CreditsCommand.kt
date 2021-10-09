@@ -12,6 +12,9 @@ import de.menkalian.pisces.util.FixedVariables
 import org.springframework.context.annotation.Conditional
 import org.springframework.stereotype.Component
 
+/**
+ * Implementierung eines Befehls der Informationen zum Bot und dem Entwicklerteam anzeigt
+ */
 @Component
 @Conditional(OnConfigValueCondition::class)
 @RequiresKey(["pisces.command.impl.base.Credits"])
@@ -20,6 +23,8 @@ class CreditsCommand(
     val messageHandler: IMessageHandler
 ) : CommonCommandBase() {
     override fun initialize() {
+        innerCategory = "Information"
+
         supportedContexts.addAll(ALL_CONTEXTS)
         supportedSources.addAll(ALL_SOURCES)
 

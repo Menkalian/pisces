@@ -15,6 +15,9 @@ import de.menkalian.pisces.util.withWarningColor
 import org.springframework.context.annotation.Conditional
 import org.springframework.stereotype.Component
 
+/**
+ * Implementierung eines Befehls zum Entfernen des zuletzt gequeueten Tracks aus der Wiedergabeliste
+ */
 @Component
 @Conditional(OnConfigValueCondition::class)
 @RequiresKey(["pisces.command.impl.audio.Unqueuelast"])
@@ -24,6 +27,8 @@ class UnqueueLastCommand(
     val audioHandler: IAudioHandler
 ) : CommonCommandBase() {
     override fun initialize() {
+        innerCategory = "Wiedergabeliste"
+
         aliases.add("uql")
         aliases.add("pop")
 

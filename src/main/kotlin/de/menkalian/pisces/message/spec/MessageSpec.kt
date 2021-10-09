@@ -1,9 +1,11 @@
 package de.menkalian.pisces.message.spec
 
+import de.menkalian.pisces.util.logger
 import net.dv8tion.jda.api.entities.Role
 import java.nio.ByteBuffer
 import java.time.OffsetDateTime
 import java.time.temporal.TemporalAccessor
+import java.util.concurrent.atomic.AtomicLong
 
 /**
  * Datenklasse zur Speicherung aller relevanten Informationen zu einer Nachricht.
@@ -25,11 +27,16 @@ import java.time.temporal.TemporalAccessor
 @Suppress("UNCHECKED_CAST") // T has to be the Subclass, so
 abstract class MessageSpec<T> {
 
+    companion object {
+        val instanceCounter = AtomicLong(0L)
+    }
+
     /**
      * Methode, die aufgerufen wird, nachdem sich die Werte von Feldern geändert haben.
      */
     protected abstract fun onUpdated()
 
+    protected val instanceId = instanceCounter.incrementAndGet()
     protected var author: AuthorSpec = AuthorSpec("", "", "")
     protected var title: String = ""
     protected var color: Int = Role.DEFAULT_COLOR_RAW
@@ -53,6 +60,7 @@ abstract class MessageSpec<T> {
      */
     fun withAuthor(name: String? = null, url: String? = null, iconUrl: String? = null): T {
         author = AuthorSpec(name ?: author.name, url ?: author.url, iconUrl ?: author.iconUrl)
+        logger().debug("Set author for $this: $author")
         onUpdated()
         return this as T
     }
@@ -65,6 +73,7 @@ abstract class MessageSpec<T> {
      */
     fun withTitle(title: String? = null): T {
         this.title = title ?: this.title
+        logger().debug("Set title for $this: ${this.title}")
         onUpdated()
         return this as T
     }
@@ -77,6 +86,7 @@ abstract class MessageSpec<T> {
      */
     fun withText(text: String? = null): T {
         this.text = text ?: this.text
+        logger().debug("Set text for $this: ${this.title}")
         onUpdated()
         return this as T
     }
@@ -89,6 +99,7 @@ abstract class MessageSpec<T> {
      */
     fun appendText(text: Any? = ""): T {
         this.text += text
+        logger().debug("Updated text for $this: ${this.title}")
         onUpdated()
         return this as T
     }
@@ -98,6 +109,7 @@ abstract class MessageSpec<T> {
      */
     fun clearFields(): T {
         fields.clear()
+        logger().debug("Clearing fields for $this")
         return this as T
     }
 
@@ -108,6 +120,7 @@ abstract class MessageSpec<T> {
      */
     fun addBlankField(isInline: Boolean): T {
         fields.add(FieldSpec(inline = isInline, blank = true))
+        logger().debug("Adding blank field to $this")
         onUpdated()
         return this as T
     }
@@ -120,7 +133,9 @@ abstract class MessageSpec<T> {
      * @param isInline Ob das Feld inline dargestellt werden soll.
      */
     fun addField(name: String = "", text: String = "", isInline: Boolean = false): T {
-        fields.add(FieldSpec(name, text, isInline))
+        val addedField = FieldSpec(name, text, isInline)
+        fields.add(addedField)
+        logger().debug("Adding field to $this: $addedField")
         onUpdated()
         return this as T
     }
@@ -136,6 +151,7 @@ abstract class MessageSpec<T> {
         color = ByteBuffer.allocate(4)
             .put(0x1F).put(red).put(green).put(blue)
             .getInt(0)
+        logger().debug("Set color for $this: ${this.color}")
         onUpdated()
         return this as T
     }
@@ -152,6 +168,7 @@ abstract class MessageSpec<T> {
      */
     fun withColor(colorInt: Int): T {
         color = colorInt
+        logger().debug("Set color for $this: ${this.color}")
         onUpdated()
         return this as T
     }
@@ -164,6 +181,7 @@ abstract class MessageSpec<T> {
      */
     fun withTimestamp(timestamp: TemporalAccessor? = null): T {
         this.timestamp = timestamp ?: this.timestamp
+        logger().debug("Setting Timestamp for $this: ${this.timestamp}")
         onUpdated()
         return this as T
     }
@@ -179,6 +197,7 @@ abstract class MessageSpec<T> {
      */
     fun withImage(imageUrl: String? = null): T {
         this.imageUrl = imageUrl ?: this.imageUrl
+        logger().debug("Set image for $this: ${this.imageUrl}")
         onUpdated()
         return this as T
     }
@@ -194,6 +213,7 @@ abstract class MessageSpec<T> {
      */
     fun withThumbnail(imageUrl: String? = null): T {
         this.thumbnailUrl = imageUrl ?: this.thumbnailUrl
+        logger().debug("Set thumbnail for $this: ${this.thumbnailUrl}")
         onUpdated()
         return this as T
     }
@@ -208,8 +228,13 @@ abstract class MessageSpec<T> {
     fun withFooter(text: String? = null, imageUrl: String? = null): T {
         this.footerText = text ?: this.footerText
         this.footerIconUrl = imageUrl ?: this.footerIconUrl
+        logger().debug("Set footer for $this: {text=${this.footerText}, url=${this.footerIconUrl}")
 
         onUpdated()
         return this as T
+    }
+
+    override fun toString(): String {
+        return "${this::class.simpleName}#$instanceId"
     }
 }

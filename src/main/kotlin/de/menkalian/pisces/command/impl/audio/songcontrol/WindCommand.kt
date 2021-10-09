@@ -15,6 +15,9 @@ import de.menkalian.pisces.util.withWarningColor
 import org.springframework.context.annotation.Conditional
 import org.springframework.stereotype.Component
 
+/**
+ * Implementierung eines Befehls zum Vor- oder Zurückspulen der aktuellen Wiedergabe
+ */
 @Component
 @Conditional(OnConfigValueCondition::class)
 @RequiresKey(["pisces.command.impl.audio.Wind"])
@@ -24,6 +27,8 @@ class WindCommand(
     val audioHandler: IAudioHandler
 ) : CommonCommandBase() {
     override fun initialize() {
+        innerCategory = "Steuerung"
+
         aliases.add("skipby")
         aliases.add("rewind")
 

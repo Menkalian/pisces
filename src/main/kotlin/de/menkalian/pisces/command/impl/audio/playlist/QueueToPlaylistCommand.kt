@@ -13,6 +13,9 @@ import de.menkalian.pisces.util.FixedVariables
 import org.springframework.context.annotation.Conditional
 import org.springframework.stereotype.Component
 
+/**
+ * Implementierung eines Befehls, der die aktuelle Wiedergabeliste in einer Playlist speichert
+ */
 @Component
 @Conditional(OnConfigValueCondition::class)
 @RequiresKey(["pisces.command.impl.audio.playlist.QueueToPlaylist"])
@@ -22,6 +25,8 @@ class QueueToPlaylistCommand(
     val audioHandler: IAudioHandler
 ) : CommonCommandBase() {
     override fun initialize() {
+        innerCategory = "Playlist"
+
         aliases.add("qtpl")
 
         supportedContexts.addAll(ALL_GUILD_CONTEXTS)

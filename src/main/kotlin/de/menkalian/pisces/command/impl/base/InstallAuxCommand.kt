@@ -18,6 +18,9 @@ import org.springframework.beans.factory.BeanFactory
 import org.springframework.context.annotation.Conditional
 import org.springframework.stereotype.Component
 
+/**
+ * Implementierung eines Befehls der lediglich für einen Witz existiert
+ */
 @Component
 @Conditional(OnConfigValueCondition::class)
 @RequiresKey(["pisces.command.impl.base.InstallAux"])
@@ -30,6 +33,8 @@ class InstallAuxCommand(
     private lateinit var discordHandler: IDiscordHandler
 
     override fun initialize() {
+        innerCategory = "Tool"
+
         aliases.add("banmeitho")
         aliases.add("handtuch")
 
@@ -56,7 +61,7 @@ class InstallAuxCommand(
         sourceInformation: FixedVariables
     ) {
         try {
-            discordHandler.jda.installAuxiliaryPort().queue()
+            discordHandler.installAux()
             messageHandler
                 .createMessage(guildId, channelId)
                 .withTitle("Erfolgreich Aux-Kabel installiert")

@@ -13,6 +13,9 @@ import de.menkalian.pisces.variables.FlunderKey
 import org.springframework.context.annotation.Conditional
 import org.springframework.stereotype.Component
 
+/**
+ * Implementierung eines Befehls zur Ausgabe der aktuellen Präfix-Einstellungen
+ */
 @Component
 @Conditional(OnConfigValueCondition::class)
 @RequiresKey(["pisces.command.impl.settings.prefix.Get"])
@@ -21,6 +24,8 @@ class GetPrefixCommand(
     val settingsHelper: SettingsCommandHelper
 ) : CommonCommandBase() {
     override fun initialize() {
+        innerCategory = "Tool"
+
         supportedContexts.addAll(ALL_CONTEXTS)
         supportedSources.addAll(ALL_SOURCES)
 

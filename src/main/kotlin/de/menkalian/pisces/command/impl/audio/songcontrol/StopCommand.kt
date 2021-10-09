@@ -13,6 +13,9 @@ import de.menkalian.pisces.util.FixedVariables
 import org.springframework.context.annotation.Conditional
 import org.springframework.stereotype.Component
 
+/**
+ * Implementierung eines Befehls zum Stoppen der Wiedergabe (ohne die Wiedergabeliste zu beeinflussen)
+ */
 @Component
 @Conditional(OnConfigValueCondition::class)
 @RequiresKey(["pisces.command.impl.audio.Stop"])
@@ -22,6 +25,8 @@ class StopCommand(
     val audioHandler: IAudioHandler
 ) : CommonCommandBase() {
     override fun initialize() {
+        innerCategory = "Steuerung"
+
         aliases.add("st")
 
         supportedContexts.addAll(ALL_GUILD_CONTEXTS)
