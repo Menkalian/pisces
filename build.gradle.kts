@@ -98,7 +98,7 @@ dependencies {
     runtimeOnly("org.mariadb.jdbc:mariadb-java-client")
 
     // JDA
-    implementation("net.dv8tion:JDA:4.3.0_333")
+    implementation("net.dv8tion:JDA:4.3.0_334")
     implementation("com.sedmelluq:lavaplayer:1.3.78")
 
     testImplementation(springboot("test"))
