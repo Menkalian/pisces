@@ -23,7 +23,7 @@ plugins {
 }
 
 group = "de.menkalian.pisces"
-version = "5.1.1"
+version = "5.2.0"
 
 // Compilation and generation settings
 java {
@@ -100,6 +100,9 @@ dependencies {
     // JDA
     implementation("net.dv8tion:JDA:4.3.0_334")
     implementation("com.sedmelluq:lavaplayer:1.3.78")
+
+    // Spotify
+    implementation("se.michaelthelin.spotify:spotify-web-api-java:6.5.4")
 
     testImplementation(springboot("test"))
     testImplementation("org.junit.jupiter:junit-jupiter-api:5.6.0")

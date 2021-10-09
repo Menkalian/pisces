@@ -3,6 +3,9 @@
     <set vela:name="pisces">
         <set vela:name="audio">
             <set vela:name="filter" />
+            <set vela:name="spotify">
+                <feature vela:name="SpotifyHelper" />
+            </set>
             <feature vela:default="true" vela:name="ExtendedAudioSendHandler">
                 <impl vela:default="true" vela:name="UnfilteredLavaplayerAudioSendHandler" />
             </feature>

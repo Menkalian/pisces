@@ -62,7 +62,11 @@ class MessageReactionListener : ListenerAdapter() {
 
             if (doRemove) {
                 logger().debug("Removing added reaction, since it was processed successfully")
-                event.reaction.removeReaction().queue()
+                try {
+                    event.user?.let { event.reaction.removeReaction(it).queue() }
+                } catch (ex: Exception) {
+                    logger().error("Could not remove reaction", ex)
+                }
             }
         }
     }

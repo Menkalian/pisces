@@ -11,6 +11,7 @@ import de.menkalian.pisces.command.impl.audio.JoinCommand
 import de.menkalian.pisces.database.IDatabaseHandler
 import de.menkalian.pisces.message.IMessageHandler
 import de.menkalian.pisces.util.FixedVariables
+import de.menkalian.pisces.util.SpotifyHelper
 import de.menkalian.pisces.util.applyQueueResult
 import de.menkalian.pisces.util.withSuccessColor
 import org.springframework.context.annotation.Conditional
@@ -26,6 +27,7 @@ class PlayListCommand(
     override val databaseHandler: IDatabaseHandler,
     val messageHandler: IMessageHandler,
     val audioHandler: IAudioHandler,
+    val spotifyHelper: SpotifyHelper?,
     val joinCommand: JoinCommand
 ) : CommonCommandBase() {
     override fun initialize() {
@@ -72,6 +74,34 @@ class PlayListCommand(
         }
 
         val name: String = parameters.getTextArg()
+        val spotifyTracks = spotifyHelper?.retrieveFromPlaylistUrl(name)
+        if (spotifyTracks != null) {
+            messageHandler
+                .createMessage(guildId, channelId)
+                .withTitle("Lade Lieder von Spotify... dies kann etwas dauern")
+                .withSuccessColor()
+                .build()
+
+            val msg = messageHandler
+                .createMessage(guildId, channelId)
+
+            spotifyTracks.forEachIndexed { index, trackname ->
+                val result = controller
+                    .playTrack(
+                        trackname,
+                        playInstant = index == 0 && parameters.isSkipQueue()
+                    )
+                msg.applyQueueResult(result)
+            }
+
+            msg
+                .withThumbnail("")
+                .withSuccessColor()
+                .withTitle("Die Playlist wurde von Spotify geladen.")
+                .build()
+            return
+        }
+
         val playlistHandle = databaseHandler.getPlaylistIfExists(guildId, name)
         if (playlistHandle != null) {
             val songs = databaseHandler.getPlaylistSongs(playlistHandle)
