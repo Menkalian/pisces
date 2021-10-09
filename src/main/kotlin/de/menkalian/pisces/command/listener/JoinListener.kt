@@ -11,14 +11,15 @@ import net.dv8tion.jda.api.hooks.ListenerAdapter
 import org.springframework.context.annotation.Conditional
 import org.springframework.stereotype.Service
 
-
+/**
+ * Listener für die Discord-Events zum Joinen von Personen.
+ * Verantwortlich für das Triggern der Joinsounds.
+ */
 @Service
 @Conditional(OnConfigValueCondition::class)
 @RequiresKey(["pisces.command.JoinListener"])
 class JoinListener(val audioHandler: IAudioHandler, val databaseHandler: IDatabaseHandler) : ListenerAdapter() {
     override fun onGuildVoiceJoin(event: GuildVoiceJoinEvent) {
-        if (event.member.idLong == event.jda.selfUser.idLong)
-            return
         onUserVoiceJoin(
             event.member.idLong,
             event.guild.idLong,
@@ -27,8 +28,6 @@ class JoinListener(val audioHandler: IAudioHandler, val databaseHandler: IDataba
     }
 
     override fun onGuildVoiceMove(event: GuildVoiceMoveEvent) {
-        if (event.member.idLong == event.jda.selfUser.idLong)
-            return
         onUserVoiceJoin(
             event.member.idLong,
             event.guild.idLong,
@@ -37,10 +36,11 @@ class JoinListener(val audioHandler: IAudioHandler, val databaseHandler: IDataba
     }
 
     private fun onUserVoiceJoin(userId: Long, guildId: Long, channelId: Long) {
+        logger().info("$userId joined $channelId in $guildId")
         val controller = audioHandler.getGuildAudioController(guildId)
 
         if (channelId == controller.getConnectedChannel()) {
-            logger().debug("Searching Joinsound for user $userId (joined in guild $guildId)")
+            logger().debug("Searching Joinsound for user $userId")
             val songEntry = databaseHandler.getUserJoinsound(userId)
             logger().debug("Found entry: \"$songEntry\"")
             if (songEntry != null) {

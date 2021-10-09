@@ -53,8 +53,10 @@ interface IMessageHandler : IHandler {
          * @param userId Discord-ID des/der Nutzer*in, der/die die Reaktion hinzugefügt hat.
          * @param messageInstance Instanz für die das Event aufgetreten ist.
          * @param reaction UTF-8 Repräsentation des Unicode-Emoji, das in der Reaktion enthalten war.
+         *
+         * @return Ob die Reaktion nach der Verarbeitung entfernt werden soll
          */
-        fun onReactionAdded(userId: Long, messageInstance: IMessageInstance, reaction: String)
+        fun onReactionAdded(userId: Long, messageInstance: IMessageInstance, reaction: String): Boolean
 
         /**
          * Wird aufgerufen, wenn eine beliebige Reaktion von einer Nachricht entfernt wurde.

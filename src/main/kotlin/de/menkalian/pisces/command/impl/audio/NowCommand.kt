@@ -16,6 +16,9 @@ import de.menkalian.pisces.util.withWarningColor
 import org.springframework.context.annotation.Conditional
 import org.springframework.stereotype.Component
 
+/**
+ * Implementierung eines Befehls der Informationen zum aktuellen Song zurückgibt
+ */
 @Component
 @Conditional(OnConfigValueCondition::class)
 @RequiresKey(["pisces.command.impl.audio.Now"])
@@ -25,6 +28,8 @@ class NowCommand(
     val audioHandler: IAudioHandler
 ) : CommonCommandBase() {
     override fun initialize() {
+        innerCategory = "Audio"
+
         aliases.add("n")
 
         supportedContexts.addAll(ALL_GUILD_CONTEXTS)

@@ -23,7 +23,7 @@ plugins {
 }
 
 group = "de.menkalian.pisces"
-version = "5.1.0"
+version = "5.1.1"
 
 // Compilation and generation settings
 java {
@@ -98,7 +98,7 @@ dependencies {
     runtimeOnly("org.mariadb.jdbc:mariadb-java-client")
 
     // JDA
-    implementation("net.dv8tion:JDA:4.3.0_333")
+    implementation("net.dv8tion:JDA:4.3.0_334")
     implementation("com.sedmelluq:lavaplayer:1.3.78")
 
     testImplementation(springboot("test"))

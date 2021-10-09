@@ -14,6 +14,11 @@ import de.menkalian.pisces.util.withErrorColor
 import org.springframework.context.annotation.Conditional
 import org.springframework.stereotype.Component
 
+/**
+ * Implementierung eines Befehls zum Senden einer Grußnachricht an einen Nutzer
+ *
+ * Dieser Befehl wurde vor allem zu Testzwecken implementiert und ist üblicherweise in Produktivbuilds deaktiviert.
+ */
 @Component
 @Conditional(OnConfigValueCondition::class)
 @RequiresKey(["pisces.command.impl.base.Greet"])
@@ -22,6 +27,8 @@ class GreetCommand(
     val messageHandler: IMessageHandler
 ) : CommonCommandBase() {
     override fun initialize() {
+        innerCategory = "Tool"
+
         supportedContexts.addAll(ALL_CONTEXTS)
         supportedSources.addAll(ALL_SOURCES)
 

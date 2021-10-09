@@ -13,6 +13,9 @@ import de.menkalian.pisces.util.FixedVariables
 import org.springframework.context.annotation.Conditional
 import org.springframework.stereotype.Component
 
+/**
+ * Implementierung eines Befehls zur Steuerung des permanenten Zufallsmixes
+ */
 @Component
 @Conditional(OnConfigValueCondition::class)
 @RequiresKey(["pisces.command.impl.audio.PermanentShuffle"])
@@ -22,6 +25,8 @@ class PermanentShuffleCommand(
     val audioHandler: IAudioHandler
 ) : CommonCommandBase() {
     override fun initialize() {
+        innerCategory = "Steuerung"
+
         aliases.add("pshuffle")
 
         supportedContexts.addAll(ALL_GUILD_CONTEXTS)

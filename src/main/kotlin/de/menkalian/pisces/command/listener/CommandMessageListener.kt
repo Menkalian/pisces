@@ -24,6 +24,13 @@ import java.time.LocalTime
 import java.time.format.DateTimeFormatter
 
 
+/**
+ * Standardbehandlung für alle Nachrichten, die per Textnachricht gesendet werden.
+ * Diese Nachrichten sind folgendermaßen aufgebaut:
+ *      `{PREFIX}{COMMANDALIAS} [PARAMETERS] [DEFAULT_ARGUMENT]`
+ *
+ * Der Listener prüft alle Nachrichten auf Relevanz und parst gegebenenfalls die Parameter.
+ */
 @Suppress("RedundantModalityModifier")
 @Service
 @Conditional(OnConfigValueCondition::class)
@@ -35,9 +42,17 @@ class CommandMessageListener(
 ) : ListenerAdapter() {
 
     companion object {
+        /**
+         * Standardprefix zur Verwendung falls es Probleme bei der Datenbankabfrage gibt.
+         */
         private const val DEFAULT_PREFIX = "_"
     }
 
+    /**
+     * Map zum Cachen der Präfixe für die einzelnen Guilds/Server.
+     * Die Präfixe werden gecached um die Latenz pro Befehlsausführung zu verringern.
+     * Wird ein Präfix während der Laufzeit geändert, so wird dies an [ICommandHandler.IGuildPrefixChangedListener] bekannt gegeben.
+     */
     private val guildPrefixMap: MutableMap<Long, String> = hashMapOf()
 
     init {
@@ -53,13 +68,16 @@ class CommandMessageListener(
         val prefix = getPrefix(guildId)
         val msg = event.message.contentRaw
         if (msg.startsWith(prefix)) {
+            logger().trace("Prefix \"$prefix\" recognized in \"$msg\"")
             val fullCommandString = msg.substring(prefix.length)
+            logger().info("Received command: \"$fullCommandString\"")
             val resolvedCommand = commandHandler.getCommand(fullCommandString.parseCommand(), guildId)
 
             if (resolvedCommand != null
                 && resolvedCommand supports event.channelType
                 && resolvedCommand supports ECommandSource.TEXT
             ) {
+                logger().info("Executing command $resolvedCommand")
                 val additionalVars: Variables = hashMapOf()
                 additionalVars[Flunder.Command.User.Name] = event.author.name
 
@@ -80,12 +98,15 @@ class CommandMessageListener(
                     additionalVars
                 )
             } else {
+                logger().warn("Command $resolvedCommand could not handle a command from Guild $guildId, Channel $channelId")
                 notifyInvalidCommand(guildId, channelId)
             }
         }
     }
 
     private fun parseParameters(parameterString: String, command: ICommand): List<CommandParameter> {
+        logger().info("Parsing parameters from $parameterString")
+
         @Suppress("RegExpRedundantEscape")
         val sectioned = parameterString
             // Split by all non-escaped quotations
@@ -101,6 +122,7 @@ class CommandMessageListener(
                     listOf(str)
                 }
             }
+        logger().trace("Built sections: $sectioned")
 
         val parsedParameters = command.parameters.map { it.copy() }
         var highestIndex = -1
@@ -114,6 +136,7 @@ class CommandMessageListener(
                 }
 
                 if (paramIndex != -1) {
+                    logger().debug("Found ${param.name} at index $paramIndex")
                     if (param.type != EParameterType.BOOLEAN) {
                         try {
                             highestIndex = maxOf(highestIndex, paramIndex + 1)
@@ -127,6 +150,8 @@ class CommandMessageListener(
                         highestIndex = maxOf(highestIndex, paramIndex)
                         param.currentValue = true
                     }
+                } else {
+                    logger().debug("Did not find parameter ${param.name}")
                 }
             }
         }
@@ -140,6 +165,7 @@ class CommandMessageListener(
                         .subList(highestIndex + 1, sectioned.size)
                         .joinToString(" ")
 
+                    logger().debug("Treating \"$parameterValue\" as remaining argument")
                     try {
                         if (parameterValue.isNotBlank()) {
                             param.currentValue = parseParameter(parameterValue, param.type)
@@ -195,6 +221,7 @@ class CommandMessageListener(
     private fun getPrefix(guildId: Long): String {
         if (!guildPrefixMap.containsKey(guildId)) {
             loadGuild(guildId)
+            logger().debug("Caching prefix for guild $guildId")
         }
 
         return guildPrefixMap[guildId] ?: DEFAULT_PREFIX

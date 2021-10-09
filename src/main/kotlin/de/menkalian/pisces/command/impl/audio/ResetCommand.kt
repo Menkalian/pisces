@@ -16,6 +16,9 @@ import de.menkalian.pisces.util.withSuccessColor
 import org.springframework.context.annotation.Conditional
 import org.springframework.stereotype.Component
 
+/**
+ * Implementierung eines Befehls zum Zurücksetzen des Audioplayers
+ */
 @Component
 @Conditional(OnConfigValueCondition::class)
 @RequiresKey(["pisces.command.impl.audio.Reset"])
@@ -25,6 +28,8 @@ class ResetCommand(
     val audioHandler: IAudioHandler
 ) : CommonCommandBase() {
     override fun initialize() {
+        innerCategory = "Audio"
+
         aliases.add("rst")
 
         supportedContexts.addAll(ALL_GUILD_CONTEXTS)

@@ -13,6 +13,9 @@ import de.menkalian.pisces.util.FixedVariables
 import org.springframework.context.annotation.Conditional
 import org.springframework.stereotype.Component
 
+/**
+ * Implementierung eines Befehls der Informationen zum aktuellen Status des Bots ausgibt
+ */
 @Component
 @Conditional(OnConfigValueCondition::class)
 @RequiresKey(["pisces.command.impl.base.Info"])
@@ -22,6 +25,8 @@ class InfoCommand(
     val audioHandler: IAudioHandler
 ) : CommonCommandBase() {
     override fun initialize() {
+        innerCategory = "Information"
+
         aliases.add("status")
 
         supportedContexts.addAll(ALL_CONTEXTS)

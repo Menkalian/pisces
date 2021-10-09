@@ -3,6 +3,7 @@ package de.menkalian.pisces.message
 import de.menkalian.pisces.discord.IDiscordHandler
 import de.menkalian.pisces.message.spec.MessageSpec
 import de.menkalian.pisces.util.PiscesColor
+import de.menkalian.pisces.util.logger
 import java.time.OffsetDateTime
 
 /**
@@ -60,7 +61,8 @@ class MessageBuilder(
      * Setzt die Informationen dieses Builders wieder auf die Standardwerte zurück.
      */
     fun clear(): MessageBuilder {
-        withAuthor(discordHandler.jda.selfUser.name, "https://pisces.menkalian.de", discordHandler.jda.selfUser.avatarUrl)
+        logger().debug("Clearing $this")
+        withAuthor(discordHandler.selfUser.name, "https://pisces.menkalian.de", discordHandler.selfUser.avatarUrl)
         withTitle("Message")
         withText("")
         clearFields()
@@ -68,7 +70,7 @@ class MessageBuilder(
         withTimestamp(OffsetDateTime.now())
         withImage("")
         withThumbnail("")
-        withFooter("Visit Pisces on Gitlab", discordHandler.jda.selfUser.avatarUrl)
+        withFooter("Visit Pisces on Gitlab", discordHandler.selfUser.avatarUrl)
 
         return this
     }

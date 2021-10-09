@@ -13,6 +13,9 @@ import de.menkalian.pisces.util.FixedVariables
 import org.springframework.context.annotation.Conditional
 import org.springframework.stereotype.Component
 
+/**
+ * Implementierung eines Befehls um Playlists umzubenennen
+ */
 @Component
 @Conditional(OnConfigValueCondition::class)
 @RequiresKey(["pisces.command.impl.audio.playlist.RenamePlaylist"])
@@ -22,6 +25,8 @@ class RenamePlaylistCommand(
     val audioHandler: IAudioHandler
 ) : CommonCommandBase() {
     override fun initialize() {
+        innerCategory = "Playlist"
+
         aliases.add("mvpl")
         aliases.add("rnpl")
         aliases.add("renamepl")

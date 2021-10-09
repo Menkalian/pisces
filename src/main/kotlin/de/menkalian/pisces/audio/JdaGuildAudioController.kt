@@ -71,12 +71,11 @@ class JdaGuildAudioController(
 
         this.logger().trace("Configuring AudioPlayer")
         player.addListener(this)
-
         this.logger().trace("AudioPlayer setup complete.")
 
         this.logger().debug("Setting up JDA GuildAudioManager")
-        jdaGuildAudioManager = discordHandler.jda
-            .getGuildById(guildId)
+        jdaGuildAudioManager = discordHandler
+            .getJdaGuild(guildId)
             ?.audioManager ?: throw IllegalArgumentException("Invalid GuildId")
         jdaGuildAudioManager.sendingHandler = createSendingHandler(player)
 
@@ -142,6 +141,7 @@ class JdaGuildAudioController(
 
     override fun stop() {
         synchronized(playerAndQueueLock) {
+            logger().debug("Destroying AudioPlayer (it will be fine)")
             player.destroy()
         }
     }

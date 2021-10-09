@@ -9,15 +9,21 @@ import de.menkalian.pisces.command.data.ECommandSource
 import de.menkalian.pisces.database.IDatabaseHandler
 import de.menkalian.pisces.message.IMessageHandler
 import de.menkalian.pisces.util.FixedVariables
+import de.menkalian.pisces.util.asBold
 import de.menkalian.pisces.util.withErrorColor
 import org.springframework.context.annotation.Conditional
 import org.springframework.stereotype.Component
 
+/**
+ * Implementierung eines Befehls, der genauere Informationen zu einzelnen Befehlen und deren Verwendung gibt
+ */
 @Component
 @Conditional(OnConfigValueCondition::class)
 @RequiresKey(["pisces.command.impl.base.Usage"])
 class UsageCommand(override val databaseHandler: IDatabaseHandler, val messageHandler: IMessageHandler) : CommonCommandBase() {
     override fun initialize() {
+        innerCategory = "Information"
+
         aliases.add("xhelp")
         aliases.add("??")
 
@@ -53,6 +59,7 @@ class UsageCommand(override val databaseHandler: IDatabaseHandler, val messageHa
         if (command != null) {
             helpMessage
                 .withText(command.description)
+                .appendText("\nKategorie: ${command.category.asBold()}")
 
             command.parameters.forEach {
                 val title = when {

@@ -14,15 +14,20 @@ import de.menkalian.pisces.util.applyQueueResult
 import org.springframework.context.annotation.Conditional
 import org.springframework.stereotype.Component
 
+/**
+ * Implementierung eines Befehls zum Suchen von Audiotracks
+ */
 @Component
 @Conditional(OnConfigValueCondition::class)
-@RequiresKey(["pisces.command.impl.audio.playing.Search"])
+@RequiresKey(["pisces.command.impl.audio.Search"])
 class SearchCommand(
     override val databaseHandler: IDatabaseHandler,
     val messageHandler: IMessageHandler,
     val audioHandler: IAudioHandler
 ) : CommonCommandBase() {
     override fun initialize() {
+        innerCategory = "Audio"
+
         aliases.add("s")
 
         supportedContexts.addAll(ALL_GUILD_CONTEXTS)

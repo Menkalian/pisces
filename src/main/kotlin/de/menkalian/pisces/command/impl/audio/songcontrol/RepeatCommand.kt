@@ -13,6 +13,9 @@ import de.menkalian.pisces.util.FixedVariables
 import org.springframework.context.annotation.Conditional
 import org.springframework.stereotype.Component
 
+/**
+ * Implementierung eines Befehls zur Steuerung der Wiederholung
+ */
 @Component
 @Conditional(OnConfigValueCondition::class)
 @RequiresKey(["pisces.command.impl.audio.Repeat"])
@@ -22,6 +25,8 @@ class RepeatCommand(
     val audioHandler: IAudioHandler
 ) : CommonCommandBase() {
     override fun initialize() {
+        innerCategory = "Steuerung"
+
         aliases.add("wiederhole")
 
         supportedContexts.addAll(ALL_GUILD_CONTEXTS)

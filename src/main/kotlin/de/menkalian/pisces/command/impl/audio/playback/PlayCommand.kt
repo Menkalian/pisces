@@ -15,6 +15,9 @@ import de.menkalian.pisces.util.applyQueueResult
 import org.springframework.context.annotation.Conditional
 import org.springframework.stereotype.Component
 
+/**
+ * Implementierung eines Befehls zum Starten der Wiedergabe eines Songs
+ */
 @Component
 @Conditional(OnConfigValueCondition::class)
 @RequiresKey(["pisces.command.impl.audio.playing.Play"])
@@ -25,6 +28,8 @@ class PlayCommand(
     val joinCommand: JoinCommand
 ) : CommonCommandBase() {
     override fun initialize() {
+        innerCategory = "Wiedergabe"
+
         aliases.add("p")
 
         supportedContexts.addAll(ALL_GUILD_CONTEXTS)

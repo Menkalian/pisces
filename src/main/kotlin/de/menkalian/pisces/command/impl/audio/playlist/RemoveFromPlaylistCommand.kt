@@ -14,6 +14,10 @@ import de.menkalian.pisces.util.applyQueueResult
 import org.springframework.context.annotation.Conditional
 import org.springframework.stereotype.Component
 
+
+/**
+ * Implementierung eines Befehls, der einen Song aus einer Playlist entfernt
+ */
 @Component
 @Conditional(OnConfigValueCondition::class)
 @RequiresKey(["pisces.command.impl.audio.playlist.RemoveFromPlaylist"])
@@ -23,6 +27,8 @@ class RemoveFromPlaylistCommand(
     val audioHandler: IAudioHandler
 ) : CommonCommandBase() {
     override fun initialize() {
+        innerCategory = "Playlist"
+
         aliases.add("rfp")
         aliases.add("rmfrompl")
         aliases.add("rmpl")

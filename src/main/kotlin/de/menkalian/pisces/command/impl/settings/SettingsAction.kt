@@ -6,6 +6,9 @@ import de.menkalian.pisces.util.logger
 import de.menkalian.pisces.util.withErrorColor
 import de.menkalian.pisces.util.withSuccessColor
 
+/**
+ * Standardimplementierung von [ISettingsAction]
+ */
 class SettingsAction(
     val databaseHandler: IDatabaseHandler,
     val messageHandler: IMessageHandler,

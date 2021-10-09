@@ -15,6 +15,9 @@ import de.menkalian.pisces.util.applyQueueResult
 import org.springframework.context.annotation.Conditional
 import org.springframework.stereotype.Component
 
+/**
+ * Implementierung eines Befehls zum sofortigen Starten der Wiedergabe eines Songs
+ */
 @Component
 @Conditional(OnConfigValueCondition::class)
 @RequiresKey(["pisces.command.impl.audio.playing.Playnow"])
@@ -25,6 +28,8 @@ class PlayNowCommand(
     val joinCommand: JoinCommand
 ) : CommonCommandBase() {
     override fun initialize() {
+        innerCategory = "Wiedergabe"
+
         aliases.add("nowplay")
         aliases.add("np")
         aliases.add("pn")
