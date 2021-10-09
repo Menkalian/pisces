@@ -11,6 +11,7 @@ import de.menkalian.pisces.command.impl.audio.JoinCommand
 import de.menkalian.pisces.database.IDatabaseHandler
 import de.menkalian.pisces.message.IMessageHandler
 import de.menkalian.pisces.util.FixedVariables
+import de.menkalian.pisces.util.SpotifyHelper
 import de.menkalian.pisces.util.applyQueueResult
 import de.menkalian.pisces.util.withErrorColor
 import de.menkalian.pisces.util.withSuccessColor
@@ -27,6 +28,7 @@ class PlayListShuffledCommand(
     override val databaseHandler: IDatabaseHandler,
     val messageHandler: IMessageHandler,
     val audioHandler: IAudioHandler,
+    val spotifyHelper: SpotifyHelper?,
     val joinCommand: JoinCommand
 ) : CommonCommandBase() {
     override fun initialize() {
@@ -62,7 +64,25 @@ class PlayListShuffledCommand(
         }
 
         val playlistName: String = parameters.getTextArg()
-        if (!PlaylistHelper.ensurePlaylistValid(playlistName, guildId, channelId, messageHandler)) {
+        val spotifyTracks = spotifyHelper?.retrieveFromPlaylistUrl(name)
+        if (spotifyTracks != null) {
+            val msg = messageHandler
+                .createMessage(guildId, channelId)
+
+            spotifyTracks.shuffled().forEachIndexed { index, trackname ->
+                val result = controller
+                    .playTrack(
+                        trackname,
+                        false
+                    )
+                msg.applyQueueResult(result)
+            }
+
+            msg
+                .withThumbnail("")
+                .withSuccessColor()
+                .withTitle("Die Playlist wurde von Spotify geladen und zufällig hinzugefügt.")
+                .build()
             return
         }
 

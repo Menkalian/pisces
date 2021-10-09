@@ -6,6 +6,7 @@ package de.menkalian.pisces.config
 class DefaultFeatureConfig : FeatureConfig() {
     override fun configure() {
         pisces.audio.apply {
+            spotify.SpotifyHelper.enable()
         }
 
         pisces.command.apply {
