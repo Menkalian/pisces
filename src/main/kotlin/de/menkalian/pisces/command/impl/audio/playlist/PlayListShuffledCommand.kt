@@ -13,7 +13,6 @@ import de.menkalian.pisces.message.IMessageHandler
 import de.menkalian.pisces.util.FixedVariables
 import de.menkalian.pisces.util.SpotifyHelper
 import de.menkalian.pisces.util.applyQueueResult
-import de.menkalian.pisces.util.withErrorColor
 import de.menkalian.pisces.util.withSuccessColor
 import org.springframework.context.annotation.Conditional
 import org.springframework.stereotype.Component
@@ -63,58 +62,18 @@ class PlayListShuffledCommand(
             joinCommand.execute(commandHandler, source, parameters, guildId, channelId, authorId, sourceInformation)
         }
 
-        val playlistName: String = parameters.getTextArg()
-        val spotifyTracks = spotifyHelper?.retrieveFromPlaylistUrl(name)
-        if (spotifyTracks != null) {
-            val msg = messageHandler
-                .createMessage(guildId, channelId)
+        val name: String = parameters.getTextArg()
 
-            spotifyTracks.shuffled().forEachIndexed { index, trackname ->
-                val result = controller
-                    .playTrack(
-                        trackname,
-                        false
-                    )
-                msg.applyQueueResult(result)
-            }
-
-            msg
-                .withThumbnail("")
-                .withSuccessColor()
-                .withTitle("Die Playlist wurde von Spotify geladen und zufällig hinzugefügt.")
-                .build()
-            return
-        }
-
-        val playlistHandle = databaseHandler.getPlaylistIfExists(guildId, playlistName)
-        if (playlistHandle != null) {
-            val songs = databaseHandler.getPlaylistSongs(playlistHandle)
-            val msg = messageHandler
-                .createMessage(guildId, channelId)
-
-            songs
-                .shuffled()
-                .forEachIndexed { index, track ->
-                    val result = controller
-                        .playTrack(
-                            track.url,
-                            playInstant = index == 0
-                        )
-                    msg.applyQueueResult(result)
-                }
-
-            msg
-                .withThumbnail("")
-                .withSuccessColor()
-                .withTitle("Die Playlist $playlistName wurde geladen und in zufälliger Reihenfolge zur Queue hinzugefügt.")
-                .build()
-        } else {
-            messageHandler
-                .createMessage(guildId, channelId)
-                .withErrorColor()
-                .withTitle("Eine Playlist namens \"$playlistName\" existiert nicht auf dem Server")
-                .build()
-        }
+        messageHandler
+            .createMessage(guildId, channelId)
+            .withTitle("Suche Playlist und lade Songs... Je nach Art der Playlist kann dies einige Zeit dauern.")
+            .withSuccessColor()
+            .build()
+        val result = controller.playList(name, shuffled = true)
+        messageHandler
+            .createMessage(guildId, channelId)
+            .applyQueueResult(result)
+            .build()
     }
 
     private fun List<CommandParameter>.getTextArg(): String {

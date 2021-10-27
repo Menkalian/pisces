@@ -39,7 +39,7 @@ class JoinListener(val audioHandler: IAudioHandler, val databaseHandler: IDataba
         logger().info("$userId joined $channelId in $guildId")
         val controller = audioHandler.getGuildAudioController(guildId)
 
-        if (channelId == controller.getConnectedChannel()) {
+        if (channelId == controller.getConnectedChannel() && !controller.togglePause(false)) {
             logger().debug("Searching Joinsound for user $userId")
             val songEntry = databaseHandler.getUserJoinsound(userId)
             logger().debug("Found entry: \"$songEntry\"")
