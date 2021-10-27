@@ -39,6 +39,11 @@ class PlayListCommand(
         supportedSources.addAll(ALL_SOURCES)
 
         addBooleanParameter(
+            "shuffle",
+            's',
+            "Falls diese Option übergeben wurde, wird die Playlist geshuffled abgespielt."
+        )
+        addBooleanParameter(
             "instant",
             'i',
             "Falls diese Option übergeben wurde, wird die aktuelle Queue übersprungen, die aktuelle Wiedergabe abgebrochen und der Song wird sofort abgespielt."
@@ -74,66 +79,17 @@ class PlayListCommand(
         }
 
         val name: String = parameters.getTextArg()
-        val spotifyTracks = spotifyHelper?.retrieveFromPlaylistUrl(name)
-        if (spotifyTracks != null) {
-            messageHandler
-                .createMessage(guildId, channelId)
-                .withTitle("Lade Lieder von Spotify... dies kann etwas dauern")
-                .withSuccessColor()
-                .build()
 
-            val msg = messageHandler
-                .createMessage(guildId, channelId)
-
-            spotifyTracks.forEachIndexed { index, trackname ->
-                val result = controller
-                    .playTrack(
-                        trackname,
-                        playInstant = index == 0 && parameters.isSkipQueue()
-                    )
-                msg.applyQueueResult(result)
-            }
-
-            msg
-                .withThumbnail("")
-                .withSuccessColor()
-                .withTitle("Die Playlist wurde von Spotify geladen.")
-                .build()
-            return
-        }
-
-        val playlistHandle = databaseHandler.getPlaylistIfExists(guildId, name)
-        if (playlistHandle != null) {
-            val songs = databaseHandler.getPlaylistSongs(playlistHandle)
-            val msg = messageHandler
-                .createMessage(guildId, channelId)
-
-            songs.forEachIndexed { index, track ->
-                val result = controller
-                    .playTrack(
-                        track.url,
-                        playInstant = index == 0 && parameters.isSkipQueue()
-                    )
-                msg.applyQueueResult(result)
-            }
-
-            msg
-                .withThumbnail("")
-                .withSuccessColor()
-                .withTitle("Die Playlist $name wurde geladen.")
-                .build()
-        } else {
-            val result = controller.playTrack(
-                parameters.getTextArg(),
-                parameters.isSkipQueue(),
-                interruptCurrent = false,
-                playFullPlaylist = true
-            )
-            messageHandler
-                .createMessage(guildId, channelId)
-                .applyQueueResult(result)
-                .build()
-        }
+        messageHandler
+            .createMessage(guildId, channelId)
+            .withTitle("Suche Playlist und lade Songs... Je nach Art der Playlist kann dies einige Zeit dauern.")
+            .withSuccessColor()
+            .build()
+        val result = controller.playList(name, parameters.isSkipQueue(), parameters.isShuffle())
+        messageHandler
+            .createMessage(guildId, channelId)
+            .applyQueueResult(result)
+            .build()
     }
 
     private fun List<CommandParameter>.getTextArg(): String {
@@ -144,6 +100,12 @@ class PlayListCommand(
     private fun List<CommandParameter>.isSkipQueue(): Boolean {
         return this
             .filter { listOf("instant", "now").contains(it.name) }
+            .any { it.asBoolean() }
+    }
+
+    private fun List<CommandParameter>.isShuffle(): Boolean {
+        return this
+            .filter { listOf("shuffle").contains(it.name) }
             .any { it.asBoolean() }
     }
 }

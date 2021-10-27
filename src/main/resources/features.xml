@@ -21,6 +21,7 @@
                 <impl vela:default="true" vela:name="JdaGuildAudioController">
                     <dependency>pisces.discord.Handler.JdaDiscordHandler</dependency>
                     <dependency>pisces.audio.ExtendedAudioSendHandler</dependency>
+                    <dependency>pisces.audio.spotify.SpotifyHelper</dependency>
                 </impl>
             </feature>
         </set>

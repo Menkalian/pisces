@@ -25,6 +25,7 @@ class SpotifyHelper(
     final val spotifyApi: SpotifyApi?
 
     val playlistIdPattern = "https://open.spotify.com/playlist/([a-zA-z0-9]+)\\?.+".toRegex().toPattern()
+    val trackIdPattern = "https://open.spotify.com/track/([a-zA-z0-9]+)\\?.+".toRegex().toPattern()
 
     private val scheduler = Executors.newSingleThreadScheduledExecutor()
     private var renewErrorCount = 0L
@@ -63,6 +64,16 @@ class SpotifyHelper(
         return null
     }
 
+    fun retrieveFromTrackUrl(trackUrl: String): String? {
+        // https://open.spotify.com/track/07xFWwKPOApMS56ildsV0G?si=e70a73cf53834639
+        val matcher = trackIdPattern.matcher(trackUrl)
+        if (matcher.matches()) {
+            val id = matcher.group(1)
+            return getTrackSearchName(id)
+        }
+        return null
+    }
+
     /**
      * Lädt die Lieder von der angegebenen Spotify-URL.
      */
@@ -71,7 +82,16 @@ class SpotifyHelper(
             val playlist = spotifyApi?.getPlaylist(playlistId)
                 ?.build()
                 ?.execute()
-            return playlist?.tracks?.items?.map { it.track.name }
+            return playlist?.tracks?.items?.mapNotNull { getTrackSearchName(it.track.id) }
+        }
+    }
+
+    fun getTrackSearchName(trackId: String): String? {
+        synchronized(apiMutex) {
+            val track = spotifyApi?.getTrack(trackId)
+                ?.build()
+                ?.execute()
+            return track?.let { it.name + " " + (it.artists?.mapNotNull { it.name }?.joinToString() ?: "") }
         }
     }
 
