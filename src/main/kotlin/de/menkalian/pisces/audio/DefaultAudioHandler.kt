@@ -10,6 +10,7 @@ import de.menkalian.pisces.config.IConfig
 import de.menkalian.pisces.database.IDatabaseHandler
 import de.menkalian.pisces.discord.IDiscordHandler
 import de.menkalian.pisces.util.CommonHandlerImpl
+import de.menkalian.pisces.util.SpotifyHelper
 import de.menkalian.pisces.util.logger
 import org.springframework.beans.factory.BeanFactory
 import org.springframework.context.annotation.Conditional
@@ -25,6 +26,7 @@ class DefaultAudioHandler(
     val databaseHandler: IDatabaseHandler,
     val config: IConfig,
     val audioSendHandlerFactory: AudioSendHandlerFactory,
+    val spotifyHelper: SpotifyHelper,
     val beanFactory: BeanFactory
 ) : IAudioHandler,
     CommonHandlerImpl() {
@@ -60,7 +62,14 @@ class DefaultAudioHandler(
                 throw IllegalStateException("AudioController may not be inactive in Config, if AudioHandler is active")
 
             return when (it.activeImplementation) {
-                it.JdaGuildAudioController -> JdaGuildAudioController(id, audioSendHandlerFactory, playerManager, discordHandler, databaseHandler)
+                it.JdaGuildAudioController -> JdaGuildAudioController(
+                    id,
+                    audioSendHandlerFactory,
+                    playerManager,
+                    discordHandler,
+                    databaseHandler,
+                    spotifyHelper
+                )
                 else                       -> throw IllegalStateException("Unknown pisces.audio.Controller implementation ative")
             }
         }

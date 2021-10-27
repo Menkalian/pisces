@@ -20,6 +20,7 @@ import de.menkalian.pisces.audio.sending.AudioSendHandlerFactory
 import de.menkalian.pisces.database.IDatabaseHandler
 import de.menkalian.pisces.discord.IDiscordHandler
 import de.menkalian.pisces.util.QueueResult
+import de.menkalian.pisces.util.SpotifyHelper
 import de.menkalian.pisces.util.logger
 import de.menkalian.pisces.variables.FlunderKey.Flunder
 import net.dv8tion.jda.api.audio.AudioSendHandler
@@ -47,7 +48,7 @@ import java.util.concurrent.atomic.AtomicBoolean
 class JdaGuildAudioController(
     val guildId: Long, private val sendHandlerFactory: AudioSendHandlerFactory,
     private val playerManager: AudioPlayerManager, discordHandler: IDiscordHandler,
-    databaseHandler: IDatabaseHandler
+    databaseHandler: IDatabaseHandler, private val spotifyHelper: SpotifyHelper
 ) : IGuildAudioController, AudioEventListener, AudioEventAdapter() {
 
     // Synchronisation Locks
@@ -150,7 +151,17 @@ class JdaGuildAudioController(
         logger().info("Searching for \"$searchterm\" and queuing it afterwards (instant=$playInstant, interrupt=$interruptCurrent, fullPlaylist=$playFullPlaylist)")
         val completable = CompletableFuture<QueueResult>()
 
-        playerManager.loadItemOrdered(this, searchterm, object : AudioLoadResultHandler {
+        val actualSearchterm: String
+        val spotifyTrackSearchTerm = spotifyHelper.retrieveFromTrackUrl(searchterm)
+        if (spotifyTrackSearchTerm != null) {
+            logger().debug("Detected spotify track. Using \"$spotifyTrackSearchTerm\" to find the track on youtube.")
+            actualSearchterm = spotifyTrackSearchTerm
+        } else {
+            // No special case
+            actualSearchterm = searchterm
+        }
+
+        playerManager.loadItemOrdered(this, actualSearchterm, object : AudioLoadResultHandler {
             override fun trackLoaded(track: AudioTrack?) {
                 logger().debug("$this found track for \"$searchterm\": ${track?.makeInfo()}")
                 if (track != null) {
@@ -219,7 +230,17 @@ class JdaGuildAudioController(
         logger().info("Looking up \"$searchterm\" (enableSearch=$enableSearch, maxResults=$results)")
         val completable = CompletableFuture<QueueResult>()
 
-        playerManager.loadItem(searchterm, object : AudioLoadResultHandler {
+        val actualSearchterm: String
+        val spotifyTrackSearchTerm = spotifyHelper.retrieveFromTrackUrl(searchterm)
+        if (spotifyTrackSearchTerm != null) {
+            logger().debug("Detected spotify track. Using \"$spotifyTrackSearchTerm\" to find the track on youtube.")
+            actualSearchterm = spotifyTrackSearchTerm
+        } else {
+            // No special case
+            actualSearchterm = searchterm
+        }
+
+        playerManager.loadItem(actualSearchterm, object : AudioLoadResultHandler {
             override fun trackLoaded(track: AudioTrack?) {
                 logger().debug("$this found track for \"$searchterm\": ${track?.makeInfo()}")
                 if (track != null) {
