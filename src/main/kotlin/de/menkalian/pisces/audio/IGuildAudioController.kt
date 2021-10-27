@@ -66,6 +66,7 @@ interface IGuildAudioController {
      *  @param interruptCurrent Falls dieser Wert `true` ist, wird die Wiedergabe des aktuellen Tracks unterbrochen und stattdessen der angegebene Track gespielt.
      *                          **NACHDEM** der Track fertig gespielt hat wird die aktuelle Wiedergabe **fortgesetzt**.
      *  @param playFullPlaylist Falls der gefundene Track (bzw. die angegebene URL) teil einer Playlist ist, wird diese Playlist vollständig zur Queue hinzugefügt.
+     *  @param playListShuffled (Nur relevant wenn [playFullPlaylist] gesetzt ist) Ob die Playlist geshuffled werden soll.
      *
      *  @return Das passende Enum-Literal von [EPlayTrackResult][de.menkalian.pisces.audio.data.EPlayTrackResult] und eine Liste mit allen Tracks, die zur aktuellen Queue hinzugefügt wurden.
      */
@@ -73,7 +74,25 @@ interface IGuildAudioController {
         searchterm: String,
         playInstant: Boolean = false,
         interruptCurrent: Boolean = false,
-        playFullPlaylist: Boolean = false
+        playFullPlaylist: Boolean = false,
+        playListShuffled: Boolean = false
+    ): QueueResult
+
+    /**
+     * Startet die Wiedergabe einer Playlist.
+     * Dabei werden Playlists aus den folgenden Quellen unterstützt:
+     *  - Interne Playlists (Datenbank)
+     *  - Spotify
+     *  - Playlist-URLs von unterstützten AudioSources
+     *
+     *  @param searchterm Name oder URL der Playlist
+     *  @param playInstant Flag, ob die aktuelle Queue ignoriert werden soll (d.h. der gefundene Track wird sofort abgespielt, die aktuelle Wiedergabe wird **abgebrochen**)
+     *  @param shuffled Ob die Playlist geshuffled abgespielt werden soll
+     */
+    fun playList(
+        searchterm: String,
+        playInstant: Boolean = false,
+        shuffled: Boolean = false
     ): QueueResult
 
     /**
