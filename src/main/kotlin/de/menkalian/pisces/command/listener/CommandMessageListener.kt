@@ -232,10 +232,10 @@ class CommandMessageListener(
     }
 
     private fun String.parseCommand(): String {
-        return split(" ", limit = 2)[0]
+        return split("\\s+".toRegex(), limit = 2)[0]
     }
 
     private fun String.parseParameterString(): String {
-        return split(" ", limit = 2).getOrNull(1) ?: ""
+        return split("\\s+".toRegex(), limit = 2).getOrNull(1) ?: ""
     }
 }
