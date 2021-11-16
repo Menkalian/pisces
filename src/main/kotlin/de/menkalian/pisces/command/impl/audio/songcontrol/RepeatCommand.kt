@@ -50,11 +50,12 @@ class RepeatCommand(
         sourceInformation: FixedVariables
     ) {
         val controller = audioHandler.getGuildAudioController(guildId)
+        val repeatOn = controller.toggleRepeat()
 
         messageHandler
             .createMessage(guildId, channelId)
             .withTitle(
-                if (controller.togglePause())
+                if (repeatOn)
                     "Wiederholung wurde aktiviert"
                 else
                     "Wiederholung wurde deaktiviert"

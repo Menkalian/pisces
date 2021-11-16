@@ -170,7 +170,7 @@ class JdaGuildAudioController(
 
         playerManager.loadItemOrdered(this, actualSearchterm, object : AudioLoadResultHandler {
             override fun trackLoaded(track: AudioTrack?) {
-                logger().debug("$this found track for \"$searchterm\": ${track?.makeInfo()}")
+                logger().debug("$this found track for \"$actualSearchterm\": ${track?.makeInfo()}")
                 if (track != null) {
                     addTrack(track, playInstant = playInstant, interruptCurrent = interruptCurrent)
                     completable.complete(QueueResult(EPlayTrackResult.TRACK_URL, listOf(track.makeInfo())))
@@ -181,7 +181,7 @@ class JdaGuildAudioController(
             }
 
             override fun playlistLoaded(playlist: AudioPlaylist?) {
-                logger().debug("$this found playlist for \"$searchterm\": {name = ${playlist?.name}; ${playlist?.tracks?.map { it.makeInfo() }}")
+                logger().debug("$this found playlist for \"$actualSearchterm\": {name = ${playlist?.name}; ${playlist?.tracks?.map { it.makeInfo() }}")
                 if (playlist == null) {
                     // Try as fallback if invalid data is returned
                     noMatches()
@@ -212,7 +212,7 @@ class JdaGuildAudioController(
             }
 
             override fun noMatches() {
-                logger().debug("$this found no matches for \"$searchterm\". Searching on Youtube...")
+                logger().debug("$this found no matches for \"$actualSearchterm\". Searching on Youtube...")
                 val searchResult = searchYoutube(searchterm)
                 if (searchResult.isNotEmpty()) {
                     val trackToAdd = searchResult.first()
@@ -225,7 +225,7 @@ class JdaGuildAudioController(
             }
 
             override fun loadFailed(exception: FriendlyException?) {
-                logger().error("$this failed to load \"$searchterm\".", exception)
+                logger().error("$this failed to load \"$actualSearchterm\".", exception)
                 completable.complete(QueueResult(EPlayTrackResult.ERROR, listOf()))
             }
         })
