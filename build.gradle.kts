@@ -23,7 +23,7 @@ plugins {
 }
 
 group = "de.menkalian.pisces"
-version = "5.3.1"
+version = "5.3.2"
 
 // Compilation and generation settings
 java {
@@ -98,7 +98,7 @@ dependencies {
     runtimeOnly("org.mariadb.jdbc:mariadb-java-client")
 
     // JDA
-    implementation("net.dv8tion:JDA:4.3.0_334")
+    implementation("net.dv8tion:JDA:4.3.0_346")
     implementation("com.sedmelluq:lavaplayer:1.3.78")
 
     // Spotify
