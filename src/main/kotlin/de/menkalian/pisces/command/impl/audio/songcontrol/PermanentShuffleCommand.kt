@@ -50,11 +50,12 @@ class PermanentShuffleCommand(
         sourceInformation: FixedVariables
     ) {
         val controller = audioHandler.getGuildAudioController(guildId)
+        val shuffleOn = controller.togglePermanentShuffle()
 
         messageHandler
             .createMessage(guildId, channelId)
             .withTitle(
-                if (controller.togglePause())
+                if (shuffleOn)
                     "Permanenter Zufallsmix wurde aktiviert"
                 else
                     "Permanenter Zufallsmix wurde deaktiviert"
