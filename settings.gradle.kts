@@ -5,8 +5,7 @@ pluginManagement {
         gradlePluginPortal()
         maven {
             name = "menkalian-artifactory"
-            setUrl("http://server.menkalian.de:8081/artifactory/menkalian")
-            isAllowInsecureProtocol = true
+            setUrl("https://artifactory.menkalian.de/artifactory/menkalian")
         }
     }
 }

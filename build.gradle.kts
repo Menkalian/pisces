@@ -62,16 +62,14 @@ repositories {
     }
     maven {
         name = "menkalian-artifactory"
-        setUrl("http://server.menkalian.de:8081/artifactory/menkalian")
-        isAllowInsecureProtocol = true
+        setUrl("https://artifactory.menkalian.de/artifactory/menkalian")
     }
 }
 publishing {
     repositories {
         maven {
-            url = uri("http://server.menkalian.de:8081/artifactory/pisces")
             name = "artifactory-menkalian"
-            isAllowInsecureProtocol = true
+            setUrl("https://artifactory.menkalian.de/artifactory/pisces")
             credentials {
                 username = System.getenv("MAVEN_REPO_USER")
                 password = System.getenv("MAVEN_REPO_PASS")
