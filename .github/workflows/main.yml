@@ -45,9 +45,9 @@ jobs:
           MAVEN_REPO_USER: ${{ secrets.MAVEN_REPO_USER }}
           MAVEN_REPO_PASS: ${{ secrets.MAVEN_REPO_PASS }}
 
-      - name: Build and push server Docker image
+      - name: Build and push Docker image
         uses: docker/build-push-action@ac9327eae2b366085ac7f6a2d02df8aa8ead720a
         with:
-          context: './server-server'
+          context: '.'
           push: true
           tags: ${{ env.DOCKER_REGISTRY}}/pisces/flunder:latest,${{ env.DOCKER_REGISTRY}}/pisces/flunder:${{ github.run_id }}
