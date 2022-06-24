@@ -96,7 +96,7 @@ dependencies {
     runtimeOnly("org.mariadb.jdbc:mariadb-java-client")
 
     // JDA
-    implementation("net.dv8tion:JDA:4.3.0_346")
+    implementation("net.dv8tion:JDA:4.4.0_352")
     implementation("com.sedmelluq:lavaplayer:1.3.78")
 
     // Spotify
