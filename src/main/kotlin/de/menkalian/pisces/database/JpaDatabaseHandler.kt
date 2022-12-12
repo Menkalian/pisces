@@ -197,6 +197,20 @@ class JpaDatabaseHandler(
             ?.let { DatabaseSongEntry(it) }
     }
 
+    override fun setGuildBuzzersound(guildId: Long, audioTrackInfo: TrackInfo) {
+        val songId = createSavedSongEntryIfNotExists(audioTrackInfo)
+        setSettingsValue(guildId, Flunder.Guild.Settings.Buzzer, songId.toString())
+    }
+
+    override fun getGuildBuzzersound(guildId: Long): DatabaseSongEntry? {
+        val songId = getSettingsValue(guildId, Flunder.Guild.Settings.Buzzer).toLongOrNull()
+        if (songId != null) {
+            return songEntryRepository.findById(songId).orElse(null)?.let { DatabaseSongEntry(it) }
+        } else {
+            return null
+        }
+    }
+
     override fun initialize() {
         // Default aliases are set externally
         // Default settings are set here

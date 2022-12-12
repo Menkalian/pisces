@@ -11,6 +11,7 @@ Flunder
       Default
         Id
     Settings
+      Buzzer
       Prefix
       Repeat
       Shuffle
