@@ -45,7 +45,7 @@ class CommandMessageListener(
         /**
          * Standardprefix zur Verwendung falls es Probleme bei der Datenbankabfrage gibt.
          */
-        private const val DEFAULT_PREFIX = "_"
+        private const val DEFAULT_PREFIX = "!"
     }
 
     /**

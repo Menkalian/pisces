@@ -161,4 +161,21 @@ interface IDatabaseHandler : IHandler {
      * @return [DatabaseSongEntry]-Objekt, das für den Nutzer hinterlegt ist oder null, falls keine Daten für den Nutzer gespeichert wurden.
      */
     fun getUserJoinsound(userId: Long): DatabaseSongEntry?
+
+    // Buzzersound
+    /**
+     * Setzt den JoinSound für den angegebenen Nutzer.
+     *
+     * @param guildId Discord-ID des Servers
+     * @param audioTrackInfo Informationen zum Track, der gesetzt werden soll.
+     */
+    fun setGuildBuzzersound(guildId: Long, audioTrackInfo: TrackInfo)
+
+    /**
+     * Liest den JoinSound für den angegebenen Nutzer aus der Datenbank.
+     *
+     * @param guildId Discord-ID des Servers
+     * @return [DatabaseSongEntry]-Objekt, das für den Nutzer hinterlegt ist oder null, falls keine Daten für den Nutzer gespeichert wurden.
+     */
+    fun getGuildBuzzersound(guildId: Long): DatabaseSongEntry?
 }
