@@ -5,6 +5,8 @@ import org.springframework.boot.CommandLineRunner
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication
 import org.springframework.context.annotation.Bean
+import org.springframework.web.servlet.config.annotation.CorsRegistry
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer
 import java.util.Scanner
 import kotlin.system.exitProcess
 
@@ -21,6 +23,21 @@ fun main(args: Array<String>) {
  */
 @SpringBootApplication
 class PiscesApplication {
+    /**
+     * Configure CORS to allow all origins for requests
+     */
+    @Bean
+    fun corsConfiguration() = object : WebMvcConfigurer {
+        override fun addCorsMappings(registry: CorsRegistry) {
+            super.addCorsMappings(registry)
+            logger().info("Configuring CORS")
+            registry
+                .addMapping("/**")
+                .allowedMethods("GET", "PUT", "POST", "DELETE")
+                .allowedOrigins("*")
+        }
+    }
+
     /**
      * Automatische Initialisierung aller Komponenten.
      *
