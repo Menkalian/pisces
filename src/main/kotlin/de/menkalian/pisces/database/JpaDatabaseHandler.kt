@@ -183,11 +183,15 @@ class JpaDatabaseHandler(
     }
 
     @Transactional
-    override fun setUserJoinsound(userId: Long, audioTrackInfo: TrackInfo) {
-        val songEntry = songEntryRepository.findByIdOrNull(createSavedSongEntryIfNotExists(audioTrackInfo)) ?: return
-        val dto = joinSoundRepository.findByIdOrNull(userId) ?: JoinSoundDto(userId, songEntry)
-        dto.song = songEntry
-        joinSoundRepository.save(dto)
+    override fun setUserJoinsound(userId: Long, audioTrackInfo: TrackInfo?) {
+        if (audioTrackInfo == null) {
+            joinSoundRepository.deleteById(userId)
+        } else {
+            val songEntry = songEntryRepository.findByIdOrNull(createSavedSongEntryIfNotExists(audioTrackInfo)) ?: return
+            val dto = joinSoundRepository.findByIdOrNull(userId) ?: JoinSoundDto(userId, songEntry)
+            dto.song = songEntry
+            joinSoundRepository.save(dto)
+        }
     }
 
     override fun getUserJoinsound(userId: Long): DatabaseSongEntry? {

@@ -64,6 +64,19 @@ class SetJoinsoundCommand(override val databaseHandler: IDatabaseHandler, val au
 
         val controller = audioHandler.getGuildAudioController(guildId)
 
+        if (parameters.getDefaultArg() == null ||
+            parameters.getDefaultArg()?.asString()?.isBlank() == true ||
+            parameters.getDefaultArg()?.asString().equals("null")
+        ) {
+            databaseHandler.setUserJoinsound(authorId, null)
+            messageHandler
+                .createMessage(guildId, channelId)
+                .withTitle("Joinsound wurde entfernt")
+                .withSuccessColor()
+                .build()
+            return
+        }
+
         val foundAudio = controller.lookupTracks(parameters.getDefaultArg()?.asString() ?: "")
         val foundTrack = foundAudio.second.firstOrNull()
 

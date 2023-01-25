@@ -152,7 +152,7 @@ interface IDatabaseHandler : IHandler {
      * @param userId Discord-ID des Nutzers
      * @param audioTrackInfo Informationen zum Track, der gesetzt werden soll.
      */
-    fun setUserJoinsound(userId: Long, audioTrackInfo: TrackInfo)
+    fun setUserJoinsound(userId: Long, audioTrackInfo: TrackInfo?)
 
     /**
      * Liest den JoinSound für den angegebenen Nutzer aus der Datenbank.
