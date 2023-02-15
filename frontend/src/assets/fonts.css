@@ -1,0 +1,21 @@
+@font-face {
+    font-family : SofiaSans;
+    src         : url("fonts/sofia_sans/SofiaSans-VariableFont_wght.ttf");
+}
+
+@font-face {
+    font-family : SofiaSans;
+    src         : url("fonts/sofia_sans/SofiaSans-Italic-VariableFont_wght.ttf");
+    font-style  : italic;
+}
+
+@font-face {
+    font-family : SourceSans;
+    src         : url("fonts/source_sans/SourceSans3-VariableFont_wght.ttf");
+}
+
+@font-face {
+    font-family : SourceSans;
+    src         : url("fonts/source_sans/SourceSans3-Italic-VariableFont_wght.ttf");
+    font-style  : italic;
+}

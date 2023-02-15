@@ -47,7 +47,7 @@ import java.util.concurrent.atomic.AtomicBoolean
  * @property isRepeat Wert zum Speichern, ob der nächste Track zufällig aus der Liste ausgewählt werden soll.
  */
 class JdaGuildAudioController(
-    val guildId: Long, private val sendHandlerFactory: AudioSendHandlerFactory,
+    override val guildId: Long, private val sendHandlerFactory: AudioSendHandlerFactory, private val preloadController: DefaultPreloadController,
     private val playerManager: AudioPlayerManager, discordHandler: IDiscordHandler,
     private val databaseHandler: IDatabaseHandler, private val spotifyHelper: SpotifyHelper
 ) : IGuildAudioController, AudioEventListener, AudioEventAdapter() {
@@ -231,6 +231,12 @@ class JdaGuildAudioController(
         })
 
         return completable.get()
+    }
+
+    override fun playPreloadedTrack(uuid: String, playInstant: Boolean, interruptCurrent: Boolean): Boolean {
+        return preloadController.getPreloadedTrack(uuid)?.apply {
+            addTrack(this, playInstant = playInstant, interruptCurrent = interruptCurrent)
+        } != null
     }
 
     override fun playList(searchterm: String, playInstant: Boolean, shuffled: Boolean): QueueResult {

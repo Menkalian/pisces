@@ -21,6 +21,11 @@ interface IDiscordHandler : IHandler {
     val restPing: Long
 
     /**
+     * Bestimmt den Nutzer, der den aktiven Bot-Account registriert hat.
+     */
+    fun getOwnerUser() : User
+
+    /**
      * Lädt das JDA-[Guild]-Objekt, das zu der angegebenen ID gehört.
      *
      * @return [Guild]-Objekt mit der angegebenen ID oder `null`, falls keine Guild mit dieser ID bekannt ist.

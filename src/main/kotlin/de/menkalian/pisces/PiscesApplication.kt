@@ -76,6 +76,7 @@ class PiscesApplication {
                     logger().info("Components were deinitialized. Shutting down.")
                     exitProcess(0)
                 }
+
                 else        -> logger().warn("Unknown CLI-input \"$input\".")
             }
         }

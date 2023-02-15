@@ -1,5 +1,7 @@
 rootProject.name = "flunder"
 
+include("frontend")
+
 pluginManagement {
     repositories {
         gradlePluginPortal()

@@ -35,17 +35,16 @@ class DefaultAudioHandler(
     val controllers: HashMap<Long, IGuildAudioController> = hashMapOf()
     lateinit var discordHandler: IDiscordHandler
     lateinit var playerManager: AudioPlayerManager
+    override lateinit var preloadController: DefaultPreloadController
 
     override fun getGuildAudioController(guildId: Long): IGuildAudioController {
         val result = synchronized(controllerLock) {
-            logger().debug("GuildAudioController for $guildId was requested.")
             if (!controllers.containsKey(guildId)) {
-                logger().debug("Controller does not exist. Creating a new one.")
+                logger().debug("Controller for $guildId does not exist. Creating a new one.")
                 controllers[guildId] = createAudioController(guildId)
             }
             controllers[guildId] ?: throw RuntimeException("GuildController could not be created")
         }
-        logger().info("Providing $result.")
         return result
     }
 
@@ -53,6 +52,22 @@ class DefaultAudioHandler(
         synchronized(controllerLock) {
             logger().info("Deleting GuildAudioController for $guildId")
             return controllers.containsKey(guildId) && controllers.remove(guildId) != null
+        }
+    }
+
+    override fun getUserMatchingAudioController(userId: Long): IGuildAudioController? {
+        return synchronized(controllerLock) {
+            val userConnectedFilter = controllers.values.filter {
+                it.getUserVoiceChannelId(userId) != null
+            }
+
+            if (userConnectedFilter.size > 1) {
+                userConnectedFilter.filter {
+                    it.getConnectedChannel() == it.getUserVoiceChannelId(userId)
+                }.firstOrNull() ?: userConnectedFilter.firstOrNull()
+            } else {
+                userConnectedFilter.firstOrNull()
+            }
         }
     }
 
@@ -65,11 +80,13 @@ class DefaultAudioHandler(
                 it.JdaGuildAudioController -> JdaGuildAudioController(
                     id,
                     audioSendHandlerFactory,
+                    preloadController,
                     playerManager,
                     discordHandler,
                     databaseHandler,
                     spotifyHelper
                 )
+
                 else                       -> throw IllegalStateException("Unknown pisces.audio.Controller implementation ative")
             }
         }
@@ -82,6 +99,8 @@ class DefaultAudioHandler(
         playerManager = DefaultAudioPlayerManager()
         AudioSourceManagers.registerLocalSource(playerManager)
         AudioSourceManagers.registerRemoteSources(playerManager)
+
+        preloadController = DefaultPreloadController(playerManager, spotifyHelper)
 
         finishInitialization()
     }

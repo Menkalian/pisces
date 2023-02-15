@@ -9,6 +9,10 @@ import de.menkalian.pisces.util.QueueResult
  * Die korrekte Instanz des [IGuildAudioController] zu erhalten kann die aktive Instanz des [IAudioHandler] verwendet werden.
  */
 interface IGuildAudioController {
+    /**
+     * Gibt die ID des Servers zurück, der dem AudioController zugeordnet ist.
+     */
+    val guildId: Long
 
     /**
      * Gibt die Discord ID des Channels an, mit dem der [IGuildAudioController] momentan verbunden ist.
@@ -77,6 +81,20 @@ interface IGuildAudioController {
         playFullPlaylist: Boolean = false,
         playListShuffled: Boolean = false
     ): QueueResult
+
+    /**
+     * Spielt einen vorgeladenen Audiotrack ab.
+     *
+     * @param uuid UUID des vorgeladenen Tracks
+     * @param playInstant Flag, ob die aktuelle Queue ignoriert werden soll (d.h. der gefundene Track wird sofort abgespielt, die aktuelle Wiedergabe wird **abgebrochen**)
+     * @param interruptCurrent Falls dieser Wert `true` ist, wird die Wiedergabe des aktuellen Tracks unterbrochen und stattdessen der angegebene Track gespielt.
+     *                         **NACHDEM** der Track fertig gespielt hat wird die aktuelle Wiedergabe **fortgesetzt**.
+     */
+    fun playPreloadedTrack(
+        uuid: String,
+        playInstant: Boolean = false,
+        interruptCurrent: Boolean = false,
+    ): Boolean
 
     /**
      * Startet die Wiedergabe einer Playlist.

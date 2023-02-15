@@ -107,11 +107,13 @@ class SlashCommandListener(final val commandHandler: ICommandHandler) : Listener
                             LocalDateTime.parse(option.asString, DateTimeFormatter.ofPattern(dateTimePattern))
                         }
                         ?: it.asTimestamp()
+
                     EParameterType.DATE      -> commandOption
                         ?.let { option ->
                             LocalDate.parse(option.asString, DateTimeFormatter.ofPattern(datePattern))
                         }
                         ?: it.asDate()
+
                     EParameterType.TIME      -> commandOption
                         ?.let { option ->
                             LocalTime.parse(option.asString, DateTimeFormatter.ofPattern(timePattern))

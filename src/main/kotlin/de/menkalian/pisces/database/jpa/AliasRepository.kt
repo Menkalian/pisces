@@ -1,7 +1,7 @@
 package de.menkalian.pisces.database.jpa
 
+import jakarta.transaction.Transactional
 import org.springframework.data.repository.CrudRepository
-import javax.transaction.Transactional
 
 /**
  * JPA-Repository zum Zugriff auf [AliasDto]-Datensätze.

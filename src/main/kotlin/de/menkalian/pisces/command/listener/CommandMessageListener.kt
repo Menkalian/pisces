@@ -201,6 +201,7 @@ class CommandMessageListener(
                     throw IllegalArgumentException("Could not parse UserId")
                 }
             }
+
             EParameterType.TIMESTAMP -> LocalDateTime.parse(value, DateTimeFormatter.ofPattern("$datePattern-$timePattern"))
             EParameterType.DATE      -> LocalDate.parse(value, DateTimeFormatter.ofPattern(datePattern))
             EParameterType.TIME      -> LocalTime.parse(value, DateTimeFormatter.ofPattern(timePattern))

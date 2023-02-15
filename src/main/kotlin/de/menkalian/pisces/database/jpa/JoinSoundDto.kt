@@ -1,11 +1,11 @@
 package de.menkalian.pisces.database.jpa
 
+import jakarta.persistence.Entity
+import jakarta.persistence.FetchType
+import jakarta.persistence.Id
+import jakarta.persistence.ManyToOne
+import jakarta.persistence.Table
 import org.hibernate.Hibernate
-import javax.persistence.Entity
-import javax.persistence.FetchType
-import javax.persistence.Id
-import javax.persistence.ManyToOne
-import javax.persistence.Table
 
 /**
  * Stellt einen Datensatz zur Speicherung eines individuellen Joinsounds für einen Nutzer dar.

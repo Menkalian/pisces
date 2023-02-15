@@ -2,17 +2,17 @@
 
 plugins {
     // Spring
-    id("org.springframework.boot") version "2.5.3"
-    id("io.spring.dependency-management") version "1.0.11.RELEASE"
+    id("org.springframework.boot") version "3.0.2"
+    id("io.spring.dependency-management") version "1.1.0"
 
     // Languages
-    kotlin("jvm") version "1.5.21"
-    kotlin("plugin.spring") version "1.5.21"
-    kotlin("plugin.jpa") version "1.5.21"
+    kotlin("jvm") version "1.8.0"
+    kotlin("plugin.spring") version "1.8.0"
+    kotlin("plugin.jpa") version "1.8.0"
     java
 
     // Gradle utilities
-    id("org.jetbrains.dokka") version "1.5.0"
+    id("org.jetbrains.dokka") version "1.7.20"
     jacoco
     `maven-publish`
 
@@ -23,24 +23,43 @@ plugins {
 }
 
 group = "de.menkalian.pisces"
-version = "5.4.0"
+version = "5.5.0"
 
 // Compilation and generation settings
 java {
-    sourceCompatibility = JavaVersion.VERSION_11
-    targetCompatibility = JavaVersion.VERSION_11
+    sourceCompatibility = JavaVersion.VERSION_17
+    targetCompatibility = JavaVersion.VERSION_17
 }
+
+sourceSets.get("main").resources {
+    srcDir(File(buildDir, "external/resources"))
+}
+
 tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
     kotlinOptions {
         freeCompilerArgs = listOf("-Xjsr305=strict", "-Xopt-in=kotlin.RequiresOptIn")
-        jvmTarget = "11"
+        jvmTarget = "17"
     }
 }
+
 tasks.getByName("kotlinSourcesJar") {
     dependsOn(tasks.generateBuildConfig)
     dependsOn(tasks.generateKeyObjects)
     dependsOn(tasks.generateFeaturetoggleCode)
 }
+
+rootProject.project("frontend").afterEvaluate {
+    val flunder = rootProject
+    val frontend = this
+    flunder.tasks.create("copyFrontend", Copy::class.java) {
+        from(frontend.file("dist"))
+        destinationDir = File(flunder.buildDir, "external/resources/static").apply { mkdirs() }
+
+        dependsOn(frontend.tasks.getByName("npm_run_build"))
+        flunder.tasks.getByName("processResources").dependsOn(this)
+    }
+}
+
 tasks.bootJar.configure {
     archiveClassifier.set("boot")
 }
@@ -49,6 +68,7 @@ keygen {
     targetPackage = "de.menkalian.pisces.variables"
     finalLayerAsString = true
 }
+
 featuretoggle {
     targetPackage = "de.menkalian.pisces.config"
 }
@@ -65,6 +85,7 @@ repositories {
         setUrl("https://artifactory.menkalian.de/artifactory/menkalian")
     }
 }
+
 publishing {
     repositories {
         maven {
@@ -88,6 +109,9 @@ dependencies {
     // Spring
     val springboot = { module: String -> "org.springframework.boot:spring-boot-starter-$module" }
     implementation(springboot("web"))
+    implementation(springboot("websocket"))
+    implementation(springboot("security"))
+    implementation(springboot("oauth2-client"))
     implementation(springboot("actuator"))
     implementation(springboot("data-jpa"))
 

@@ -15,3 +15,11 @@ Flunder
       Prefix
       Repeat
       Shuffle
+  User
+    Preload
+      Track
+        n
+        XXX
+          UUID
+          Name
+          Url

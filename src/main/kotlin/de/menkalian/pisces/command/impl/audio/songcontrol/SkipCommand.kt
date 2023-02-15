@@ -78,6 +78,7 @@ class SkipCommand(
                     .withWarningColor()
                     .withText("Möglicherweise ist die Queue aktuell leer oder der Aufruf des Befehls war fehlerhaft.")
             }
+
             result.size == 1 -> {
                 val track = result.first()
                 msg
@@ -87,6 +88,7 @@ class SkipCommand(
                     msg.withThumbnail("https://img.youtube.com/vi/${track.sourceIdentifier}/default.jpg")
 
             }
+
             else             -> {
                 msg.withTitle("Mehrere Tracks wurden erfolgreich übersprungen.")
                 result.forEachIndexed { index, trackInfo ->

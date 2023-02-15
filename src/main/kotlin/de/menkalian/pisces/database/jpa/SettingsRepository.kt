@@ -1,7 +1,7 @@
 package de.menkalian.pisces.database.jpa
 
 import org.springframework.data.repository.CrudRepository
-import javax.transaction.Transactional
+import jakarta.transaction.Transactional
 
 /**
  * JPA-Repository zum Zugriff auf [SettingsDto]-Datensätze.

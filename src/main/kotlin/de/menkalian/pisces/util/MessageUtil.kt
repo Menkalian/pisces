@@ -53,22 +53,27 @@ fun <T> MessageSpec<T>.applyQueueResult(queueResult: QueueResult): T {
             withSuccessColor()
             withTitle("Der Song wurde von der angegebenen URL geladen")
         }
+
         EPlayTrackResult.TRACK_SEARCH        -> {
             withSuccessColor()
             withTitle("Der Song wurde auf Youtube gesucht und gefunden")
         }
+
         EPlayTrackResult.PLAYLIST            -> {
             withSuccessColor()
             withTitle("Die Playlist wurde erkannt und erfolgreich geladen")
         }
+
         EPlayTrackResult.TRACK_FROM_PLAYLIST -> {
             withSuccessColor()
             withTitle("Der Song wurde aus der Playlist geladen")
         }
+
         EPlayTrackResult.NOT_FOUND           -> {
             withWarningColor()
             withTitle("Es konnte kein Song gefunden werden")
         }
+
         EPlayTrackResult.ERROR               -> {
             withErrorColor()
             withTitle("Beim Suchen/Abspielen des Songs ist ein Fehler aufgetreten")

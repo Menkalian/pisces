@@ -72,6 +72,7 @@ class ReskipCommand(
                     .withWarningColor()
                     .withText("Möglicherweise ist die Queue aktuell leer oder der Aufruf des Befehls war fehlerhaft.")
             }
+
             result.size == 1 -> {
                 val track = result.first()
                 msg
@@ -81,6 +82,7 @@ class ReskipCommand(
                     msg.withThumbnail("https://img.youtube.com/vi/${track.sourceIdentifier}/default.jpg")
 
             }
+
             else             -> {
                 msg.withTitle("Mehrere Tracks wurden erfolgreich übersprungen und erneut gequeued.")
                 result.forEachIndexed { index, trackInfo ->

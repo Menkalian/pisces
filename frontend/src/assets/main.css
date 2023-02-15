@@ -1,0 +1,43 @@
+.button {
+    display          : flex;
+    align-items      : center;
+
+    vertical-align   : center;
+    margin           : auto 0 auto 0.5rem;
+
+    background-color : var(--color-secondary);
+    color            : var(--color-on-secondary);
+
+    border-radius    : 1rem;
+    padding          : 0.5rem;
+
+    height           : 30%;
+
+    font-family      : SourceSans, sans-serif;
+    font-weight      : bold;
+    font-size        : large;
+}
+
+.button:hover {
+    cursor : pointer;
+}
+
+.textbox {
+    border-radius : 2rem;
+    padding       : 0.5rem;
+
+    font-family   : SourceSans, sans-serif;
+    font-size     : medium;
+}
+
+.textbox:focus {
+    outline : none;
+}
+
+html {
+    background-color : var(--color-background);
+}
+
+.popup {
+    background-color : var(--color-background-popup);
+}

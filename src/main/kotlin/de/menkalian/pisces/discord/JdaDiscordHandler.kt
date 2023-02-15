@@ -39,6 +39,10 @@ class JdaDiscordHandler(
     override val restPing: Long
         get() = innerJda.restPing.complete()
 
+    override fun getOwnerUser(): User {
+        return innerJda.retrieveApplicationInfo().complete().owner
+    }
+
     override fun getJdaGuild(id: Long): Guild? {
         return innerJda.getGuildById(id)
     }
