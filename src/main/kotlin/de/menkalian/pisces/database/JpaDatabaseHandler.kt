@@ -39,6 +39,7 @@ class JpaDatabaseHandler(
     val songEntryRepository: SongEntryRepository
 ) : IDatabaseHandler, CommonHandlerImpl() {
 
+    @Transactional
     override fun addCommandShortcut(guildId: Long, alias: String, original: String) {
         val origResolved = getFormalCommandName(guildId, original)
         val existingEntry = aliasRepo.findByGuildIdAndAlias(guildId, alias)
@@ -63,6 +64,7 @@ class JpaDatabaseHandler(
             ?.value ?: default
     }
 
+    @Transactional
     override fun setSettingsValue(guildId: Long, variable: String, value: String) {
         val existingSetting = settingsRepo.findByGuildIdAndVariableName(guildId, variable)
 
@@ -76,6 +78,7 @@ class JpaDatabaseHandler(
         }
     }
 
+    @Transactional
     override fun createSavedSongEntryIfNotExists(audioTrackInfo: TrackInfo): Long {
         val existingEntry = songEntryRepository.findByUrl(audioTrackInfo.sourceUri)
 
@@ -112,6 +115,7 @@ class JpaDatabaseHandler(
             .map { it.name }
     }
 
+    @Transactional
     override fun getOrCreatePlaylist(guildId: Long, name: String): PlaylistHandle {
         val existingPlaylist = playlistRepo.findByGuildIdAndName(guildId, name)
 
@@ -158,6 +162,7 @@ class JpaDatabaseHandler(
         return songEntry.isPresent && playlist != null
     }
 
+    @Transactional
     override fun removeFromPlaylist(handle: PlaylistHandle, audioTrackInfo: TrackInfo) {
         logger().info("Trying to remove $audioTrackInfo from $handle")
         val playlist = findPlaylistByHandle(handle)
@@ -173,6 +178,7 @@ class JpaDatabaseHandler(
         }
     }
 
+    @Transactional
     override fun renamePlaylist(handle: PlaylistHandle, name: String): PlaylistHandle {
         logger().info("Renaming playlist $handle to $name")
         findPlaylistByHandle(handle)?.let {
@@ -201,6 +207,7 @@ class JpaDatabaseHandler(
             ?.let { DatabaseSongEntry(it) }
     }
 
+    @Transactional
     override fun setGuildBuzzersound(guildId: Long, audioTrackInfo: TrackInfo) {
         val songId = createSavedSongEntryIfNotExists(audioTrackInfo)
         setSettingsValue(guildId, Flunder.Guild.Settings.Buzzer, songId.toString())
