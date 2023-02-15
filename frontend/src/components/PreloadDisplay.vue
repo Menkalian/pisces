@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import {FlunderClient} from "@/services/FlunderClient";
-import {ref, watch} from "vue";
+import {onMounted, ref, watch} from "vue";
 import type {PreloadedTrackData} from "@/data/CommonTypes";
 import {useToast} from "vue-toastification";
-import {EVENT_REFRESH_PRELOAD, EVENT_USER_LOGIN, EventBus} from "@/services/EventBus";
+import {EVENT_REFRESH_PRELOAD, EVENT_USER_LOGIN, EVENT_USER_LOGOUT, EventBus} from "@/services/EventBus";
 import PreloadCard from "@/components/PreloadCard.vue";
 import TintedSVG from "@/components/base/TintedSVG.vue";
 import AddIcon from "@/assets/icons/icon_add.svg"
@@ -27,8 +27,13 @@ watch(props, newProps => {
 EventBus.on(EVENT_REFRESH_PRELOAD, () => {
   refreshValues()
 })
-EventBus.on(EVENT_USER_LOGIN, () => {
-  refreshValues()
+onMounted(() => {
+  client.getUserData()
+        .then(data => {
+          if (data.name != undefined) {
+            refreshValues()
+          } else {}
+        })
 })
 
 function refreshValues() {
