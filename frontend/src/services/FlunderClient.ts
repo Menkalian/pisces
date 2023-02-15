@@ -258,14 +258,14 @@ export class FlunderClient {
     }
 
     private connectSocket(): Client {
-        let socket = new SockJS("http://localhost:8080/audioinfo/live")
+        let socket = new SockJS("https://flunder.menkalian.de/audioinfo/live")
         return Stomp.over(socket)
     }
 
     private baseRequest(): AxiosInstance {
         return axios.create(
             {
-                baseURL: "http://localhost:8080",
+                baseURL: "https://flunder.menkalian.de",
                 xsrfCookieName: "XSRF-TOKEN",
                 withCredentials: true,
             })
