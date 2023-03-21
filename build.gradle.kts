@@ -23,7 +23,7 @@ plugins {
 }
 
 group = "de.menkalian.pisces"
-version = "5.5.4"
+version = "5.5.5"
 
 // Compilation and generation settings
 java {
