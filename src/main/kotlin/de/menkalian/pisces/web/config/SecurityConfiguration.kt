@@ -5,6 +5,7 @@ import org.springframework.context.annotation.Configuration
 import org.springframework.http.HttpMethod
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity
+import org.springframework.security.config.http.SessionCreationPolicy
 import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository
 import org.springframework.security.oauth2.client.web.DefaultOAuth2AuthorizationRequestResolver
 import org.springframework.security.oauth2.client.web.OAuth2AuthorizationRequestCustomizers
@@ -18,7 +19,11 @@ import org.springframework.security.web.DefaultSecurityFilterChain
 class SecurityConfiguration {
     @Bean
     fun filterChain(http: HttpSecurity, resolver: OAuth2AuthorizationRequestResolver): DefaultSecurityFilterChain {
-        http.authorizeHttpRequests()
+        http.sessionManagement()
+            .sessionCreationPolicy(SessionCreationPolicy.ALWAYS)
+            .maximumSessions(5).and()
+            .and()
+            .authorizeHttpRequests()
             .requestMatchers("/login/**", "/oauth2/authorization/**").permitAll()
             .requestMatchers("/user/details", "/audio/**", "/preload/**").authenticated()
             .requestMatchers(HttpMethod.GET).permitAll()
