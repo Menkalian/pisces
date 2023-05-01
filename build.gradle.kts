@@ -6,9 +6,9 @@ plugins {
     id("io.spring.dependency-management") version "1.1.0"
 
     // Languages
-    kotlin("jvm") version "1.8.0"
-    kotlin("plugin.spring") version "1.8.0"
-    kotlin("plugin.jpa") version "1.8.0"
+    kotlin("jvm") version "1.8.20"
+    kotlin("plugin.spring") version "1.8.20"
+    kotlin("plugin.jpa") version "1.8.20"
     java
 
     // Gradle utilities
@@ -23,7 +23,22 @@ plugins {
 }
 
 group = "de.menkalian.pisces"
-version = "5.5.5"
+version = parseVersionFromEnv()
+
+fun parseVersionFromEnv(baseVersion: String = "5"): String {
+    // Expecting tag like `release-2.3.1-alpha4`
+    val buildTag: String?
+    if (System.getenv("GITHUB_REF_TYPE") == "tag")
+        buildTag = System
+            .getenv("GITHUB_REF_NAME")
+            ?.substring("release-".length)
+    else
+        buildTag = null
+
+    val commitSha = System.getenv("GITHUB_SHA") ?: "dev"
+
+    return buildTag ?: "$baseVersion-$commitSha"
+}
 
 // Compilation and generation settings
 java {
