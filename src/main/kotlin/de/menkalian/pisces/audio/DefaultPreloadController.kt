@@ -2,18 +2,14 @@ package de.menkalian.pisces.audio
 
 import com.sedmelluq.discord.lavaplayer.player.AudioLoadResultHandler
 import com.sedmelluq.discord.lavaplayer.player.AudioPlayerManager
-import com.sedmelluq.discord.lavaplayer.source.youtube.YoutubeAudioSourceManager
-import com.sedmelluq.discord.lavaplayer.source.youtube.YoutubeAudioTrack
 import com.sedmelluq.discord.lavaplayer.source.youtube.YoutubeSearchProvider
 import com.sedmelluq.discord.lavaplayer.tools.FriendlyException
-import com.sedmelluq.discord.lavaplayer.track.AudioPlaylist
-import com.sedmelluq.discord.lavaplayer.track.AudioTrack
-import com.sedmelluq.discord.lavaplayer.track.BasicAudioPlaylist
+import com.sedmelluq.discord.lavaplayer.track.*
 import de.menkalian.pisces.audio.data.EPlayTrackResult
 import de.menkalian.pisces.audio.data.TrackInfo
-import de.menkalian.pisces.util.QueueResult
-import de.menkalian.pisces.util.SpotifyHelper
-import de.menkalian.pisces.util.logger
+import de.menkalian.pisces.util.*
+import dev.lavalink.youtube.YoutubeAudioSourceManager
+import dev.lavalink.youtube.track.YoutubeAudioTrack
 import java.util.UUID
 import java.util.concurrent.CompletableFuture
 
@@ -89,7 +85,7 @@ class DefaultPreloadController(
         return completable.get()
     }
 
-    fun getPreloadedTrack(uuid: String) : AudioTrack? {
+    fun getPreloadedTrack(uuid: String): AudioTrack? {
         return preloaded[uuid]?.makeClone()
     }
 

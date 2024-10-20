@@ -38,17 +38,21 @@ class SpotifyHelper(
     }
 
     init {
-        var tmpSpotifyApi: SpotifyApi?
-        try {
-            tmpSpotifyApi = SpotifyApi.builder()
-                .setClientId(clientId)
-                .setClientSecret(clientSecret)
-                .build()!!
-            scheduler.schedule(RefreshTokenRunnable(), 0L, TimeUnit.SECONDS)
-        } catch (ex: Exception) {
-            tmpSpotifyApi = null
+        if (clientId.isBlank() || clientSecret.isBlank()) {
+            spotifyApi = null
+        } else {
+            var tmpSpotifyApi: SpotifyApi?
+            try {
+                tmpSpotifyApi = SpotifyApi.builder()
+                    .setClientId(clientId)
+                    .setClientSecret(clientSecret)
+                    .build()!!
+                scheduler.schedule(RefreshTokenRunnable(), 0L, TimeUnit.SECONDS)
+            } catch (ex: Exception) {
+                tmpSpotifyApi = null
+            }
+            spotifyApi = tmpSpotifyApi
         }
-        spotifyApi = tmpSpotifyApi
     }
 
     /**

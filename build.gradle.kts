@@ -92,12 +92,16 @@ featuretoggle {
 repositories {
     mavenCentral()
     maven {
+        name = "menkalian-artifactory"
+        setUrl("https://artifactory.menkalian.de/artifactory/menkalian")
+    }
+    maven {
         name = "jda-maven"
         setUrl("https://m2.dv8tion.net/releases")
     }
     maven {
-        name = "menkalian-artifactory"
-        setUrl("https://artifactory.menkalian.de/artifactory/menkalian")
+        name = "lavalink-maven"
+        setUrl("https://maven.lavalink.dev/releases")
     }
 }
 
@@ -135,8 +139,9 @@ dependencies {
     runtimeOnly("org.mariadb.jdbc:mariadb-java-client")
 
     // JDA
-    implementation("net.dv8tion:JDA:4.4.1_353")
-    implementation("com.sedmelluq:lavaplayer:1.3.78")
+    implementation("net.dv8tion:JDA:5.1.2")
+    implementation("dev.arbjerg:lavaplayer:2.2.2")
+    implementation("dev.lavalink.youtube:v2:1.8.3")
 
     // Spotify
     implementation("se.michaelthelin.spotify:spotify-web-api-java:6.5.4")

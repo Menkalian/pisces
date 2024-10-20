@@ -1,17 +1,12 @@
 package de.menkalian.pisces.discord
 
-import de.menkalian.pisces.BuildConfig
-import de.menkalian.pisces.OnConfigValueCondition
-import de.menkalian.pisces.RequiresKey
+import de.menkalian.pisces.*
 import de.menkalian.pisces.config.IConfig
 import de.menkalian.pisces.util.CommonHandlerImpl
-import net.dv8tion.jda.api.JDA
-import net.dv8tion.jda.api.JDABuilder
-import net.dv8tion.jda.api.OnlineStatus
-import net.dv8tion.jda.api.entities.Activity
-import net.dv8tion.jda.api.entities.Guild
-import net.dv8tion.jda.api.entities.User
+import net.dv8tion.jda.api.*
+import net.dv8tion.jda.api.entities.*
 import net.dv8tion.jda.api.hooks.EventListener
+import net.dv8tion.jda.api.requests.GatewayIntent
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.context.annotation.Conditional
 import org.springframework.stereotype.Service
@@ -59,8 +54,9 @@ class JdaDiscordHandler(
     override fun initialize() {
         innerJda = JDABuilder
             .createDefault(token)
-            .setActivity(Activity.of(Activity.ActivityType.DEFAULT, "DJ Flunder V${BuildConfig.version}"))
+            .setActivity(Activity.of(Activity.ActivityType.STREAMING, "DJ Flunder V${BuildConfig.version}"))
             .setAudioPool(Executors.newScheduledThreadPool(4))
+            .enableIntents(GatewayIntent.getIntents(GatewayIntent.ALL_INTENTS))
             .setAutoReconnect(true)
             .setEnableShutdownHook(true)
             .setStatus(OnlineStatus.ONLINE)

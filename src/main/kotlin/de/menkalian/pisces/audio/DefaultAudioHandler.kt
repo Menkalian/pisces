@@ -9,10 +9,10 @@ import de.menkalian.pisces.audio.sending.AudioSendHandlerFactory
 import de.menkalian.pisces.config.IConfig
 import de.menkalian.pisces.database.IDatabaseHandler
 import de.menkalian.pisces.discord.IDiscordHandler
-import de.menkalian.pisces.util.CommonHandlerImpl
-import de.menkalian.pisces.util.SpotifyHelper
-import de.menkalian.pisces.util.logger
+import de.menkalian.pisces.util.*
+import dev.lavalink.youtube.YoutubeAudioSourceManager
 import org.springframework.beans.factory.BeanFactory
+import org.springframework.beans.factory.annotation.Value
 import org.springframework.context.annotation.Conditional
 import org.springframework.stereotype.Component
 
@@ -27,7 +27,8 @@ class DefaultAudioHandler(
     val config: IConfig,
     val audioSendHandlerFactory: AudioSendHandlerFactory,
     val spotifyHelper: SpotifyHelper,
-    val beanFactory: BeanFactory
+    val beanFactory: BeanFactory,
+    @Value("\${pisces.youtube.oauth2.token}") val youtubeRefreshToken: String?,
 ) : IAudioHandler,
     CommonHandlerImpl() {
     val controllerLock = Any()
@@ -98,7 +99,14 @@ class DefaultAudioHandler(
         // Initialize the AudioPlayerManager
         playerManager = DefaultAudioPlayerManager()
         AudioSourceManagers.registerLocalSource(playerManager)
-        AudioSourceManagers.registerRemoteSources(playerManager)
+        @Suppress("DEPRECATION") // We exclude it for its deprecation.
+        AudioSourceManagers.registerRemoteSources(playerManager, com.sedmelluq.discord.lavaplayer.source.youtube.YoutubeAudioSourceManager::class.java)
+        val youtubeSourceManager = YoutubeAudioSourceManager()
+        youtubeSourceManager.useOauth2(
+            youtubeRefreshToken?.takeIf { it.isNotBlank() },
+            youtubeRefreshToken != null && youtubeRefreshToken!!.isNotBlank()
+        )
+        playerManager.registerSourceManager(youtubeSourceManager)
 
         preloadController = DefaultPreloadController(playerManager, spotifyHelper)
 

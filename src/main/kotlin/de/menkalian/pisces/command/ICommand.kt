@@ -3,7 +3,7 @@ package de.menkalian.pisces.command
 import de.menkalian.pisces.command.data.CommandParameter
 import de.menkalian.pisces.command.data.ECommandSource
 import de.menkalian.pisces.util.FixedVariables
-import net.dv8tion.jda.api.entities.ChannelType
+import net.dv8tion.jda.api.entities.channel.ChannelType
 
 /**
  * Schnittstelle zur Darstellung eines Befehls.

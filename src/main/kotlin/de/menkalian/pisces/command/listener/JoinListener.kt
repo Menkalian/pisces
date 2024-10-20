@@ -5,8 +5,6 @@ import de.menkalian.pisces.RequiresKey
 import de.menkalian.pisces.audio.IAudioHandler
 import de.menkalian.pisces.database.IDatabaseHandler
 import de.menkalian.pisces.util.logger
-import net.dv8tion.jda.api.events.guild.voice.GuildVoiceJoinEvent
-import net.dv8tion.jda.api.events.guild.voice.GuildVoiceMoveEvent
 import net.dv8tion.jda.api.hooks.ListenerAdapter
 import org.springframework.context.annotation.Conditional
 import org.springframework.stereotype.Service
@@ -19,21 +17,23 @@ import org.springframework.stereotype.Service
 @Conditional(OnConfigValueCondition::class)
 @RequiresKey(["pisces.command.JoinListener"])
 class JoinListener(val audioHandler: IAudioHandler, val databaseHandler: IDatabaseHandler) : ListenerAdapter() {
-    override fun onGuildVoiceJoin(event: GuildVoiceJoinEvent) {
-        onUserVoiceJoin(
-            event.member.idLong,
-            event.guild.idLong,
-            event.channelJoined.idLong
-        )
-    }
 
-    override fun onGuildVoiceMove(event: GuildVoiceMoveEvent) {
-        onUserVoiceJoin(
-            event.member.idLong,
-            event.guild.idLong,
-            event.channelJoined.idLong
-        )
-    }
+    // TODO: Find replacement events (if any are available ?)
+//    override fun onGuildVoiceJoin(event: GuildVoiceJoinEvent) {
+//        onUserVoiceJoin(
+//            event.member.idLong,
+//            event.guild.idLong,
+//            event.channelJoined.idLong
+//        )
+//    }
+//
+//    override fun onGuildVoiceMove(event: GuildVoiceMoveEvent) {
+//        onUserVoiceJoin(
+//            event.member.idLong,
+//            event.guild.idLong,
+//            event.channelJoined.idLong
+//        )
+//    }
 
     private fun onUserVoiceJoin(userId: Long, guildId: Long, channelId: Long) {
         logger().info("$userId joined $channelId in $guildId")

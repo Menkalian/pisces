@@ -5,7 +5,7 @@ import de.menkalian.pisces.command.data.ECommandChannelContext
 import de.menkalian.pisces.command.data.ECommandSource
 import de.menkalian.pisces.command.data.EParameterType
 import de.menkalian.pisces.database.IDatabaseHandler
-import net.dv8tion.jda.api.entities.ChannelType
+import net.dv8tion.jda.api.entities.channel.ChannelType
 import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.LocalTime

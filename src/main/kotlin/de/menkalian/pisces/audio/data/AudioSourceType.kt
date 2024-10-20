@@ -9,7 +9,7 @@ import com.sedmelluq.discord.lavaplayer.source.nico.NicoAudioSourceManager
 import com.sedmelluq.discord.lavaplayer.source.soundcloud.SoundCloudAudioSourceManager
 import com.sedmelluq.discord.lavaplayer.source.twitch.TwitchStreamAudioSourceManager
 import com.sedmelluq.discord.lavaplayer.source.vimeo.VimeoAudioSourceManager
-import com.sedmelluq.discord.lavaplayer.source.youtube.YoutubeAudioSourceManager
+import dev.lavalink.youtube.YoutubeAudioSourceManager
 import de.menkalian.pisces.audio.data.AudioSourceType.BANDCAMP
 import de.menkalian.pisces.audio.data.AudioSourceType.GETYARN
 import de.menkalian.pisces.audio.data.AudioSourceType.HTTP

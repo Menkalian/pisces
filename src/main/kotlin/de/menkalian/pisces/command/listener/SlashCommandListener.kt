@@ -6,21 +6,17 @@ import de.menkalian.pisces.command.ICommand
 import de.menkalian.pisces.command.ICommandHandler
 import de.menkalian.pisces.command.data.ECommandSource
 import de.menkalian.pisces.command.data.EParameterType
-import de.menkalian.pisces.util.Variables
-import de.menkalian.pisces.util.logger
-import de.menkalian.pisces.util.shortenTo
+import de.menkalian.pisces.util.*
 import de.menkalian.pisces.variables.FlunderKey
-import net.dv8tion.jda.api.entities.ChannelType
-import net.dv8tion.jda.api.events.ReadyEvent
-import net.dv8tion.jda.api.events.interaction.SlashCommandEvent
+import net.dv8tion.jda.api.entities.channel.ChannelType
+import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent
+import net.dv8tion.jda.api.events.session.ReadyEvent
 import net.dv8tion.jda.api.hooks.ListenerAdapter
 import net.dv8tion.jda.api.interactions.commands.OptionType
-import net.dv8tion.jda.api.interactions.commands.build.CommandData
+import net.dv8tion.jda.api.interactions.commands.build.Commands
 import org.springframework.context.annotation.Conditional
 import org.springframework.stereotype.Service
-import java.time.LocalDate
-import java.time.LocalDateTime
-import java.time.LocalTime
+import java.time.*
 import java.time.format.DateTimeFormatter
 
 
@@ -49,7 +45,8 @@ class SlashCommandListener(final val commandHandler: ICommandHandler) : Listener
             }
             .forEach {
                 logger().debug("Adding \"${it.name}\" as native Discord command")
-                val commandData = CommandData(it.name.lowercase().shortenTo(32), it.description.shortenTo(100))
+
+                val commandData = Commands.slash(it.name.lowercase().shortenTo(32), it.description.shortenTo(100))
 
                 it.parameters.forEach { param ->
                     val optionType = when (param.type) {
@@ -76,12 +73,11 @@ class SlashCommandListener(final val commandHandler: ICommandHandler) : Listener
         }
     }
 
-
-    override fun onSlashCommand(event: SlashCommandEvent) {
+    override fun onSlashCommandInteraction(event: SlashCommandInteractionEvent) {
         val guildId = if (event.isFromGuild) event.guild?.idLong ?: 0L else 0L
         val channelId = if (event.isFromGuild) event.channel.idLong else event.user.idLong
         val command = commandMap[event.commandIdLong]
-        logger().info("Processing native Discord command from guild $guildId, channel $channelId: ${event.commandPath}")
+        logger().info("Processing native Discord command from guild $guildId, channel $channelId: ${event.commandString}")
         logger().debug("Associated native command with $command")
 
         if (command != null) {

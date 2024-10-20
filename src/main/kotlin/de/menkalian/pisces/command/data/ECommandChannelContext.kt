@@ -1,10 +1,7 @@
 package de.menkalian.pisces.command.data
 
-import de.menkalian.pisces.command.data.ECommandChannelContext.GUILD_ALL
-import de.menkalian.pisces.command.data.ECommandChannelContext.GUILD_STORE
-import de.menkalian.pisces.command.data.ECommandChannelContext.GUILD_TEXT
-import de.menkalian.pisces.command.data.ECommandChannelContext.PRIVATE
-import net.dv8tion.jda.api.entities.ChannelType
+import de.menkalian.pisces.command.data.ECommandChannelContext.*
+import net.dv8tion.jda.api.entities.channel.ChannelType
 
 /**
  * Kontext zur Beschreibung des Channels, von dem ein Befehl empfangen wurde.
@@ -28,6 +25,6 @@ enum class ECommandChannelContext {
             PRIVATE     -> type == ChannelType.PRIVATE
             GUILD_ALL   -> type.isGuild
             GUILD_TEXT  -> type == ChannelType.TEXT
-            GUILD_STORE -> type == ChannelType.STORE
+            GUILD_STORE -> type == ChannelType.STAGE
         }
 }

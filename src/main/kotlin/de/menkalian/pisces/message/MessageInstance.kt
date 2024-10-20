@@ -3,15 +3,13 @@ package de.menkalian.pisces.message
 import de.menkalian.pisces.discord.IDiscordHandler
 import de.menkalian.pisces.message.spec.FieldSpec
 import de.menkalian.pisces.message.spec.MessageSpec
-import de.menkalian.pisces.util.Emoji
-import de.menkalian.pisces.util.TimeoutTimer
-import de.menkalian.pisces.util.logger
+import de.menkalian.pisces.util.*
 import net.dv8tion.jda.api.EmbedBuilder
 import net.dv8tion.jda.api.Permission
-import net.dv8tion.jda.api.entities.GuildChannel
 import net.dv8tion.jda.api.entities.Message
 import net.dv8tion.jda.api.entities.MessageEmbed
-import net.dv8tion.jda.api.entities.TextChannel
+import net.dv8tion.jda.api.entities.channel.middleman.GuildChannel
+import net.dv8tion.jda.api.entities.channel.middleman.GuildMessageChannel
 import java.time.temporal.TemporalAccessor
 
 /**
@@ -115,7 +113,7 @@ class MessageInstance(
             val targetChannel = discordHandler
                 .getJdaGuild(guildId)
                 ?.getGuildChannelById(channelId)
-            if (targetChannel?.isEligibleChannel() == true && targetChannel is TextChannel) {
+            if (targetChannel?.isEligibleChannel() == true && targetChannel is GuildMessageChannel) {
                 logger().info("Sending $this to $targetChannel")
                 jdaMessageInstance = targetChannel
                     .sendMessageEmbeds(renderMessage())
@@ -196,7 +194,7 @@ class MessageInstance(
     override fun addReaction(reaction: String) {
         if (hasReactionRights(false)) {
             logger().debug("Adding reaction $reaction to $this")
-            jdaMessageInstance.addReaction(reaction).complete()
+            jdaMessageInstance.addReaction(net.dv8tion.jda.api.entities.emoji.Emoji.fromUnicode(reaction)).complete()
         }
     }
 
@@ -210,7 +208,7 @@ class MessageInstance(
     override fun removeReaction(reaction: String) {
         if (hasReactionRights(true)) {
             logger().debug("Removing all reactions \"$reaction\" from $this")
-            jdaMessageInstance.clearReactions(reaction).complete()
+            jdaMessageInstance.clearReactions(net.dv8tion.jda.api.entities.emoji.Emoji.fromUnicode(reaction)).complete()
         }
     }
 
@@ -289,8 +287,8 @@ class MessageInstance(
             pages.clear()
 
             val baseLength = title.length + author.name.length + footerText.length
-            // For some reason discord only displays EMBED_MAX_LENGTH_CLIENT (also 6k characters are very hard to properly read, so 2k are better for this)
-            val lengthPerPage = minOf(MessageEmbed.EMBED_MAX_LENGTH_CLIENT, MessageEmbed.EMBED_MAX_LENGTH_BOT) - baseLength
+            // For some reason discord only displays TEXT_MAX_LENGTH (also 6k characters are very hard to properly read, so 2k are better for this)
+            val lengthPerPage = minOf(MessageEmbed.TEXT_MAX_LENGTH, MessageEmbed.EMBED_MAX_LENGTH_BOT) - baseLength
 
             var remainingLength: Int
             var currentPage = MessagePage()
@@ -302,16 +300,19 @@ class MessageInstance(
             }
 
             remainingLength = lengthPerPage - (chunkedText.lastOrNull()?.length ?: 0)
+            var remainingCount = MessageEmbed.MAX_FIELD_AMOUNT
             currentPage.text = chunkedText.lastOrNull() ?: ""
 
             fields.forEach {
-                if (it.length > remainingLength) {
+                if (it.length > remainingLength || remainingCount <= 0) {
                     pages.add(currentPage)
                     currentPage = MessagePage()
                     remainingLength = lengthPerPage
+                    remainingCount = MessageEmbed.MAX_FIELD_AMOUNT
                 }
                 currentPage.fields.add(it)
                 remainingLength -= it.length
+                remainingCount -= 1
             }
 
             // Add the final page
@@ -387,8 +388,8 @@ class MessageInstance(
         if (jdaMessageInstance.channelType.isGuild) {
             val guildMember = jdaMessageInstance.guild.getMemberById(discordHandler.selfUser.id)
             return jdaMessageInstance.channelType.isGuild
-                    && guildMember?.hasPermission(jdaMessageInstance.textChannel, Permission.MESSAGE_ADD_REACTION) == true
-                    && (!checkRemove || guildMember.hasPermission(jdaMessageInstance.textChannel, Permission.MESSAGE_MANAGE))
+                    && guildMember?.hasPermission(jdaMessageInstance.guildChannel, Permission.MESSAGE_ADD_REACTION) == true
+                    && (!checkRemove || guildMember.hasPermission(jdaMessageInstance.guildChannel, Permission.MESSAGE_MANAGE))
         } else
         // for private channels you can always add but may never remove emotes
             return !checkRemove
@@ -399,6 +400,6 @@ class MessageInstance(
      */
     private fun GuildChannel.isEligibleChannel(): Boolean {
         return this.type.isMessage
-                && guild.getMember(jda.selfUser)?.hasPermission(this, Permission.MESSAGE_WRITE) ?: false
+                && guild.getMember(jda.selfUser)?.hasPermission(this, Permission.MESSAGE_SEND) ?: false
     }
 }
