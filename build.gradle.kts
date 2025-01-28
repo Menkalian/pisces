@@ -141,7 +141,7 @@ dependencies {
     // JDA
     implementation("net.dv8tion:JDA:5.1.2")
     implementation("dev.arbjerg:lavaplayer:2.2.2")
-    implementation("dev.lavalink.youtube:v2:1.8.3")
+    implementation("dev.lavalink.youtube:v2:1.11.3")
 
     // Spotify
     implementation("se.michaelthelin.spotify:spotify-web-api-java:6.5.4")
